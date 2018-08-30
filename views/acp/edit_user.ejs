@@ -1,0 +1,85 @@
+
+<div class="container" id="admin-page">
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="edituser-page">
+      <!--<ul class="breadcrumb">-->
+        <!--<li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>-->
+        <!--<li><a href="/acp/user"><i class="fa fa-people"></i> Users</a></li>-->
+        <!--<li class="active">Add user</li>-->
+      <!--</ul>-->
+
+
+      <form id="edit-user-submit">
+        <h4>Information</h4><hr>
+        <div class="form-group">
+          <label for="username">Full Name</label>
+          <input type="hidden" value="<%= findUser.id %>" name="id">
+          <input type="text" class="form-control" id="username" name="username" value="<%= findUser.username %>" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" value="<%= findUser.email %>" required>
+        </div>
+        <div class="form-group">
+          <label for="pwd">New Password</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+        </div>
+        <div class="form-group">
+          <label for="commission">Commission(%)</label>
+          <input type="number" max="100" class="form-control" id="commission" name="commission" value="<%= findUser.commission || 0 %>">
+        </div>
+
+
+        <br>
+        <h4>Permission</h4><hr>
+
+        <% if (req.user.group == 1) {%>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="1" <%if(findUser.group == 1){%>checked<%}%>>Super Admin
+        </label>
+        <% } %>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="2" <%if(findUser.group == 2){%>checked<%}%>>Manager
+        </label>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="3" <%if(findUser.group == 3){%>checked<%}%>>Shipper
+        </label>
+
+        <hr>
+
+        <button type="submit" class="btn btn-block btn-green add-user">Update</button>
+      </form>
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+<style>
+  .main-content{
+    max-width:700px;
+  }
+  .detail-content {
+    background: #fff;
+    margin-top:10px;
+  }
+  /*form {*/
+     /*max-width: inherit!important;*/
+     /*background: none!important;*/
+     /*padding:0!important;*/
+     /*margin: 0!important;*/
+     /*box-shadow: inherit!important;*/
+  /*}*/
+</style>

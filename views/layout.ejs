@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=typeof title == 'undefined' ? 'MIS' : title%></title>
+    <link rel="icon" href="/images/fav.png" type='image/png'>
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/plugin/dropzone.css">
+    <link rel="stylesheet" href="/styles/plugin/jquery.miniColors.css">
+    <link rel="stylesheet" href="/styles/plugin/jquery.simplecolorpicker.css">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/bootstrap-colorpicker/css/bootstrap-colorpicker.css">
+    <link rel="stylesheet" href="/js/dependencies/datatables/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/js/dependencies/datatables/builder/Buttons-1.2.1/css/buttons.bootstrap.css">
+    <link rel="stylesheet" href="/js/dependencies/datatables/builder/Select-1.2.0/css/select.bootstrap.css">
+    <link rel="stylesheet" href="/js/dependencies/datatables/builder/FixedHeader-3.1.2/css/fixedHeader.bootstrap.css">
+    <link rel="stylesheet" href="/js/dependencies/bootstrap-table/bootstrap-table.css">
+    <link rel="stylesheet" href="/js/dependencies/bootstrap-select/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/tagsinput/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/bootstrap-toggle/bootstrap-toogle.css">
+    <link rel="stylesheet" href="/noty/noty.css">
+    <link rel="stylesheet" href="/js/dependencies/boostrap-editable/bootstrap-editable.css">
+    <link rel="stylesheet" href="/justified-gallery/css/justifiedGallery.css">
+    <link rel="stylesheet" href="/bootstrap-tagsinput/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="/js/dependencies/print/print.min.css">
+    <!--STYLES END-->
+
+    <!--<link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">-->
+  </head>
+
+  <body>
+
+    <script>
+      var baseUrl = "<%= sails.config.globals.baseUrl %>";
+    </script>
+
+
+    <!--TEMPLATES-->
+
+    <!--TEMPLATES END-->
+
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/jquery.2.2.4.js"></script>
+    <script src="/js/dependencies/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dependencies/datatables/builder/Buttons-1.2.1/js/dataTables.buttons.js"></script>
+    <script src="/js/dependencies/datatables/builder/Buttons-1.2.1/js/buttons.bootstrap.js"></script>
+    <script src="/js/dependencies/datatables/builder/Select-1.2.0/js/dataTables.select.js"></script>
+    <script src="/js/dependencies/datatables/builder/FixedHeader-3.1.2/js/dataTables.fixedHeader.js"></script>
+    <script src="/js/dependencies/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="/js/dependencies/dropzone.js"></script>
+    <script src="/bootstrap-less/js/bootstrap.min.js"></script>
+    <script src="/select2/js/select2.full.js"></script>
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+    <script src="/js/dependencies/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/js/dependencies/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="/js/dependencies/boostrap-editable/bootstrap-editable.min.js"></script>
+    <script src="/js/dependencies/boostrap-editable/bootstrap-editable-custom-input.js"></script>
+    <script src="/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="/js/dependencies/imageDesigner/fabric1713.js"></script>
+    <script src="/js/dependencies/imageDesigner/jquery.miniColors.min.js"></script>
+    <script src="/js/dependencies/print/print.min.js"></script>
+    <script src="/bootstrap-toggle/bootstrap-toogle.js"></script>
+    <script src="/tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="/justified-gallery/js/jquery.justifiedGallery.js"></script>
+    <script src="/bootstrap-tagsinput/typeahead.bundle.js"></script>
+    <script src="/js/dependencies/clipboard.min.js"></script>
+    <script src="/js/dependencies/countUp.js"></script>
+    <script src="/js/dependencies/datatables.lang.js"></script>
+    <script src="/js/dependencies/jquery.blockUI.js"></script>
+    <script src="/js/dependencies/jquery.helper.js"></script>
+    <script src="/js/dependencies/jquery.lazy.js"></script>
+    <script src="/js/dependencies/jquery.scrollTo.min.js"></script>
+    <script src="/js/dependencies/jquery.twbsPagination.js"></script>
+    <script src="/js/dependencies/lodash.min.js"></script>
+    <script src="/js/dependencies/lzma_worker-min.js"></script>
+    <script src="/js/dependencies/moment.min.js"></script>
+    <script src="/js/dependencies/noty.min.js"></script>
+    <script src="/js/dependencies/numeral.min.js"></script>
+    <script src="/js/dependencies/offline.min.js"></script>
+    <script src="/js/dependencies/progressbar.js"></script>
+    <script src="/js/dependencies/scannerdetect.js"></script>
+    <script src="/js/dependencies/sweetalert.min.js"></script>
+    <script src="/daterangepicker/daterangepicker.js"></script>
+    <script src="/js/init.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/campaign.js"></script>
+    <script src="/js/homepage.js"></script>
+    <script src="/js/import_csv_order.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/manifesting.js"></script>
+    <script src="/js/notification.js"></script>
+    <script src="/js/offline.js"></script>
+    <script src="/js/pace.js"></script>
+    <script src="/js/pace.min.js"></script>
+    <script src="/js/payment.js"></script>
+    <script src="/js/paypal.js"></script>
+    <script src="/js/printpage.js"></script>
+    <script src="/js/testBuild.js"></script>
+    <script src="/js/tracking.js"></script>
+    <script src="/js/tshirtEditor.js"></script>
+    <script src="/js/uploader.js"></script>
+    <script src="/js/userSetting.js"></script>
+    <script src="/js/modules/add_remove_item.js"></script>
+    <script src="/js/modules/api/uploader.js"></script>
+    <script src="/js/modules/design.js"></script>
+    <script src="/js/modules/intercom.js"></script>
+    <script src="/js/modules/inventory/datatable.js"></script>
+    <script src="/js/modules/inventory/option_datatable.js"></script>
+    <script src="/js/modules/jquery.js"></script>
+    <script src="/js/modules/jquery.lazyload.js"></script>
+    <script src="/js/modules/order_refund.js"></script>
+    <script src="/js/modules/order.js"></script>
+    <script src="/js/modules/print.js"></script>
+    <script src="/js/modules/product/bulkCloneUploader.js"></script>
+    <script src="/js/modules/product/designGallery.js"></script>
+    <script src="/js/modules/scp/order/update_order.js"></script>
+    <script src="/js/modules/scp/profile.js"></script>
+    <script src="/js/modules/scp/saving.js"></script>
+    <script src="/js/modules/scp/scp_dashboard.js"></script>
+    <script src="/js/modules/selectCountry.js"></script>
+    <script src="/js/modules/system.js"></script>
+    <script src="/js/modules/transaction.js"></script>
+    <script src="/js/modules/user.js"></script>
+    <!--SCRIPTS END-->
+
+    <!--<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>-->
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
+
+    <%- body %>
+  </body>
+</html>

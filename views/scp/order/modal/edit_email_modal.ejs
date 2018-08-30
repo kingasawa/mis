@@ -1,0 +1,35 @@
+<!-- Modal Update Email-->
+<div id="editEmailModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit email address</h4>
+      </div>
+      <div class="fade hide updateInfoNotify alert alert-warning"></div>
+
+      <div class="modal-body">
+        <form style="padding:15px" class="form-horizontal" role="form" id="editEmailAddress">
+
+          <div class="form-group">
+            <label for="newEmail">Email</label>
+            <input type="text" class="form-control" id="email" name="newEmail" value="<%= foundOrder.email %>">
+          </div>
+
+          <hr>
+
+          <input class="sr-only" name="currentEmail" value="<%= foundOrder.email %>">
+          <input class="sr-only" name="id" value="<%= foundOrder.id %>">
+          <input class="sr-only" name="orderid" value="<%= foundOrder.orderid %>">
+          <input class="sr-only" name="shop" value="<%= foundOrder.shop %>">
+          <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+          <input type="submit" class="updateInfobutton btn btn-success" value="Save changes"></input>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,11 @@
+image: tamdu/node:6
+
+services:
+  - postgres
+
+before_script:
+  - ls
+
+test:
+  script:
+  - npm test

@@ -1,0 +1,45 @@
+
+<div class="container" id="seller-page">
+  <aside class="sidenav">
+    <%- partial ('menu-side.ejs') %>
+  </aside>
+
+  <div class="main-content">
+    <div class="head-content">
+      <a class="menu-button" href="#">
+        <div class="menu-arrow aright text-center">
+          <i class="fa fa-chevron-right pull-left"></i>
+        </div>
+      </a>
+      <a class="menu-button" href="#">
+        <div class="sr-only menu-arrow aleft text-center">
+          <i class="fa fa-chevron-left pull-left"></i>
+        </div>
+      </a>
+      <div class="menu-title">
+        <h4><span class="name-param">Stores</span></h4>
+      </div>
+    </div>
+
+    <div class="detail-content" id="store-page">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/scp/store">Store</a></li>
+        <li><a href="/scp/sync">Sync Store</a></li>
+        <li class="active"></li>
+      </ul>
+
+
+      <div class="text-center">
+        <a class="btn btn-lg btn-success" href="/scp/sync">
+          <i class="fa fa-shopping-bag"></i> Sync Store</a>
+      </div>
+
+
+
+    </div>
+
+
+
+  </div>
+</div>

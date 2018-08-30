@@ -1,0 +1,140 @@
+
+<div class="container" id="seller-page">
+
+  <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content container" id="dashboard-page">
+      <div class="white-box">
+
+        <div class="row">
+          <!--<div class="col-sm-6">-->
+            <!--<a href="/scp/order">-->
+            <!--<div class="media media-manager">-->
+              <!--<div class="media-left media-middle">-->
+                <!--<img src="/images/order-icon.png" class="media-object">-->
+              <!--</div>-->
+              <!--<div class="media-body" style="text-align: center">-->
+                <!--<h2 class="media-heading"></h2>-->
+                <!--<p>Orders</p>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+          <div class="col-sm-6">
+            <a href="/scp/product">
+            <div class="media media-manager">
+              <div class="media-left media-middle">
+                <img src="/images/product-icon.png" class="media-object">
+              </div>
+              <div class="media-body" style="text-align: center">
+                <h2 class="media-heading"><%= data.countProduct %></h2>
+                <p>Products</p>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <a href="/scp/order">
+              <div class="media media-manager">
+                <div class="media-left media-middle">
+                  <img src="/images/money-icon.png" class="media-object">
+                </div>
+                <div class="media-body" style="text-align: center">
+                  <h2 class="media-heading">$<%= totalSale.total_price %></h2>
+                  <p>For <strong><%= totalSale.quantity %></strong> products</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container" style="position: relative;">
+        <canvas style="background:#fff" id="myChart" height="100"></canvas>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+      <script>
+
+        socket.get('/order/get_chart?position=scp',function(data){
+          console.log('data', data);
+          var ctx = document.getElementById("myChart").getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              datasets: [{
+                label: 'Total Money',
+//              backgroundColor: 'rgb(255, 87, 34)',
+                borderColor: 'rgb(255, 87, 34)',
+                data: data.dataPrice,
+                yAxisID: 'y-axis-1',
+                // Changes this dataset to become a line
+                type: 'line'
+              },
+                {
+                  label: 'Total Order',
+                  backgroundColor: 'rgba(0, 168, 251, 0.47843137254901963)',
+                  borderColor: 'rgb(3, 169, 244)',
+                  data: data.dataCount,
+//                  yAxisID: 'y-axis-2',
+                  display:false
+                },
+
+                {
+                  label: 'Total Product',
+//              backgroundColor: 'rgb(139, 195, 74)',
+                  borderColor: 'rgb(139, 195, 74)',
+                  data: data.dataProduct,
+                  // Changes this dataset to become a line
+                  type: 'line'
+                }],
+              labels: data.dataDate
+            },
+            options: {
+              title: {
+                display: false,
+              },
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero:true
+                  }
+                },
+                  {
+                    position: 'right',
+                    id: 'y-axis-1',
+                  },
+                  {
+                    position: 'left',
+                    display:false,
+                    id: 'y-axis-2',
+
+                    // grid line settings
+                    gridLines: {
+                      drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                  }]
+              }
+            }
+          });
+        })
+
+
+        //        myChart.canvas.parentNode.style.height = '328px';
+      </script>
+
+
+    </div>
+
+
+
+
+
+  </div>
+</div>

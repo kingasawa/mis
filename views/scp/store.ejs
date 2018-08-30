@@ -1,0 +1,77 @@
+
+<div class="container" id="seller-page">
+
+    <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content" id="store-page">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Stores</li>
+      </ul>
+      <div class="connect-store">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel panel-default">
+              <div class="panel-heading">Stores List</div>
+              <div style="padding:0" class="panel-body" id="shop-userid-<%= req.session.user.id %>">
+
+                <table class="table table-hover table-condensed" id="store-table">
+
+                  <thead>
+                  <tr>
+                    <th>Platform</th>
+                    <th>Name</th>
+                    <th>Total cost</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% _.each(foundShop, function(shop) { %>
+                  <tr>
+                    <td><img src="../images/shopify.png" class="media-object" style="display: initial;width:30px"></td>
+                    <td><%= shop.name %></td>
+                    <td class="text_price">$<%= shop.total %>
+                    </td>
+                  </tr>
+                  <% }) %>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <td></td>
+                    <td class="text_price">TOTAL</td>
+                    <td class="text_price">$<%= parseFloat(getSum).toFixed(2) %></td>
+                  </tr>
+                  </tfoot>
+                </table>
+
+
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel panel-default">
+              <div class="panel-body text-center">
+                <span>Connect to an ecommerce platform</span>
+                <img style="max-width:40px;" src="https://www.printful.com/static/images/integrations/shopify.svg">
+                <img style="max-width:40px;" src="https://www.printful.com/static/images/integrations/woocommerce.svg">
+                <img style="max-width:40px;" src="https://www.printful.com/static/images/integrations/bigcommerce.svg">
+                <hr><a href="/scp/sync" type="button" class="btn btn-block btn-primary">Connect</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+</div>

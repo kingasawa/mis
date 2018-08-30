@@ -1,0 +1,179 @@
+/**
+ * grunt/pipeline.js
+ *
+ * The order in which your css, javascript, and template files should be
+ * compiled and linked from your views and static HTML files.
+ *
+ * (Note that you can take advantage of Grunt-style wildcard/glob/splat expressions
+ * for matching multiple files, and ! in front of an expression to ignore files.)
+ *
+ * For more information see:
+ *   https://github.com/balderdashy/sails-docs/blob/master/anatomy/myApp/tasks/pipeline.js.md
+ */
+
+
+// CSS files to inject in order
+//
+// (if you're using LESS with the built-in default config, you'll want
+//  to change `assets/styles/importer.less` instead.)
+var cssFilesToInject = [
+  'styles/**/*.css',
+  'font-awesome/css/font-awesome.min.css',
+  // 'bootstrap-colorpicker/css/bootstrap-colorpicker.css',
+  // '/datatables/css/dataTables.bootstrap.css',
+
+  // Full datatables with plugins
+  // 'js/dependencies/datatables/builder/*.css',
+
+  '/js/dependencies/datatables/css/dataTables.bootstrap.css',
+  '/js/dependencies/datatables/builder/Buttons-1.2.1/css/buttons.bootstrap.css',
+  '/js/dependencies/datatables/builder/Select-1.2.0/css/select.bootstrap.css',
+  '/js/dependencies/datatables/builder/FixedHeader-3.1.2/css/fixedHeader.bootstrap.css',
+  // '/js/dependencies/datatables/builder/Scroller-1.4.2/css/scroller.bootstrap.css',
+  // '/js/dependencies/datatables/builder/Responsive-2.1.0/css/responsive.bootstrap.css',
+
+  '/js/dependencies/bootstrap-table/bootstrap-table.css',
+  // '/js/dependencies/bootstrap-select/bootstrap-select.min.css',
+
+  '/select2/css/select2.min.css',
+
+  '/tagsinput/bootstrap-tagsinput.css',
+  '/bootstrap-select/bootstrap-select.min.css',
+  '/daterangepicker/daterangepicker.css',
+  // '/bootstrap-toggle/bootstrap-toogle.css',
+  '/noty/noty.css',
+  '/js/dependencies/boostrap-editable/bootstrap-editable.css',
+  // '/justified-gallery/css/justifiedGallery.css',
+  '/bootstrap-tagsinput/bootstrap-tagsinput.css',
+
+  // '/masonry/masonry.pkgd.js',
+
+  /*Material*/
+  // 'styles/scss-importer.css',
+  // '/materialize/plugins/material-preloader/css/materialPreloader.min.css',
+  // '/daterangepicker/daterangepicker.css',
+  // '/materialize/css/alpha.css',
+  // 'materialize/plugins/fullcalendar/fullcalendar3.css',
+  // 'materialize/plugins/select2/css/select2.css',
+  /*Material*/
+
+  // 'styles/importer.less',
+];
+
+
+// Client-side javascript files to inject in order
+// (uses Grunt-style wildcard/glob/splat expressions)
+var jsFilesToInject = [
+  // Bootstrap here
+  'js/dependencies/jquery.2.2.4.js',
+
+  // 'datatables/js/jquery.dataTables.min.js',
+  // Full datatables with plugins
+  // 'js/dependencies/datatables/builder/*.js',
+
+  '/js/dependencies/datatables/js/jquery.dataTables.min.js',
+  '/js/dependencies/datatables/builder/Buttons-1.2.1/js/dataTables.buttons.js',
+  '/js/dependencies/datatables/builder/Buttons-1.2.1/js/buttons.bootstrap.js',
+  // '/js/dependencies/datatables/builder/Select-1.2.0/js/dataTables.select.js',
+  '/js/dependencies/datatables/builder/Select-1.2.0/js/dataTables.select.js',
+  '/js/dependencies/datatables/builder/FixedHeader-3.1.2/js/dataTables.fixedHeader.js',
+  // '/js/dependencies/datatables/builder/Scroller-1.4.2/js/dataTables.scroller.js',
+  // '/js/dependencies/datatables/builder/Responsive-2.1.0/js/responsive.bootstrap.min.js',
+
+  // '/js/dependencies/bootstrap-select/bootstrap-select.min.js',
+  'js/dependencies/dropzone.js',
+  'bootstrap-less/js/*.js',
+  '/select2/js/select2.full.js',
+  // Load sails.io before everything else
+  'js/dependencies/sails.io.js',
+  // 'bootstrap-colorpicker/js/bootstrap-colorpicker.js',
+
+  '/js/dependencies/bootstrap-table/bootstrap-table.js',
+  // 'js/dependencies/bootstrap-table/extensions/editable/bootstrap-table-editable.js',
+  '/js/dependencies/boostrap-editable/bootstrap-editable.min.js',
+  // '/js/dependencies/boostrap-editable/bootstrap-editable-custom-input.js',
+
+  // 'bootstrap-tagsinput/bootstrap-tagsinput.js',
+
+  // Image design
+  // 'js/dependencies/imageDesigner/fabric1713.js',
+  // 'js/dependencies/imageDesigner/tshirtEditor.js',
+  // 'js/dependencies/imageDesigner/jquery.miniColors.min.js',
+
+
+  // '/bootstrap-toggle/bootstrap-toogle.js',
+
+  '/tagsinput/bootstrap-tagsinput.js',
+  '/bootstrap-select/bootstrap-select.min.js',
+
+  // '/justified-gallery/js/jquery.justifiedGallery.js',
+  '/bootstrap-tagsinput/typeahead.bundle.js',
+  // '/js/dependencies/ckeditor/ckeditor.js',
+  // '/js/dependencies/ckeditor/config.js',
+  // '/js/dependencies/ckeditor/plugins/**/*.js',
+  // '/js/dependencies/ckeditor/style.js',
+
+  // Dependencies like jQuery, or Angular are brought in here
+  'js/dependencies/*.js',
+  // 'js/dependencies/**/*.js', // Please dont enable like this
+
+  // Need moment dep
+  '/daterangepicker/daterangepicker.js',
+
+  //Init instance or config
+  'js/init.js',
+  // All of the rest of your client-side js files
+  // will be injected here in no particular order.
+  'js/*.js',
+  'js/modules/**/*.js',
+];
+
+
+// Client-side HTML templates are injected using the sources below
+// The ordering of these templates shouldn't matter.
+// (uses Grunt-style wildcard/glob/splat expressions)
+//
+// By default, Sails uses JST templates and precompiles them into
+// functions for you.  If you want to use jade, handlebars, dust, etc.,
+// with the linker, no problem-- you'll just want to make sure the precompiled
+// templates get spit out to the same file.  Be sure and check out `tasks/README.md`
+// for information on customizing and installing new tasks.
+var templateFilesToInject = [
+  'templates/**/*.html'
+];
+
+
+
+
+
+
+
+// Default path for public folder (see documentation for more information)
+var tmpPath = '.tmp/public/';
+
+// Prefix relative paths to source files so they point to the proper locations
+// (i.e. where the other Grunt tasks spit them out, or in some cases, where
+// they reside in the first place)
+module.exports.cssFilesToInject = cssFilesToInject.map(function(cssPath) {
+  // If we're ignoring the file, make sure the ! is at the beginning of the path
+  if (cssPath[0] === '!') {
+    return require('path').join('!.tmp/public/', cssPath.substr(1));
+  }
+  return require('path').join('.tmp/public/', cssPath);
+});
+module.exports.jsFilesToInject = jsFilesToInject.map(function(jsPath) {
+  // If we're ignoring the file, make sure the ! is at the beginning of the path
+  if (jsPath[0] === '!') {
+    return require('path').join('!.tmp/public/', jsPath.substr(1));
+  }
+  return require('path').join('.tmp/public/', jsPath);
+});
+module.exports.templateFilesToInject = templateFilesToInject.map(function(tplPath) {
+  // If we're ignoring the file, make sure the ! is at the beginning of the path
+  if (tplPath[0] === '!') {
+    return require('path').join('!assets/', tplPath.substr(1));
+  }
+  return require('path').join('assets/',tplPath);
+});
+
+

@@ -1,0 +1,88 @@
+
+<div class="container" id="admin-page">
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="adduser-page">
+      <!--<ul class="breadcrumb">-->
+        <!--<li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>-->
+        <!--<li><a href="/acp/user"><i class="fa fa-people"></i> Users</a></li>-->
+        <!--<li class="active">Add user</li>-->
+      <!--</ul>-->
+
+
+      <form id="add-user-submit">
+        <% if (req.user.group == 1) {%>
+        <h4>Information</h4><hr>
+        <% } else { %>
+        <h4>Add New Shipper</h4><hr>
+        <% } %>
+        <div class="form-group">
+          <label for="username">Full Name</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="pwd">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+        </div>
+        <div class="form-group">
+          <label for="commission">Commission(%)</label>
+          <input type="number" class="form-control" id="commission" name="commission" value="0">
+        </div>
+
+
+        <br>
+        <h4>Permission</h4><hr>
+
+        <% if (req.user.group == 1) {%>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="1">Super Admin
+        </label>
+        <% } %>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="2">Manager
+        </label>
+        <label class="custom-radio radio-inline">
+          <input type="radio" name="group" value="3" checked>Shipper
+        </label>
+
+          <hr>
+
+        <button type="submit" class="btn btn-block btn-green add-user">Add new</button>
+      </form>
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+<style>
+  .main-content{
+    max-width:700px;
+  }
+  .detail-content {
+    background: #fff;
+    margin-top:10px;
+  }
+  /*form {*/
+     /*max-width: inherit!important;*/
+     /*background: none!important;*/
+     /*padding:0!important;*/
+     /*margin: 0!important;*/
+     /*box-shadow: inherit!important;*/
+  /*}*/
+</style>

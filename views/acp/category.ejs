@@ -1,0 +1,95 @@
+
+<div class="container" id="admin-page">
+
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="user-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Categories</li>
+      </ul>
+      <div id="seller-page-notice"></div>
+
+      <!--Category management begin-->
+      <div class="panel-group" id="accordion">
+
+
+        <div class="add-more">
+          <button class="btn btn-green" data-toggle="collapse" data-target="#addCat">Add New Category</button>
+          <div id="addCat" class="collapse">
+            <form style="max-width:500px" id="add-cat">
+              <div class="form-group">
+                <label for="parent">Category Parent</label>
+                <input type="text" class="form-control" id="parent" name="parent">
+                <div class="dropdown">
+                  <ul style="display:none" class="dropdown-menu dropdown-parent">
+                    <% _.each(categories, function(category) { %>
+                    <li class="hidden"><a href="#" class=""><%= category.name %></a></li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">Category Title</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <button type="submit" class="btn btn-default button-add">Add category</button>
+
+            </form>
+          </div>
+        </div>
+
+
+
+            <table class="table table-hover table-condensed" id="category-table">
+              <thead>
+              <tr>
+                <th>Category</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% _.each(categories, function(category) { %>
+              <tr id="cat-<%= category.id %>">
+                <td class="category-title"><%= category.title %></td>
+                <td><a class="edit-cat" data-id="<%= category.id %>" data-title="<%= category.title %>" href="#"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+                <td><a class="delete-cat" data-id="<%= category.id %>" data-title="<%= category.title %>" href="#"><i class="fa fa-trash-o"></i></a></td>
+              </tr>
+              <% }) %>
+              </tbody>
+            </table>
+
+          <!--<div class="col-sm-6">-->
+            <!--<form action="/action_page.php">-->
+              <!--<div class="form-group">-->
+                <!--<label for="title">Name</label>-->
+                <!--<input type="text" class="form-control" id="name" name="name">-->
+              <!--</div>-->
+              <!--<button type="submit" class="btn btn-default">Save</button>-->
+            <!--</form>-->
+          <!--</div>-->
+
+
+      <!--Category management end-->
+
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
+</div>
+
+<style>
+  td.category-title {
+    text-align: left;
+    padding-left: 15px!important;
+  }
+</style>

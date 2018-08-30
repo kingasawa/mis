@@ -1,0 +1,49 @@
+
+<div class="container" id="admin-page">
+
+  <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content" id="store-page">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Stores</li>
+      </ul>
+
+      <a href="/acp/sync" style="margin-bottom:5px" type="button" class="btn btn-green">Add new store</a>
+
+      <table class="table table-hover table-condensed" id="store-table">
+
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Store</th>
+          <th>Owner</th>
+          <th>Delete</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(foundShop, function(shop) { %>
+        <tr id="store-<%= shop.id %>">
+          <td><%= shop.id %></td>
+          <td><%= shop.name %></td>
+          <td>
+            <a href="/acp/user_order?id=<%= shop.owner %>" data-toggle="tooltip" title="<%= shop.email %>"><%= shop.username %></a>
+          </td>
+          <td><a class="delete-store" data-id="<%= shop.id %>" data-name="<%= shop.name %>" href="#"><i class="fa fa-trash-o"></i></a></td>
+
+        </tr>
+        <% }) %>
+        </tbody>
+
+      </table>
+    </div>
+
+
+
+  </div>
+</div>

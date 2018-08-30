@@ -1,0 +1,377 @@
+<div class="se-pre-con"></div>
+<div class="container" id="seller-page">
+  <% if (req.user.group == 3) {%>
+  <%- partial ('../scp/menu-side.ejs') %>
+  <% } else {%>
+  <%- partial ('../acp/menu-side.ejs') %>
+  <% } %>
+
+  <div id="add-product-page">
+
+
+    <div class="detail-content container">
+      <% if (req.user.group == 3) {%>
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a href="/scp/product">Products</a></li>
+        <li class="active">Add Product</li>
+      </ul>
+      <% } else { %>
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a href="/acp/product">Products</a></li>
+        <li class="active">Add Product</li>
+      </ul>
+      <% } %>
+      <div class="row">
+        <form name="validate_form" id="add_product">
+        <div class="col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="title">Title <span style="color:#a94442">*</span></label>
+                <input type="text" class="form-control" name="title" id="title" value="" required>
+              </div>
+
+              <div class="form-group">
+                <div id="default-product-description" style="display: none"></div>
+
+                <div id="productDescriptionWrapper">
+                  <label for="body_html">Description</label>
+                  <textarea class="form-control" rows="5" id="productDescription"></textarea>
+                  <input name="body_html" type="hidden" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Image<strong></strong></div>
+            <div class="panel-body uploaded-images"></div>
+            <div class="panel-body">
+              <div class="row">
+
+
+                <!-- dont remove this content -->
+                <form class="hidden"></form>
+                <!--please-->
+
+
+                <div class="form-group col-md-12" id="uploadImages">
+                  <!--<input type="hidden" name="frontimg" />-->
+                  <form action="/uploader" class="dropzone" id="productImage">
+                    <input class="imageUrl" type="hidden" name="frontimg" value="" />
+                  </form>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" name="price" id="price">
+                  </div>
+                </div>
+                <div class="hidden col-sm-6">
+                  <div class="form-group">
+                    <label for="compare_at_price">Compare at price</label>
+                    <input type="number" class="form-control" name="compare_at_price" id="compare_at_price">
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label for="stock">In Stock</label>
+                <input type="number" class="form-control" name="stock" id="stock" value="1">
+              </div>
+
+              <div class="form-group">
+                <label style="width:100%" for="weight">Weight</label>
+                <div class="input-group">
+                  <input type="number" class="input-lg form-control" name="weight" id="weight" value="0">
+                  <div class="input-group-btn">
+                    <select class="input-lg" id="weight-unit" name="weight-unit">
+                      <option value="oz">oz</option>
+                      <option value="lb">lb</option>
+                      <option value="kg">kg</option>
+                      <option value="g">g</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input type="text" class="form-control" name="sku" id="sku" value="" required>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="mpn">MPN</label>
+                    <input type="text" class="form-control" name="mpn" id="mpn" value="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="gtin">GTIN</label>
+                    <input type="text" class="form-control" name="gtin" id="gtin" value="">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="variant">Variants</label><a class="pull-right add-variant">Add variant</a><a class="pull-right remove-variant hidden">Cancel</a>
+                <p style="margin-top:10px">Add variants if this product comes in multiple versions, like different sizes or colors</p>
+              </div>
+            </div>
+            <div class="panel-body variant-option hidden">
+              <table class="table" id="addVariant">
+                <thead>
+                <tr>
+                  <th>Option Name</th>
+                  <th>Value</th>
+                  <!--<th></th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="option-name"><input type="text" class="form-control" name="option-name-1" id="option-name-1" value="Size"></td>
+                  <td><input type="text" class="option-value form-control" name="option-value-1" id="option-value-1" data-role="tagsinput"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="1"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                <tr>
+                  <td class="option-name"><input type="text" class="form-control" name="option-name-2" id="option-name-2" value="Color"></td>
+                  <td><input type="text" class="option-value form-control" name="option-value-2" id="option-value-2" data-role="tagsinput"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="2"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                <tr clas="hidden">
+                  <td class="option-name"><input type="text" class="form-control" name="option-name-3" id="option-name-3" value="Style"></td>
+                  <td><input type="text" class="option-value form-control" name="option-value-3" id="option-value-3" data-role="tagsinput"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="3"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="panel-body table-variant hidden">
+              <table class="table" id="createVariant">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Variant</th>
+                  <th>Price</th>
+                  <th>SKU</th>
+                  <th>GTIN</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-sm-4 product-add-right-panel">
+          <!--<div class="panel panel-default">-->
+            <!--<div class="panel-body">-->
+              <!--<div class="form-group">-->
+                <!--<label for="category">Product Category</label>-->
+                <!--<select class="form-control" id="category" name="category">-->
+                  <!--<option value="">1</option>-->
+                  <!--<option value="">2</option>-->
+                  <!--<option value="">3</option>-->
+                  <!--<option value="">4</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group">
+                <label class="radio-inline"><input type="radio" name="global" value="1" checked>Global</label>
+                <label class="radio-inline"><input type="radio" name="global" value="0">Private</label>
+              </div><hr>
+
+              <div class="form-group">
+              <label for="category">Category</label>
+              <select class="form-control" id="category" name="category">
+                <option>Choose category</option>
+                <% _.each(categories,function(category){ %>
+                <option value="<%= category.name %>"><%= category.title %></option>
+                <% }) %>
+              </select>
+              </div>
+
+              <!--<div class="form-group">-->
+                <!--<label for="vendor">Vendor</label>-->
+                <!--<input type="text" class="form-control" name="vendor" id="vendor" value="" required>-->
+              <!--</div>-->
+              <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" class="form-control" name="brand" id="brand" value="">
+                <div class="dropdown">
+
+                  <ul style="display:none" class="dropdown-menu dropdown-brand">
+                    <% _.each(findBrand,function(brand){ %>
+                    <li class="hidden"><a href="#" class=""><%= brand.name %></a></li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="collections">Collection</label>
+                <input type="text" class="form-control" name="collections" id="collections" value="">
+              </div>
+              <p>Add this product to a collection so it’s easy to find in your store.</p>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="tags">Tags (optional)</label>
+                <input type="text" class="form-control" name="tags" data-role="tagsinput" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <select id="add-merchant" class="selectoption" multiple data-width="100%" data-selected-text-format="count > 1" data-max-options="6" title="Add merchant">>
+                <% _.each(findMerchant,function(merchant){ %>
+                <option value="<%= merchant.name %>"><%= merchant.name %></option>
+                <% }) %>
+              </select></div>
+            <div class="panel-body merchant-list">
+
+            </div>
+          </div>
+
+        </div>
+          <hr>
+          <div class="col-sm-12">
+            <button style="letter-spacing:1.5px" type="button" class="createProductButton btn btn-block btn-green">Create Product</button>
+          </div>
+
+
+        </form>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<style>
+
+  .panel-body.variant-option input {
+    margin-top:10px !important;
+  }
+  .variant-option {
+    background: #f5f5f5;
+  }
+  .variant-option-values button{
+    padding: 10px 15px;
+    margin-top:12px;
+  }
+  .variant-option-values .fa {
+    font-size: 20px;
+    color:#1d87dc;
+  }
+  a.pull-right.add-variant:hover,a.pull-right.remove-variant:hover {
+    cursor: pointer;
+  }
+  .bootstrap-tagsinput {
+    height:auto;
+  }
+  .bootstrap-tagsinput input{
+    /*height:35px;*/
+    width:100%;
+  }
+</style>
+<script>
+  $('.add-variant').click(function(){
+    $('.variant-option').removeClass('hidden');
+    $('.add-variant').addClass('hidden');
+    $('.remove-variant').removeClass('hidden');
+  })
+  $('.remove-variant').click(function(){
+    $('.variant-option').addClass('hidden');
+    $('.remove-variant').addClass('hidden');
+    $('.add-variant').removeClass('hidden');
+  })
+
+  var updateMaterialImage = $('#productBackImage, #productFrontImage').serializeJson();
+  // Upload image
+  Dropzone.options.productImage = {
+    paramName: "image",
+    maxFiles: 50,
+    dictDefaultMessage: '',
+    accept: function(file, done)
+    {
+      var re = /(?:\.([^.]+))?$/;
+      var ext = re.exec(file.name)[1];
+      ext = ext.toUpperCase();
+      if ( ext == "JPEG" || ext == "BMP" || ext == "JPG" ||  ext == "PNG" ||  ext == "JPE")
+      {
+        done();
+      }
+      else { done("just select jpeg or bmp or pnj files."); }
+    },
+    init: function() {
+      this.on("success", function(file, response) {
+//        console.log('response',{file, response});
+
+//        $('.uploaded-images').append(`<div class="upload-img col-xs-3">
+//                <a class="delete-image" data-source="${response.imageUrl}"><img src="/images/close.png" width="25"></a>
+//                <img class=img-source style="max-width:100%" src="${response.imageUrl}">
+//              </div>`)
+        $('div#uploadImages').append(`<span class="image-success hidden">${response.imageUrl}</span>`)
+      });
+    }
+  };
+
+//  Dropzone.options.productImage = {
+//    paramName: "image",
+//    maxFiles: 1,
+//    dictDefaultMessage: 'drop your back images here to upload',
+//    init: function() {
+//      this.on("success", function(file, response) {
+//        $('#productBackImage').css('background','none')
+//        console.log(response);
+//        $('input[name=backimg]').val(response.imageUrl);
+////          $('input[name=backimg]').val(response.id)
+//      });
+//    }
+//  };
+</script>

@@ -1,0 +1,50 @@
+<div class="panel-group" id="accordion">
+  <% _.each(foundHistory,function(history){ %>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= history.id %>"><%= history.data.msg %></a>
+        <span class="pull-right"><%= history.createdAt.toDateString().slice(4) %></span>
+      </h4>
+    </div>
+    <div id="collapse<%= history.id %>" class="panel-collapse collapse">
+
+      <% if (history.type == 'edit') { %>
+      <div class="panel-body">
+        <p>User ID: <%= _.get(history,'owner','') %></p>
+        <p>Action: <%= _.get(history,'type','') %>  </p>
+        <p>From: <%= _.get(history,'data.currentValue','') %></p>
+        <p>To: <%= _.get(history,'data.newValue','') %></p>
+      </div>
+      <% } else if (history.type == 'change_quantity') { %>
+      <div class="panel-body">
+        <p>User ID: <%= _.get(history,'owner','') %></p>
+        <p>Action: <%= _.get(history,'type','') %>  </p>
+        <p>Items:</p>
+        <% _.each(history.data.line_items,function(item){ %>
+          <p><%= _.get(item,'quantity','') %> x <%= _.get(item,'title','') %></p>
+        <% }) %>
+      </div>
+
+      <% } else if (history.type == 'edit_address') { %>
+      <div class="panel-body">
+        <p>User ID: <%= _.get(history,'owner','') %></p>
+        <p>Action: <%= _.get(history,'type','') %>  </p>
+
+      </div>
+
+      <% } else if (history.type == 'edit_email') { %>
+      <div class="panel-body">
+        <p>User ID: <%= _.get(history,'owner','') %></p>
+        <p>Action: <%= _.get(history,'type','') %>  </p>
+        <p>Old email: <%= _.get(history,'data.currentEmail','') %></p>
+        <p>New email: <%= _.get(history,'data.newEmail','') %></p>
+
+      </div>
+      <% } %>
+    </div>
+  </div>
+
+  <% }) %>
+</div>

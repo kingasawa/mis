@@ -1,0 +1,60 @@
+<!--<ul class="list-group">-->
+  <!--<li class="main-group-item list-group-item">-->
+    <!--<img style="max-width:160px" src="/images/lg.png">-->
+    <!--<a class="menu-button" href="#"><i class="pull-right aleft fa fa-close sr-only"></i></a>-->
+  <!--</li>-->
+  <!--<a href="/acp"><li class="list-group-item" name="Dashboard"><i class="fa fa-dashboard"></i>Dashboard</li></a>-->
+  <!--<a href="/acp/product/"><li class="list-group-item"><i class="fa fa-reorder"></i>Products</li></a>-->
+
+  <!--<a href="/acp/order"><li class="list-group-item" name=""><i class="fa fa-file-text-o"></i>Orders</li></a>-->
+  <!--<a href="/acp/user"><li class="list-group-item" name=""><i class="fa fa-users"></i>Users</li></a>-->
+  <!--<a href="/acp/manager"><li class="list-group-item" name=""><i class="fa fa-user-plus"></i>Managers</li></a>-->
+
+  <!--<a href="/logout"><li data-toggle="tooltip" title="<%= req.session.user.email %>" data-placement="bottom" class="list-group-item">-->
+      <!--<i class="fa fa-power-off"></i><%= req.session.user.username %> (Sign out)</li></a>-->
+<!--</ul>-->
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menuSide">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/scp">
+        <img style="max-width:160px;" src="/images/lg.png">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="menuSide">
+      <ul class="nav navbar-nav">
+        <li><a href="/acp">Dashboard</a></li>
+        <!--<li><a href="/acp/order">Orders</a></li>-->
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Orders
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/acp/order">All Orders</a></li>
+            <li><a href="/acp/order?list=picked">Orders Picked</a></li>
+            <li><a href="/acp/order?list=unpick">Orders Unpick</a></li>
+          </ul>
+        </li>
+        <li><a href="/acp/product">Products</a></li>
+        <li><a href="/acp/user">Users</a></li>
+        <li><a href="/acp/discount">Discounts</a></li>
+        <li><a href="/acp/brand">Brands</a></li>
+        <li><a href="/acp/category">Categories</a></li>
+        <li><a href="/acp/merchant">Merchants</a></li>
+        <% if(req.user.group == 1) {%>
+        <li><a href="/acp/store">Stores</a></li>
+        <% } %>
+        <!--<li><a href="/acp/manager">Manager</a></li>-->
+        <!--<li><a href="/acp/setting">Setting</a></li>-->
+        <li class="user-account" data-toggle="tooltip" title="<%= req.session.user.email %>" data-placement="bottom"><a href="/logout"><%= req.session.user.username %> (Sign out)</a></li>
+      </ul>
+
+    </div>
+  </div>
+</nav>

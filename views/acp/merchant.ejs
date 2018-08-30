@@ -1,0 +1,60 @@
+
+<div class="container" id="admin-page">
+  <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="merchant-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Merchants</li>
+      </ul>
+
+      <div class="add-more">
+        <button class="btn btn-green" data-toggle="collapse" data-target="#addMerchant">Add New Merchant</button>
+        <div id="addMerchant" class="collapse">
+          <form class="form-inline" id="add-merchant">
+            <div class="form-group">
+              <label for="name">Merchant Name</label>
+              <input type="text" class="form-control" id="name" name="name">
+              <button type="submit" class="btn btn-default button-add">Add merchant</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+
+      <!--<div id="seller-page-notice"></div>-->
+      <table class="table" id="merchant-list">
+        <thead>
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Merchant</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(findMerchant, function(merchant) { %>
+        <tr id="merchant-<%= merchant.id %>">
+          <td></td>
+          <td><%= merchant.id %></td>
+          <td class="merchant-name"><%= merchant.name %></td>
+          <td><a class="edit-merchant" data-id="<%= merchant.id %>" data-name="<%= merchant.name %>" href="#"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+          <td><a class="delete-merchant" data-id="<%= merchant.id %>" data-name="<%= merchant.name %>" href="#"><i class="fa fa-trash-o"></i></a></td>
+        </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+  </div>
+</div>

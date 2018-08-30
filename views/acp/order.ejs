@@ -1,0 +1,385 @@
+<div class="se-pre-con"></div>
+<div class="container" id="admin-page">
+
+    <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content" id="order-page">
+
+
+
+      <!--<div style="padding:5px" class="white-box">-->
+
+        <!--<div class="row">-->
+          <!--<div class="col-sm-3">-->
+            <!--<a href="#">-->
+              <!--<div class="media">-->
+                <!--<div class="media-left media-middle">-->
+                  <!--<img src="/images/order-icon.png" class="media-object">-->
+                <!--</div>-->
+                <!--<div class="media-body" style="text-align: center">-->
+                  <!--<h2 class="media-heading">101</h2>-->
+                  <!--<p>Orders</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+
+          <!--<div class="col-sm-3">-->
+            <!--<a href="#">-->
+              <!--<div class="media">-->
+                <!--<div class="media-left media-middle">-->
+                  <!--<img src="/images/money-icon.png" class="media-object">-->
+                <!--</div>-->
+                <!--<div class="media-body" style="text-align: center">-->
+                  <!--<h2 class="media-heading">101</h2>-->
+                  <!--<p>Total Money</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+
+          <!--<div class="col-sm-3">-->
+            <!--<a href="#">-->
+              <!--<div class="media">-->
+                <!--<div class="media-left media-middle">-->
+                  <!--<img src="/images/tracking-icon.png" class="media-object">-->
+                <!--</div>-->
+                <!--<div class="media-body" style="text-align: center">-->
+                  <!--<h2 class="media-heading">101</h2>-->
+                  <!--<p>Total Tracking</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+
+          <!--<div class="col-sm-3">-->
+            <!--<a href="#">-->
+              <!--<div class="media">-->
+                <!--<div class="media-left media-middle">-->
+                  <!--<img src="/images/commission-icon.png" class="media-object">-->
+                <!--</div>-->
+                <!--<div class="media-body" style="text-align: center">-->
+                  <!--<h2 class="media-heading">101</h2>-->
+                  <!--<p>Total Commission</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+
+
+        <!--</div>-->
+
+      <!--</div>-->
+      <!--end white box-->
+
+      <div class="auto-charge-notify hide fade alert"></div>
+
+      <div style="display:none" class="show-count-pickup">
+        <div class="btn-group button-pick">
+
+          <button type="button" class="count-pickup btn">Choose <span class="update-val">0</span> Products</button>
+          <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+              Bulk action <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <%if(req.user.group == 1) {%>
+
+              <% } %>
+              <li><a class="picklist" data-text="change-status" data-toggle="modal" data-target="#changeStatusModal" href="#"><i class="fa fa-refresh"></i> Change status</a></li>
+              <li><a class="picklist" data-text="change-user" data-toggle="modal" data-target="#changeUserModal" href="#"><i class="fa fa-refresh"></i> Change user</a></li>
+              <li class="divider"></li>
+              <% if (req.query.list == 'picked'){ %>
+              <li><a class="hidden picklist" data-text="pickup-order" data-picker="<%= req.user.username %>" href="#"><i class="fa fa-hand-o-up"></i> Pickup order</a></li>
+              <li><a class="hidden picklist" data-text="unpick-order" data-owner="<%= req.user.username %>" data-group="<%= req.user.group %>" href="#"><i class="fa fa-close"></i> Unpick order</a></li>
+              <% } else { %>
+              <li><a class="picklist" data-text="pickup-order" data-picker="<%= req.user.username %>" href="#"><i class="fa fa-hand-o-up"></i> Pickup order</a></li>
+              <li><a class="picklist" data-text="unpick-order" data-owner="<%= req.user.username %>" data-group="<%= req.user.group %>" href="#"><i class="fa fa-close"></i> Unpick order</a></li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!--<div id="orderreportrange" class="hidden btn btn-default">-->
+        <!--<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;-->
+        <!--<span></span> <b class="caret"></b>-->
+      <!--</div>-->
+
+      <!--<button type="button" id="export-order-csv" class="hidden btn btn-success"><i class="fa fa-list-alt"></i> Export CSV</button>-->
+
+      <!--<ul class="nav nav-pills">-->
+        <!--<li><a href="/acp/order">All order</a></li>-->
+        <!--<li><a href="/acp/order?tracking=pending">Pending</a></li>-->
+        <!--<li><a href="/acp/order?tracking=Awaiting-Fulfillment">Awaiting-Fulfillment</a></li>-->
+        <!--<li><a href="/acp/order?tracking=In-Production">In-Production</a></li>-->
+        <!--<li><a href="/acp/order?tracking=Fulfilled">Fulfilled</a></li>-->
+        <!--<li><a href="/acp/order?tracking=Cancelled">Cancelled</a></li>-->
+      <!--</ul>-->
+
+
+      <table style="background:#fff" class="display table-responsive table table-hover new-order-hook" id="acp-order-table">
+        <% if (req.query.list !== 'unpick'){ %>
+        <div id="order-status-filter" class="status-filter">
+          <ul class="nav nav-pills">
+
+            <li><a id="all-order" class="active" data-status="">All orders</a></li>
+            <li><a id="new-order" data-status="new">New</a></li>
+            <li><a id="processing-order" data-status="processing">Processing</a></li>
+            <li><a id="shipped-order" data-status="shipped">Shipped</a></li>
+            <li><a id="cancelled-order" data-status="cancelled">Cancelled</a></li>
+            <li><a id="refund-order" data-status="refunded">Refunded</a></li>
+            <li><a id="return-order" data-status="return">Return (<%= orderReturnCount %>)</a></li>
+            <li><a id="refund-cs" data-status="cs">CS (<%= orderCsCount %>)</a></li>
+          </ul>
+
+        </div>
+        <% } %>
+        <select style="margin: 7px 5px;height: 30px" class="pull-right" name="sort-by" id="sort-by">
+          <option value="desc">Sort by Newest</option>
+          <option value="asc">Sort by Latest</option>
+        </select>
+        <% if(req.user.group == 1) {%>
+        <select style="margin:7px 5px;height:30px;border:1px dashed #FF5722" class="pull-left" id="order-shop-filter" >
+          <option value="">All Stores</option>
+          <% _.each(findStore,function(store){ %>
+          <option><%= store.name %></option>
+          <% }) %>
+        </select>
+        <% } %>
+        <select style="margin:7px 5px;height:30px;border:1px dashed #03A9F4" class="pull-left" id="user-filter" >
+          <option value="">All Users</option>
+          <% _.each(foundUser,function(user){ %>
+          <option><%= user.username %></option>
+          <% }) %>
+        </select>
+        <thead>
+        <tr>
+          <th><input type="checkbox" class="choose-all-order"></th>
+          <th class="hidden">Tag</th>
+          <th>OrderID</th>
+          <th>OrderName</th>
+          <th>Date</th>
+          <!--<th>User</th>-->
+
+          <%if(req.user.group == 1){ %>
+          <th>Store</th>
+          <% } else { %>
+          <th class="hidden">Store</th>
+          <% } %>
+
+
+          <th>Qty</th>
+          <th>Total</th>
+          <th>Products</th>
+          <th>Shipping Information</th>
+          <!--<th class="sr-only">Owner</th>-->
+          <th>Notes</th>
+          <th>Status</th>
+          <th>Tracking</th>
+          <th>User</th>
+          <th>Copy</th>
+          <th class="hidden">Search Status</th>
+          <th class="hidden">Search User</th>
+          <!--<th>Base Cost</th>-->
+          <!--<th>Shipping Cost</th>-->
+          <!--<th>Total Cost</th>-->
+
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(foundOrder,function(order){%>
+          <tr class="tr-order" id="order-id-<%= order.id %>">
+            <td><input type="checkbox" data-order-id="<%= order.id %>" class="choose-order-id"></td>
+            <td class="hidden"><%= order.tag || '' %></td>
+            <td><a href="/acp/order?id=<%= order.id %>"><%= order.id %></a></td>
+            <td><a href="/acp/order?id=<%= order.id %>"><%= order.order_name %></a></td>
+            <td><%= sails.moment.tz(order.createdAt,"America/Los_Angeles").format('MM/DD/YYYY') %></td>
+
+            <%if(req.user.group == 1){ %>
+            <td><%= order.shop.replace('.myshopify.com','') %></td>
+            <% } else { %>
+            <td class="hidden"></td>
+            <% } %>
+
+            <td><%= order.total_item %></td>
+            <td class="order-total-price"><%= order.total_price %></td>
+            <td class="order-products"><%= order.products %></td>
+            <td class="order-shipping"><%= order.addressFormat %></td>
+            <td class="order-note">
+              <span class="update-note"><%= order.internal_notes1 || '' %></span>
+              <div style="margin:5px;width:95%" class="hidden update-order-note ">
+                <textarea style="max-width: 100%" class="form-control" rows="3"><%= order.internal_notes1 || '' %></textarea>
+                <button data-order-id="<%= order.id %>" class="btn btn-danger cancel-update-note"><i class="fa fa-close"></i></button>
+                <button data-order-id="<%= order.id %>" class="btn btn-success save-update-note"><i class="fa fa-save"></i></button>
+              </div>
+            </td>
+            <td class="order-status order-<%= order.status %>">
+              <span class="update-status" data-toggle="tooltip" title="click to update status"><%= order.status %></span>
+              <select class="hidden form-control" data-order-id="<%= order.id %>" id="update-order-status">
+                <option value="New" <%if(order.status=='New'){%>selected<%}%>>New</option>
+                <option value="Processing" <%if(order.status=='Processing'){%>selected<%}%>>Processing</option>
+                <option value="Shipped" <%if(order.status=='Shipped'){%>selected<%}%>>Shipped</option>
+                <option value="Delivered" <%if(order.status=='Delivered'){%>selected<%}%>>Delivered</option>
+                <option value="Out of stock" <%if(order.status=='Out of stock'){%>selected<%}%>>Out of stock</option>
+                <option value="Cancelled" <%if(order.status=='Cancelled'){%>selected<%}%>>Cancelled</option>
+                <option value="Refunded" <%if(order.status=='Refunded'){%>selected<%}%>>Refunded</option>
+              </select>
+            </td>
+            <% if(order.tracking_number) { let trackingArr = order.tracking_number.split(' | ') %>
+              <% if (trackingArr.length > 1){ %>
+              <td class="tracking-<%= order.tracking_status %> text-left">
+                <% _.each(trackingArr,function(tracking) { %>
+                <a href="https://shipint.aftership.com/<%=tracking%>" target="_blank">
+                  <img style="max-width:20px" src="/images/<%= order.tracking_status%>.svg"> <%= tracking %>
+                </a>
+                <% }) %>
+              </td>
+              <% } else { %>
+                <td class="tracking-<%= order.tracking_status %> text-left">
+                  <a href="https://shipint.aftership.com/<%=order.tracking_number%>" target="_blank"><img style="max-width:20px" src="/images/<%= order.tracking_status%>.svg"> <%= order.tracking_number %> </a>
+                </td>
+              <% } %>
+
+            <% } else { %>
+            <td></td>
+            <% } %>
+
+            <td style="cursor:context-menu" class="order-picker update-picker">
+              <span class="update-picker"><%= order.picker || '' %></span>
+              <select class="hidden form-control" data-order-id="<%= order.id %>" id="update-order-picker">
+                <% _.each(foundUser,function(user){ %>
+                <% if (user.username == order.picker){ %>
+                <option value="<%= user.username %>" selected><%= user.username %></option>
+                <% } else { %>
+                <option value="<%= user.username %>"><%= user.username %></option>
+                <% } %>
+
+                <% }) %>
+              </select>
+            </td>
+            <td><a href="#" class="copyToClipboard" data-text="<%= order.addressFormat %>"><i class="fa fa-copy"></i></a></td>
+            <td class="hidden"><%= order.status %></td>
+            <td class="hidden"><%= order.picker %></td>
+          </tr>
+        <% }) %>
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="changeStatusModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change order status</h4>
+      </div>
+      <div class="modal-body">
+        <select class="form-control" id="change-order-status">
+          <option value="Choose Status">Choose Status</option>
+          <option value="New">New</option>
+          <option value="Processing">Processing</option>
+          <option value="Cancelled">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Out of stock">Out of stock</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Refunded">Refunded</option>
+        </select>
+        <hr>
+        <button type="button" class="changeStatusButton btn btn-info btn-block">Change status</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="changeUserModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change order status</h4>
+      </div>
+      <div class="modal-body">
+        <select class="form-control" id="change-user-status">
+          <option value="">None User</option>
+          <% _.each(foundUser,function(user){ %>
+          <option value="<%= user.username %>"><%= user.username %></option>
+          <% }) %>
+        </select>
+        <hr>
+        <button type="button" class="changeStatusButton btn btn-info btn-block">Change user</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .main-content{
+    max-width:inherit;
+  }
+  table{
+    font-size: 12px;
+  }
+  td{
+    border-right:1px solid #eee;
+    padding:0 4px !important;
+  }
+  td.order-total-price{
+    font-size: 14px;
+    font-weight: 500;
+    color: #607D8B;
+  }
+  .detail-content .dataTables_wrapper thead th{
+    padding:3px 0 !important;
+  }
+  th.sorting_desc {
+    padding-right:0 !important;
+  }
+
+</style>
+
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>-->
+<!--<script>-->
+  <!--var ctx = $("#myOrderChart");-->
+  <!--var myChart = new Chart(ctx, {-->
+    <!--type: 'pie',-->
+    <!--data: {-->
+<!--//      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],-->
+      <!--datasets: [{-->
+        <!--label: '# of Votes',-->
+        <!--data: [12, 19, 3, 5, 2, 3],-->
+        <!--backgroundColor: [-->
+          <!--'rgba(255, 99, 132, 0.2)',-->
+          <!--'rgba(54, 162, 235, 0.2)',-->
+          <!--'rgba(255, 206, 86, 0.2)',-->
+          <!--'rgba(75, 192, 192, 0.2)',-->
+          <!--'rgba(153, 102, 255, 0.2)',-->
+          <!--'rgba(255, 159, 64, 0.2)'-->
+        <!--],-->
+        <!--borderColor: [-->
+          <!--'rgba(255,99,132,1)',-->
+          <!--'rgba(54, 162, 235, 1)',-->
+          <!--'rgba(255, 206, 86, 1)',-->
+          <!--'rgba(75, 192, 192, 1)',-->
+          <!--'rgba(153, 102, 255, 1)',-->
+          <!--'rgba(255, 159, 64, 1)'-->
+        <!--],-->
+        <!--borderWidth: 1-->
+      <!--}]-->
+    <!--},-->
+    <!--options: {-->
+
+    <!--}-->
+  <!--});-->
+
+<!--</script>-->

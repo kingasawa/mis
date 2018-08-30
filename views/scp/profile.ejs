@@ -1,0 +1,27 @@
+<div class="container" id="seller-page">
+  <aside class="sidenav">
+    <%- partial('menu-side.ejs') %>
+  </aside>
+
+  <div class="main-content">
+    <div class="head-content">
+      <a class="menu-button" href="#">
+        <div class="menu-arrow aright text-center">
+          <i class="fa fa-chevron-right pull-left"></i>
+        </div>
+      </a>
+      <a class="menu-button" href="#">
+        <div class="sr-only menu-arrow aleft text-center">
+          <i class="fa fa-chevron-left pull-left"></i>
+        </div>
+      </a>
+      <div class="menu-title">
+        <h4><span class="name-param">Profile <%= _.get(req, 'user.username', 'n/a') %></span></h4>
+      </div>
+    </div>
+
+    <div class="detail-content" id="profile-page">
+
+    </div>
+  </div>
+</div>

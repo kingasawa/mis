@@ -1,0 +1,34 @@
+<div class="fullwidth-page">
+
+<div class="container" id="login-page">
+
+  <form id="login-form-submit">
+    <a href="/"><h4><img style="max-width:400px" class="center-block" src="/images/logo.png"></h4></a>
+    <div class="form-group">
+      <label for="identifier">Email</label>
+      <input type="text" class="input-lg form-control" name="identifier" id="identifier" placeholder="Enter email" required
+             value="<%=_.get(req.allParams(), 'email','')%>">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password</label>
+      <input type="password" class="input-lg form-control" name="password" id="password" placeholder="Enter password" required>
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox"> Remember me</label>
+    </div><hr>
+    <button type="submit" class="btn btn-block btn-green">SIGN IN</button><hr>
+    <div class="ex-link">
+      <p><a href="/register">Sign up for seller account</a></p>
+      <!--<p><a href="#">Forgot your password?</a></p>-->
+    </div>
+
+  </form>
+  <script>
+    $(function(){
+      <%if(_.get(req.allParams(), 'email',false)){%>
+          $('#password').focus();
+      <%}%>
+    })
+  </script>
+</div>
+</div>

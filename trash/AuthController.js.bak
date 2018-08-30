@@ -1,0 +1,136 @@
+/**
+ * AuthController
+ *
+ * @description :: Server-side logic for managing auths
+ * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+ */
+
+module.exports = {
+
+  // register: (req,res) => {
+  //   console.log(req)
+  // },
+
+  /**
+   * Log out bootstrap-colorpicker user and return them to the homepage
+   *
+   * Passport exposes bootstrap-colorpicker logout() function on req (also aliased as logOut()) that
+   * can be called from any route handler which needs to terminate bootstrap-colorpicker login
+   * session. Invoking logout() will remove the req.user property and clear the
+   * login session (if any).
+   *
+   * For more information on logging out users in Passport.js, check out:
+   * http://passportjs.org/guide/logout/
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  logout: function (req, res) {
+
+    //@TODO check logout callback?
+    req.logOut();
+    res.ok();
+    // res.redirect('/');
+    // if (!req.isSocket) {
+    //   // req.session.authenticated = false;
+    //   req.logout();
+    //   res.redirect('/');
+    // }
+    // else {
+    //   delete req.user;
+    //   delete req.session.passport;
+    //   req.session.user = false;
+    //   // req.session.authenticated = false;
+    //
+    //   res.ok();
+    //
+    // }
+
+  },
+
+  /**
+   * Create bootstrap-colorpicker third-party authentication endpoint
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  provider: function (req, res) {
+    sails.services.passport.endpoint(req, res);
+  },
+
+  /**
+   * Create bootstrap-colorpicker authentication callback endpoint
+   *
+   * This endpoint handles everything related to creating and verifying Pass-
+   * ports and users, both locally and from third-aprty providers.
+   *
+   * Passport exposes bootstrap-colorpicker login() function on req (also aliased as logIn()) that
+   * can be used to establish bootstrap-colorpicker login session. When the login operation
+   * completes, user will be assigned to req.user.
+   *
+   * For more information on logging in users in Passport.js, check out:
+   * http://passportjs.org/guide/login/
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  callback: async (req, res) => {
+    let session_id = req.signedCookies['sails.sid'];
+    sails.sockets.join(req,session_id);
+    let result = {
+      type: 'success'
+    };
+    console.log("login callback 0 session_id: %s", session_id);
+    const passportLogin = () => new Promise( (resolve, reject) => {
+      sails.services.passport.callback(req, res, (err, user) => {
+        req.login(user, () => {
+          const { error } = req.flash();
+          if(error || !req.isAuthenticated()){
+            console.log("login callback 1");
+            result.type = 'fail';
+            result.error = error;
+            // return sails.sockets.broadcast(
+            //   session_id,'login/fail',{ result }
+            // );
+            return resolve(result);
+          }
+          console.log("login callback 2");
+
+          result.location = '/scp';
+          result.user = user;
+          req.session.user = user;
+
+          // req.session.authenticated = true;
+          // setTimeout(() => {
+          // sails.sockets.broadcast(session_id,
+          //   `login/${result.type}`,
+          //   result);
+          // }, 300);
+          // res.json(result);
+          return resolve(result);
+        })
+        console.log("login callback 3");
+        // resolve(result)
+      })
+    })
+
+    const user = await passportLogin();
+    console.log("login callback 4", user, result);
+    sails.sockets.broadcast(session_id,
+      `login/${result.type}`,
+      result);
+    res.json(result);
+  },
+
+
+  /**
+   * Disconnect bootstrap-colorpicker passport from bootstrap-colorpicker user
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  disconnect: function (req, res) {
+    sails.services.passport.disconnect(req, res);
+  }
+};
+

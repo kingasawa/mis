@@ -1,0 +1,192 @@
+
+<div class="container" id="seller-page">
+
+  <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content" id="order-page">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li class="active">Orders</li>
+
+      </ul>
+
+      <div style="display:none" class="show-count-pickup">
+        <div class="btn-group button-pick">
+
+          <button type="button" class="count-pickup btn">Choose <span class="update-val">0</span> Products</button>
+          <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+              Bulk action <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <%if(req.user.group == 1) {%>
+
+              <% } %>
+              <% if (req.query.list == 'picked'){ %>
+              <li><a class="hidden picklist" data-text="pickup-order" data-picker="<%= req.user.username %>" href="#"><i class="fa fa-hand-o-up"></i> Pickup order</a></li>
+              <li><a class="hidden picklist" data-text="unpick-order" data-owner="<%= req.user.username %>" data-group="<%= req.user.group %>" href="#"><i class="fa fa-close"></i> Unpick order</a></li>
+              <% } else { %>
+              <li><a class="picklist" data-text="pickup-order" data-picker="<%= req.user.username %>" href="#"><i class="fa fa-hand-o-up"></i> Pickup order</a></li>
+              <li><a class="picklist" data-text="unpick-order" data-owner="<%= req.user.username %>" data-group="<%= req.user.group %>" href="#"><i class="fa fa-close"></i> Unpick order</a></li>
+              <% } %>
+              <!--<li class="divider"></li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Datatable here -->
+
+      <!--<div id="orderreportrange" class="btn btn-default">-->
+      <!--<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;-->
+      <!--<span></span> <b class="caret"></b>-->
+      <!--</div>-->
+
+      <!--<button type="button" id="export-order-csv" class="btn btn-success"><i class="fa fa-list-alt"></i> Export CSV</button>-->
+      <!--<h2>Order List</h2>-->
+      <table style="background:#fff" id="order-table" class="display table table-responsive" cellspacing="0" width="100%">
+
+
+        <% if (req.query.list !== 'unpick'){ %>
+        <div id="order-status-filter" class="status-filter">
+          <ul class="nav nav-pills">
+
+            <li><a id="all-order" class="active" data-status="">All orders</a></li>
+            <li><a id="new-order" data-status="new">New</a></li>
+            <li><a id="processing-order" data-status="processing">Processing</a></li>
+            <li><a id="shipped-order" data-status="shipped">Shipped</a></li>
+            <li><a id="cancelled-order" data-status="cancelled">Cancelled</a></li>
+            <li><a id="refund-order" data-status="refunded">Refunded</a></li>
+            <li><a id="return-order" data-status="return">Return (<%= orderReturnCount %>)</a></li>
+            <li><a id="refund-cs" data-status="cs">CS</a></li>
+          </ul>
+
+        </div>
+        <% } %>
+        <select style="margin: 7px 5px;height: 30px" class="pull-right" name="sort-by" id="sort-by">
+          <option value="desc">Sort by Newest</option>
+          <option value="asc">Sort by Latest</option>
+        </select>
+        <thead>
+        <tr>
+          <th><input type="checkbox" class="choose-all-order"></th>
+          <th class="hidden">Tag</th>
+          <th>OrderID</th>
+
+          <th>Date</th>
+
+
+          <th>Qty</th>
+          <th>Total</th>
+
+          <!--<th>Base Cost</th>-->
+          <th>Products</th>
+          <th>Shipping Information</th>
+          <th>Notes</th>
+          <th>Status</th>
+          <th>Tracking</th>
+          <th>User</th>
+          <th>Copy</th>
+          <th class="hidden">Search Status</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <% _.each(orderArr,function(order){%>
+        <% if((req.user.group === 3 && order.picker == req.user.username) || order.picker === null || order.picker === '' || req.user.group !== 3){ %>
+        <tr class="tr-order" id="order-id-<%= order.id %>">
+          <td><input type="checkbox" data-order-id="<%= order.id %>" class="choose-order-id"></td>
+          <td class="hidden"><%= order.tag || '' %></td>
+          <td><a href="/scp/order?id=<%= order.id %>"><%= order.id %></a></td>
+
+          <td><%= sails.moment.tz(order.createdAt,"America/Los_Angeles").format('MM/DD/YYYY') %></td>
+          <!--<td></td>-->
+
+
+          <td><%= order.total_item %></td>
+          <td class="order-total-price"><%= order.total_price %></td>
+          <td class="order-products"><%= order.products %></td>
+          <td class="order-shipping"><%= order.addressFormat %></td>
+          <td class="order-note">
+            <span class="update-note"><%= order.internal_notes1 || '' %></span>
+            <div style="margin:5px;width:95%" class="hidden update-order-note ">
+              <textarea style="max-width: 100%" class="form-control" rows="3"><%= order.internal_notes1 || '' %></textarea>
+              <button data-order-id="<%= order.id %>" class="btn btn-danger cancel-update-note"><i class="fa fa-close"></i></button>
+              <button data-order-id="<%= order.id %>" class="btn btn-success save-update-note"><i class="fa fa-save"></i></button>
+            </div>
+          </td>
+          <td class="order-status order-<%= order.status %>">
+            <span class="update-status" data-toggle="tooltip" title="click to update status"><%= order.status %></span>
+            <select class="hidden form-control" data-order-id="<%= order.id %>" id="update-order-status">
+              <option value="New" <%if(order.status=='New'){%>selected<%}%>>New</option>
+              <option value="Processing" <%if(order.status=='Processing'){%>selected<%}%>>Processing</option>
+              <option value="Shipped" <%if(order.status=='Shipped'){%>selected<%}%>>Shipped</option>
+              <option value="Delivered" <%if(order.status=='Delivered'){%>selected<%}%>>Delivered</option>
+              <option value="Out of stock" <%if(order.status=='Out of stock'){%>selected<%}%>>Out of stock</option>
+              <option value="Cancelled" <%if(order.status=='Cancelled'){%>selected<%}%>>Cancelled</option>
+              <option value="Refunded" <%if(order.status=='Refunded'){%>selected<%}%>>Refunded</option>
+            </select>
+          </td>
+          <% if(order.tracking_number) { let trackingArr = order.tracking_number.split(' | ') %>
+          <td class="tracking-<%= order.tracking_status %> text-left">
+            <% _.each(trackingArr,function(tracking) { %>
+            <a href="https://shipint.aftership.com/<%=tracking%>" target="_blank"><img style="max-width:20px" src="/images/<%= order.tracking_status%>.svg"> <%= tracking %> </a>
+            <% }) %>
+          </td>
+          <% } else { %>
+          <td></td>
+          <% } %>
+          <td class="order-picker">
+            <span><%= order.picker || '' %></span>
+          </td>
+          <td><a href="#" class="copyToClipboard" data-text="<%= order.addressFormat %>"><i class="fa fa-copy"></i></a></td>
+          <td class="hidden"><%= order.status %></td>
+        </tr>
+        <% } %>
+
+        <% }) %>
+
+        </tbody>
+      </table>
+
+
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .main-content{
+    max-width:inherit;
+  }
+  table{
+    font-size: 12px;
+  }
+  td{
+    border-right:1px solid #eee;
+    padding:0 4px !important;
+  }
+  td.order-total-price{
+    font-size: 14px;
+    font-weight: 500;
+    color: #607D8B;
+  }
+  .detail-content .dataTables_wrapper thead th{
+    padding:3px 0 !important;
+  }
+  th.sorting_desc {
+    padding-right:0 !important;
+  }
+</style>
+
+<!--<script>-->
+
+
+  <!--$(function(){-->
+    <!--$('#printLabel').click(function(){-->
+      <!--printJS({printable: '../images/product/34e95756-f4b4-4c41-820c-c24c39aeb817.jpg', type: 'image', header: 'My cool image header'});-->
+    <!--})-->
+  <!--})-->
+<!--</script>-->

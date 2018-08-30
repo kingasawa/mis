@@ -1,0 +1,50 @@
+
+<div class="container" id="admin-page">
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="manager-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Managers</li>
+      </ul>
+
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Manager</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(foundManager, function(manager) { %>
+        <tr>
+          <td><%= manager.id %></td>
+          <td><a href="#"><%= manager.email %></a></td>
+          <td>Active</td>
+          <td><%= manager.createdAt %></td></td>
+          <td>
+            <div class="btn-group">
+              <a class="btn btn-default" href="#"><i class="fa fa-pencil"></i></a>
+              <a class="btn btn-default" href="#"><i class="fa fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        <% }) %>
+
+
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+  </div>
+</div>

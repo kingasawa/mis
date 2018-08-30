@@ -1,0 +1,120 @@
+
+<div class="container" id="seller-page">
+
+    <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content" id="product-page">
+
+
+    <div class="detail-content container">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li class="active">Products</li>
+      </ul>
+
+      <p>
+        <a href="/product/add_product" type="button" class="btn btn-green">Add product</a>
+      </p>
+
+      <table class="table table-bordered" id="scp-product-table">
+        <!--<select style="margin:0px 5px;height:40px;width:150px" class="pull-left" id="filter-product" >-->
+          <!--<option value="">Filter Product</option>-->
+          <!--<option value="Instock">Instock</option>-->
+          <!--<option value="Outstock">Out of stock</option>-->
+          <!--<option value="error">Error</option>-->
+        <!--</select>-->
+
+        <thead style="background:#7fbf00;color:#fff">
+        <tr>
+          <!--<th></th>-->
+          <th>ID</th>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Brand</th>
+          <th>Error</th>
+          <th>GTIN</th>
+          <th style="min-width:100px">Price</th>
+          <!--<th>Owner</th>-->
+          <th>Global</th>
+          <th style="width:80px">Status</th>
+          <th>Stock</th>
+          <th>Edit</th>
+          <th>Delete</th>
+          <th>GTIN</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(findPost, function(post) { %>
+        <tr id="product-id-<%= post.id %>" class="<%if (post.status == 'Disabled') {%>hidden<%}%>">
+          <!--<td></td>-->
+          <td><%= post.id %></td>
+          <td class="product-image"><img src="<%= _.get(post,'images[0].src','') %>"></td>
+          <td class="product-title"><%= post.title %> - <%= post.gtin || '' %></td>
+          <td class="product-brand"><%= post.brand || '' %></td>
+          <td class="product-error"><%= post.tags || '' %></td>
+          <td class="product-gtin"><%= post.gtin || '' %></td>
+          <td class="text_price"><%= _.get(post,'price','') %></td>
+          <!--<td></td>-->
+          <td><%if(post.global === 1){%>Yes<%}else{%>No<%}%></td>
+          <td class="post<%= post.status %>"><%= post.status %></td>
+          <% if(post.stock < 3) { %>
+          <td>Out of stock</td>
+          <% } else { %>
+          <td><%= post.stock %></td>
+          <% } %>
+
+          <td><a href="/product/edit_product?id=<%= post.id %>" class="edit-post"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+          <td><a class="delete-post" data-status="<%= post.status %>" data-title="<%= post.title %>" data-id="<%= post.id %>"><i class="fa fa-trash-o"></i></a></td>
+          <td><a class="search-mpn" data-id="<%= post.id %>"><i class="fa fa-barcode"></i></a></td>
+        </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="updateGtinModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">SEARCH GTIN</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="media product-details">
+            <div class="media-left">
+              <img src="" class="media-object product-image" style="width:80px">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading product-title"></h4>
+              <p class="product-mpn"></p>
+              <p class="product-brand"></p>
+            </div>
+          </div><hr>
+          <div id="search-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<style>
+  .main-content{
+    max-width:inherit;
+  }
+  #scp-product-table_filter input {
+    width:400px;
+  }
+  .modal {
+    background: #000000b3 !important;
+  }
+  .modal-backdrop {background: none;}
+
+</style>

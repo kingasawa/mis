@@ -1,0 +1,16 @@
+const Color = {
+  rgb2hex: (input) => {
+    let rgb = input.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+
+    return (rgb && rgb.length === 4) ?
+           "" +
+           ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) :
+           input;
+  }
+}
+/*
+ * https://www.npmjs.com/package/shopify-node-api
+ * */
+module.exports = Color;

@@ -1,0 +1,13 @@
+<div style="margin-top:100px;max-width: 600px;text-align: center" class="container-fluid">
+  <div><i style="font-size:100px;color:#5cb85c" class="fa fa-check-circle"></i></div>
+  <% if(req.session.user) { %>
+  <div style="font-size:16px">Hi <%= req.session.user.username %> !</div>
+  <% } %>
+  <div style="font-size:20px;margin-bottom:15px">Push product to Shopify successfully
+    <% if (params.p !== 'ok') { %>
+    <p><a href="https://<%= params.shop %>/admin/products/<%= params.p %>">Open in Shopify</a></p>
+    <% } %>
+  </div>
+  <div><a href="/scp" class="btn btn-info" role="button">Back to home</a>
+    <a href="/product/design" class="btn btn-info" role="button">Continue post product</a></div>
+</div>

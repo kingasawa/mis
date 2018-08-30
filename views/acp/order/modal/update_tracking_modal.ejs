@@ -1,0 +1,38 @@
+<!-- Modal Update Email-->
+<div id="updateTrackingModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Update tracking information</h4>
+      </div>
+      <div class="fade hide updateInfoNotify alert alert-warning"></div>
+
+      <div class="modal-body">
+        <form style="padding:15px" class="form-horizontal" role="form" id="updateTrackingInformation">
+
+          <div class="form-group">
+            <label for="tracking_number">Tracking Number</label>
+            <input type="text" class="form-control" id="tracking_number" name="tracking_number" value="<%= fulfill.tracking_number %>">
+          </div>
+          <div class="form-group">
+            <label for="tracking_company">Tracking Company</label>
+            <input type="text" class="form-control" id="tracking_company" name="tracking_company" value="<%= fulfill.tracking_company %>">
+          </div>
+
+          <hr>
+
+          <input class="sr-only" name="id" value="<%= fulfill.id %>">
+
+          <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+          <input type="submit" class="updateInfobutton btn btn-success" value="Save changes"></input>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--end modal-->

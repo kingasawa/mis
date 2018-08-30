@@ -1,0 +1,276 @@
+
+<div class="container" id="admin-page">
+
+    <%- partial ('menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content container" id="product-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li class="active">Products</li>
+      </ul>
+
+      <p>
+        <a href="/product/add_product" type="button" class="btn btn-green">Add product</a>
+      </p>
+
+      <div style="display:none" class="show-count-pickup">
+        <div class="btn-group button-pick">
+
+          <button type="button" class="count-pickup btn">Choose <span class="update-val">0</span> Products</button>
+          <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+              Bulk action <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <%if(req.user.group == 1) {%>
+              <li><a class="picklist" data-text="sync_product" href="#"><i class="fa fa-refresh"></i> Sync product (Push to store)</a></li>
+              <li><a class="picklist" data-text="unsync_product" href="#"><i class="fa fa-close"></i> Unsync product (Remove store)</a></li>
+              <li><a class="picklist" data-text="restock_product" href="#"><i class="fa fa-refresh"></i> Restock (5)</a></li>
+              <% } %>
+              <!--<li class="divider"></li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden progress">
+        <div class="progress-bar" role="progressbar" style=""></div>
+      </div>
+
+      <table class="table table-bordered" id="acp-product-table">
+
+        <div id="product-status-filter" class="status-filter">
+          <ul class="nav nav-pills">
+
+            <li><a id="all-product" data-status="" class="active">All products</a></li>
+            <li><a id="product-sync" data-status="Synced">Sync</a></li>
+            <li><a id="product-unsync" data-status="Unsync">Unsync</a></li>
+            <li><a id="product-disabled" data-status="Disabled">Disabled</a></li>
+            <li><a id="product-outofstock" data-status="Out of stock">Out of stock (<%= countOutOfStock %>)</a></li>
+          </ul>
+        </div>
+
+        <div style="padding:5px;float:left;line-height:35px" id="search-filter">
+          <% if(req.user.group == 1) {%>
+          <select style="height:40px" class="pull-left" id="product-shop-filter" >
+            <option value="">All Stores</option>
+            <% _.each(findStore,function(store){ %>
+            <option><%= store.name %></option>
+            <% }) %>
+          </select>
+          <% } %>
+
+          <!--<select style="margin:0px 5px;height:40px;width:150px" class="pull-left" id="filter-product" >-->
+            <!--<option value="">Filter Product</option>-->
+            <!--<option value="Instock">Instock</option>-->
+            <!--<option value="Outstock">Out of stock</option>-->
+            <!--<option value="error">Error</option>-->
+          <!--</select>-->
+
+          <select style="margin:0px 5px;height:40px;width:150px" class="pull-left" id="product-table-filter" >
+            <option value="">Filter by</option>
+            <option value="4">Title</option>
+            <option value="5">Brand</option>
+            <option value="8">Price</option>
+            <option value="9">User</option>
+          </select>
+          <input style="width:400px" type="text" name="search-key">
+
+          <input class="slider hidden" name="price-range">
+
+        </div>
+
+
+
+        <thead>
+
+        <tr>
+
+          <th><input type="checkbox" class="choose-all-product"></th>
+          <th>ID</th>
+          <% if(req.user.group !== 1) {%>
+          <th class="hidden">Store</th>
+          <% } else { %>
+          <th>Store</th>
+          <% } %>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Brand</th>
+          <th>Error</th>
+          <th>GTIN</th>
+          <th>Price</th>
+          <th style="min-width:80px">Owner</th>
+          <th>Global</th>
+          <th style="width:80px">Status</th>
+          <th>Stock</th>
+          <th>Edit</th>
+          <th>Disable</th>
+          <th>GTIN</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(findProduct, function(post) { %>
+        <tr id="product-id-<%= post.id %>" class="tr-product">
+
+          <td><input type="checkbox" data-product-id="<%= post.id %>" class="choose-product-id"></td>
+          <td class="product-id"><%= post.id %></td>
+          <% if(req.user.group === 1) {%>
+          <td class="product-store"><%= post.store || '' %></td>
+          <% } else { %>
+          <td class="hidden product-store"></td>
+          <% } %>
+          <td class="product-image"><img src="<%= _.get(post,'images[0].src','') %>"></td>
+          <td class="product-title"><%= post.title %> - <%= post.gtin || '' %></td>
+          <td class="product-brand"><%= post.brand || '' %></td>
+          <td class="product-error"><%= post.tags || '' %></td>
+          <td class="product-gtin"><%= post.gtin || '' %></td>
+          <td class="text_price"><%= _.get(post,'price','') %></td>
+          <td><%= _.get(post,'owner.username','') %></td>
+          <td><%if(post.global === 1){%>Yes<%}else{%>No<%}%></td>
+          <td class="post<%= post.status %>"><%= post.status %></td>
+          <% if(post.stock < 3) { %>
+          <td>Out of stock (<strong><%=post.stock%></strong>)</td>
+          <% } else { %>
+          <td><%= post.stock %></td>
+          <% } %>
+          <td><a href="/product/edit_product?id=<%= post.id %>" class="edit-post"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+          <td><a class="delete-post" data-status="<%= post.status %>" data-title="<%= post.title %>" data-id="<%= post.id %>"><i class="fa fa-trash-o"></i></a></td>
+          <td><a class="search-mpn" data-id="<%= post.id %>"><i class="fa fa-barcode"></i></a></td>
+
+        </tr>
+        <% }) %>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+  <div id="updateGtinModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">SEARCH GTIN</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="media product-details">
+            <div class="media-left">
+              <img src="" class="media-object product-image" style="width:80px">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading product-title"></h4>
+              <p class="product-mpn"></p>
+              <p class="product-brand"></p>
+            </div>
+          </div><hr>
+          <div id="search-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%if(req.user.group == 1) {%>
+<!-- Modal -->
+<div id="selectStoreModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select store to push</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+
+          <select class="form-control" id="store" name="shop">
+            <% _.each(findStore,function(store){ %>
+            <option value="<%= store.name %>"><%= store.name %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-green btn-block push-product-confirm">Push</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<% } %>
+
+<!-- Modal -->
+
+
+<style>
+  .slider{
+    margin-left:15px;
+    display: none;
+  }
+  #acp-product-table_filter{
+    display: none;
+  }
+  .main-content{
+    max-width:inherit;
+  }
+  .fa-refresh{
+    color:#03A9F4
+  }
+
+  .fa-close{
+    color:#F44336
+  }
+  .product-title{
+    text-align: left;
+    /*padding:0 10px;*/
+  }
+
+  .modal {
+    background: #000000b3 !important;
+  }
+  .modal-backdrop {background: none;}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest/dist/sweetalert2.all.min.js"></script>
+<script>
+  var mySlider = $("input.slider").bootstrapSlider({
+    range:true,
+    min:0,
+    max:300,
+    // value: [10,100]
+  });
+
+  var min;
+  var max;
+  $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+      let price = parseFloat( data[8] ) || 0; // use data for the age column
+      if ( ( isNaN( min ) && isNaN( max ) ) ||
+           ( isNaN( min ) && price <= max ) ||
+           ( min <= price   && isNaN( max ) ) ||
+           ( min <= price   && price <= max ) )
+      {
+        return true;
+      }
+      return false;
+    }
+  );
+
+  mySlider.on('slideStop',function(slide){
+    min = slide.value[0];
+    max = slide.value[1];
+    productTable.draw();
+    // console.log('value', slide.value);
+  })
+
+  // Call a method on the slider
+//  var value = mySlider.bootstrapSlider('getValue');
+</script>

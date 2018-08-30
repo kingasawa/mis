@@ -1,0 +1,88 @@
+
+<div class="container" id="seller-page">
+  <aside class="sidenav">
+    <%- partial ('../menu-side.ejs') %>
+  </aside>
+
+  <div class="main-content">
+    <div class="head-content">
+      <a class="menu-button" href="#">
+        <div class="menu-arrow aright text-center">
+          <i class="fa fa-chevron-right pull-left"></i>
+        </div>
+      </a>
+      <a class="menu-button" href="#">
+        <div class="sr-only menu-arrow aleft text-center">
+          <i class="fa fa-chevron-left pull-left"></i>
+        </div>
+      </a>
+      <div class="menu-title">
+        <h4><span class="name-param">Stores</span></h4>
+      </div>
+    </div>
+
+    <div class="detail-content" id="view-store-products">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/scp/store">Store</a></li>
+        <li><a href="/scp/store?name=<%= data.name %>">View store</a></li>
+        <li><a href="/scp/store?name=<%= data.name %>&id=<%= data.product.id %>">View product</a></li>
+        <li class="active">Edit product</li>
+      </ul>
+
+      <div class="panel panel-default" id="edit-product">
+        <div class="panel-heading">Edit product id <%= data.product.id %></div>
+        <div class="panel-body">
+          <form class="form-horizontal" action="/shopify/product" method="post" id="edit-product-shopify">
+            <input class="sr-only" name="id" value="<%= data.product.id %>">
+            <input class="sr-only" name="action" value="update">
+            <input class="sr-only" name="name" value="<%= data.name %>">
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="title">Title</label>
+              <div class="col-sm-10">
+                <input type="text" class="input-lg form-control" value="<%= data.product.title %>" name="title" id="title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="vendor">Vendor</label>
+              <div class="col-sm-10">
+                <input type="text" class="input-lg form-control" value="<%= data.product.vendor %>" name="vendor" id="vendor">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="tags">Tags</label>
+              <div class="col-sm-10">
+                <input type="text" class="input-lg form-control" value="<%= data.product.tags %>" name="tags" id="tags">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="handle">Handle</label>
+              <div class="col-sm-10">
+                <input type="text" class="input-lg form-control" value="<%= data.product.handle %>" name="handle" id="handle">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="body_html">Description</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" rows="5" id="richText" name="body_html"><%= data.product.body_html %></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Update product</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

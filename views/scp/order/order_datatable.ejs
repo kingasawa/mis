@@ -1,0 +1,63 @@
+
+<div class="container" id="seller-page">
+
+    <%- partial ('../menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+    <div class="detail-content" id="order-page">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li class="active">Orders</li>
+      </ul>
+
+      <!-- Datatable here -->
+
+      <!--<div id="orderreportrange" class="btn btn-default">-->
+        <!--<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;-->
+        <!--<span></span> <b class="caret"></b>-->
+      <!--</div>-->
+
+      <!--<button type="button" id="export-order-csv" class="btn btn-success"><i class="fa fa-list-alt"></i> Export CSV</button>-->
+          <!--<h2>Order List</h2>-->
+          <table style="background:#fff" id="order-table" class="display table table-responsive" cellspacing="0" width="100%">
+            <!--<div class="form-group" style="margin-top:15px" >-->
+              <!--<select class="form-control" id="shop-filter" >-->
+                <!--<option>All Stores</option>-->
+                <!--<%_.each(shopData, (shop) => {%>-->
+                  <!--<option><%=shop.name%></option>-->
+                <!--<%})%>-->
+              <!--</select>-->
+            <!--</div>-->
+            <div id="order-status-filter" class="status-filter">
+              <ul class="nav nav-pills">
+                <li><a id="all-order" href="#All">All orders (<span>0</span>)</a></li>
+                <li><a id="pending-order" href="#Pending">Pending (<span>0</span>)</a></li>
+                <!--<li><a id="back-order" href="#Back-Order">Back-Order (<span>0</span>)</a></li>-->
+                <!--<li><a id="awaiting-fulfillment-order" href="#Awaiting-Fulfillment">Awaiting-Fulfillment (<span>0</span>)</a></li>-->
+                <!--<li><a id="in-production-order" href="#In-Production">In-Production (<span>0</span>)</a></li>-->
+                <li><a id="fulfilled-order" href="#Fulfilled">Fulfilled (<span>0</span>)</a></li>
+                <li><a id="cancelled-order" href="#Cancelled">Cancelled (<span>0</span>)</a></li>
+              </ul>
+            </div>
+            <thead>
+            <tr>
+              <th>Date</th>
+              <!--<th>Store</th>-->
+              <th>OrderID</th>
+              <th>Customer</th>
+              <!--<th>Base Cost</th>-->
+              <!--<th>Shipping Cost</th>-->
+              <th>Status</th>
+
+            </tr>
+            </thead>
+
+          </table>
+
+
+
+    </div>
+  </div>
+</div>

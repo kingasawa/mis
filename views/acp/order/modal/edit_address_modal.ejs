@@ -1,0 +1,74 @@
+<!-- Modal Update Address-->
+<div id="editAddressModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit shipping address</h4>
+      </div>
+      <div class="fade hide updateInfoNotify alert alert-warning"></div>
+
+      <div class="modal-body">
+        <form style="padding:15px" class="form-horizontal" role="form" id="editShippingAddress">
+          <div style="float:left;width:100%">
+            <div style="float:left;width:45%">
+              <div class="form-group">
+                <label for="first_name">First name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="<%= foundOrder.shipping_address.first_name %>">
+              </div>
+              <div class="form-group">
+                <label for="address1">Address</label>
+                <input type="text" class="form-control" id="address1" name="address1" value="<%= foundOrder.shipping_address.address1 %>">
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%= foundOrder.shipping_address.city %>">
+              </div>
+              <div class="form-group">
+                <label for="province">Province</label>
+                <input type="text" class="form-control" id="province" name="province" value="<%= foundOrder.shipping_address.province %>">
+              </div>
+
+            </div>
+
+            <div style="float:right;width:45%">
+              <div class="form-group">
+                <label for="last_name">Last name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="<%= foundOrder.shipping_address.last_name %>">
+              </div>
+              <div class="form-group">
+                <label for="address1">Address 2</label>
+                <input type="text" class="form-control" id="address2" name="address2" value="<%= foundOrder.shipping_address.address2 %>">
+              </div>
+              <div class="form-group">
+                <label for="country_code">Country</label>
+                <select class="form-control" id="countryList" name="country_code" data-current="<%= foundOrder.shipping_address.country %>"></select>
+              </div>
+              <div class="form-group">
+                <label for="zip">Postal/Zip code</label>
+                <input type="text" class="form-control" id="zip" name="zip" value="<%= foundOrder.shipping_address.zip %>">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone number</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="<%= foundOrder.shipping_address.phone %>">
+              </div>
+            </div>
+          </div>
+          <hr>
+
+          <div class="button">
+            <input class="sr-only" name="country">
+            <input class="sr-only" name="id" value="<%= foundOrder.id %>">
+            <input class="sr-only" name="orderid" value="<%= foundOrder.orderid %>">
+            <input class="sr-only" name="shop" value="<%= foundOrder.shop %>">
+            <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="updateInfobutton btn btn-success" value="Apply changes"></input>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,431 @@
+<div class="se-pre-con"></div>
+<div class="container" id="seller-page">
+  <% if (req.user.group == 3) {%>
+  <%- partial ('../scp/menu-side.ejs') %>
+  <% } else {%>
+  <%- partial ('../acp/menu-side.ejs') %>
+  <% } %>
+
+  <div id="add-product-page">
+
+
+    <div class="detail-content container">
+      <% if (req.user.group == 3) {%>
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a href="/scp/product">Products</a></li>
+        <li class="active">Add Product</li>
+      </ul>
+      <% } else { %>
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a href="/acp/product">Products</a></li>
+        <li class="active">Add Product</li>
+      </ul>
+      <% } %>
+      <div class="row">
+        <form id="add_product">
+          <input type="hidden" name="id" value="<%= post.id %>">
+        <div class="col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="title">Title <span style="color:#a94442">*</span></label>
+                <input type="text" class=" form-control" name="title" id="title" value="<%= post.title %>" required>
+              </div>
+
+              <div class="form-group">
+                <div id="default-product-description" style="display: none">
+                  <%if(_.get(post, 'body_html', false)){%>
+                  <%- _.get(post, 'body_html', '')%>
+                  <% } %>
+
+                </div>
+
+                <div id="productDescriptionWrapper">
+                  <label for="body_html">Description</label>
+                  <textarea class="form-control" rows="5" id="productDescription"></textarea>
+                  <input name="body_html" type="hidden" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Image<strong></strong></div>
+            <div class="panel-body uploaded-images">
+            <% if(post.images && post.images.length > 0) {%>
+
+              <% _.each(post.images,function(img){ %>
+              <div class="upload-img col-xs-3">
+                <a class="delete-image" data-source="<%= img.src %>"><img src="/images/close.png" width="25"></a>
+                <img class=img-source style="max-width:100%" src="<%= img.src %>">
+              </div>
+              <% }) %>
+
+            <% } %>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+
+
+                <!-- dont remove this content -->
+                <form class="hidden"></form>
+                <!--please-->
+
+
+                <div class="form-group col-md-12" id="uploadImages">
+                  <!--<input type="hidden" name="frontimg" />-->
+                  <form action="/uploader" class="dropzone" id="productImage">
+                    <input class="imageUrl" type="hidden" name="frontimg" value="" />
+                  </form>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" class=" form-control" name="price" id="price" value="<%= post.price %>" required>
+                  </div>
+                </div>
+                <div class="hidden col-sm-6">
+                  <div class="form-group">
+                    <label for="compare_at_price">Compare at price</label>
+                    <input type="number" class="form-control" name="compare_at_price" id="compare_at_price" value="<%= post.compare_at_price %>">
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label for="stock">In Stock</label>
+                <input type="number" class=" form-control" name="stock" id="stock" value="<%= _.get(post,'stock',0) %>">
+              </div>
+
+
+              <div class="form-group">
+                <label style="width:100%" for="weight">Weight</label>
+                <div class="input-group">
+                  <input type="number" class="input-lg form-control" name="weight" id="weight" value="0">
+                  <div class="input-group-btn">
+                    <select class="input-lg" id="weight-unit" name="weight-unit">
+                      <% if(post.weight_unit){ %>
+                      <option value="<%= post.weight_unit %>" selected><%= post.weight_unit %></option>
+                      <% } %>
+                      <option value="oz">oz</option>
+                      <option value="lb">lb</option>
+                      <option value="kg">kg</option>
+                      <option value="g">g</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input type="text" class=" form-control" name="sku" id="sku" value="<%= _.get(post,'sku','') %>" required>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="mpn">MPN</label>
+                    <input type="text" class=" form-control" name="mpn" id="mpn" value="<% if(post.mpn){%><%= post.mpn %><%}%>">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="gtin">GTIN</label>
+                    <input type="text" class="form-control" name="gtin" id="gtin" value="<%= post.gtin || '' %>">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="variant">Variants</label><a class="pull-right add-variant">Add variant</a><a class="pull-right remove-variant hidden">Cancel</a>
+                <p style="margin-top:10px">Add variants if this product comes in multiple versions, like different sizes or colors</p>
+              </div>
+            </div>
+            <div class="panel-body variant-option hidden">
+              <table class="table" id="addVariant">
+                <thead>
+                <tr>
+                  <th>Option Name</th>
+                  <th>Value</th>
+                  <!--<th></th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="option-name"><input type="text" class=" form-control" name="option-name-1" id="option-name-1" value="Size"></td>
+                  <td><input type="text" class="option-value  form-control" name="option-value-1" id="option-value-1" data-role="tagsinput" value="<% if(post.option1 && post.option1.length>0){%><%= post.option1 %><%}%>"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="1"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                <tr>
+                  <td class="option-name"><input type="text" class=" form-control" name="option-name-2" id="option-name-2" value="Color"></td>
+                  <td><input type="text" class="option-value  form-control" name="option-value-2" id="option-value-2" data-role="tagsinput" value="<% if(post.option2 && post.option2.length>0){%><%= post.option2 %><%}%>"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="2"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                <tr class="hidden">
+                  <td class="option-name"><input type="text" class=" form-control" name="option-name-3" id="option-name-3" value="Style"></td>
+                  <td><input type="text" class="option-value  form-control" name="option-value-3" id="option-value-3" data-role="tagsinput" value="<% if(post.option3 && post.option3.length>0){%><%= post.option3 %><%}%>"></td>
+                  <!--<td><button type="button" class="btn btn-default clear-variant" data-id="3"><i class="fa fa-trash"></i></button></td>-->
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="panel-body table-variant hidden">
+              <table class="table" id="createVariant">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Variant</th>
+                  <th>Price</th>
+                  <th>SKU</th>
+                  <th>GTIN</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-sm-4 product-add-right-panel">
+          <!--<div class="panel panel-default">-->
+            <!--<div class="panel-body">-->
+              <!--<div class="form-group">-->
+                <!--<label for="category">Product Category</label>-->
+                <!--<select class="form-control" id="category" name="category">-->
+                  <!--<option value="">1</option>-->
+                  <!--<option value="">2</option>-->
+                  <!--<option value="">3</option>-->
+                  <!--<option value="">4</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <% if(post.global == 1) {%>
+                <label class="radio-inline"><input type="radio" name="global" value="1" checked>Global</label>
+                <label class="radio-inline"><input type="radio" name="global" value="0">Private</label>
+                <%} else { %>
+                <label class="radio-inline"><input type="radio" name="global" value="1">Global</label>
+                <label class="radio-inline"><input type="radio" name="global" value="0" checked>Private</label>
+                <% } %>
+
+              </div><hr>
+
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category">
+                  <option>Choose category</option>
+                  <% _.each(categories,function(category){ %>
+                  <% if(category.name == post.category) { %>
+                  <option value="<%= category.name %>" selected><%= category.title %></option>
+                  <% } else { %>
+                  <option value="<%= category.name %>"><%= category.title %></option>
+                  <% } %>
+                  <% }) %>
+                </select>
+              </div>
+
+              <!--<div class="form-group">-->
+                <!--<label for="vendor">Vendor</label>-->
+                <!--<input type="text" class=" form-control" name="vendor" id="vendor" value="" required>-->
+              <!--</div>-->
+              <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" class=" form-control" name="brand" id="brand" value="<%= _.get(post,'brand','') %>">
+                <div class="dropdown">
+
+                  <ul style="display:none" class="dropdown-menu dropdown-brand">
+                    <% _.each(findBrand,function(brand){ %>
+                    <li class="hidden"><a href="#" class=""><%= brand.name %></a></li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="collections">Collections</label>
+                <input type="text" class=" form-control" name="collections" id="collections" value="<% if(post.collections){%><%= post.collections %><%}%>">
+              </div>
+              <p>Add this product to a collection so it’s easy to find in your store.</p>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="tags">Tags (optional)</label>
+                <input type="text" class=" form-control" name="tags" data-role="tagsinput" value="<%= _.get(post,'tags','') %>">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <select id="add-merchant" class="selectoption" multiple data-width="100%" data-selected-text-format="count > 1" data-max-options="6" title="Add merchant">
+                <% _.each(findMerchant,function(merchant){ %>
+                <!--.includes({ 'a': 1, 'b': 2 }, 1);-->
+                <% let merArr = [] ; _.each(post.merchant,function(item){ merArr.push(item.name) }) %>
+                <% if(post.merchant.length > 0 && _.includes(merArr,merchant.name) === true) { %>
+                <option value="<%= merchant.name %>" selected><%= merchant.name %></option>
+                <% } else { %>
+                <option value="<%= merchant.name %>"><%= merchant.name %></option>
+                <% } %>
+                <% }) %>
+              </select>
+            </div>
+            <div class="panel-body merchant-list">
+              <% _.each(post.merchant,function(merchant){ %>
+              <div style="margin-bottom:5px" class="input-group merchant-item">
+                <span class="merchant_name input-group-addon"><%= merchant.name %></span>
+                <input id="merchant_code" type="text" class="form-control" name="merchant_code" placeholder="Enter code" value="<%= merchant.code %>">
+              </div>
+              <% }) %>
+            </div>
+          </div>
+
+        </div>
+          <hr>
+          <div class="col-sm-12">
+            <button style="letter-spacing:1.5px" type="button" class="saveProductButton btn btn-block btn-green">Save Product</button>
+          </div>
+
+
+        </form>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+<style>
+  div.upload-img:hover > a.delete-image {
+    display:block !important;
+  }
+  a.delete-image{
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    right:0;
+    transition: all 0.6s;
+  }
+  .panel-body.variant-option input {
+    margin-top:10px !important;
+  }
+  .variant-option {
+    background: #f5f5f5;
+  }
+  .variant-option-values button{
+    padding: 10px 15px;
+    margin-top:12px;
+  }
+  .variant-option-values .fa {
+    font-size: 20px;
+    color:#1d87dc;
+  }
+  a.pull-right.add-variant:hover,a.pull-right.remove-variant:hover {
+    cursor: pointer;
+  }
+  .bootstrap-tagsinput {
+    height:auto;
+  }
+  .bootstrap-tagsinput input{
+    height:35px;
+    width:100%;
+  }
+</style>
+<script>
+  $('.add-variant').click(function(){
+    $('.variant-option').removeClass('hidden');
+    $('.add-variant').addClass('hidden');
+    $('.remove-variant').removeClass('hidden');
+  })
+  $('.remove-variant').click(function(){
+    $('.variant-option').addClass('hidden');
+    $('.remove-variant').addClass('hidden');
+    $('.add-variant').removeClass('hidden');
+  })
+
+  var updateMaterialImage = $('#productBackImage, #productFrontImage').serializeJson();
+  // Upload image
+  Dropzone.options.productImage = {
+    paramName: "image",
+    maxFiles: 50,
+    dictDefaultMessage: '',
+    accept: function(file, done)
+    {
+      var re = /(?:\.([^.]+))?$/;
+      var ext = re.exec(file.name)[1];
+      ext = ext.toUpperCase();
+      if ( ext == "JPEG" || ext == "BMP" || ext == "JPG" ||  ext == "PNG" ||  ext == "JPE")
+      {
+        done();
+      }
+      else { done("just select jpeg or bmp or pnj files."); }
+    },
+    init: function() {
+      this.on("success", function(file, response) {
+        console.log(response);
+//        $('#productImage').css('background','none')
+//        $('input[name=frontimg]').val(response.imageUrl);
+//        $('.uploaded-images').append(`<div class="upload-img col-xs-3">
+//                <a class="delete-image" data-source="${response.imageUrl}"><img src="/images/close.png" width="25"></a>
+//                <img class=img-source style="max-width:100%" src="${response.imageUrl}">
+//              </div>`)
+        $('div#uploadImages').append(`<span class="image-success hidden">${response.imageUrl}</span>`)
+      });
+    }
+  };
+
+//  Dropzone.options.productBackImage = {
+//    paramName: "image",
+//    maxFiles: 1,
+//    dictDefaultMessage: 'drop your back images here to upload',
+//    init: function() {
+//      this.on("success", function(file, response) {
+//        $('#productBackImage').css('background','none')
+//        console.log(response);
+//        $('input[name=backimg]').val(response.imageUrl);
+////          $('input[name=backimg]').val(response.id)
+//      });
+//    }
+//  };
+</script>

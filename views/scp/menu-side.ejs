@@ -1,0 +1,51 @@
+
+<!--<nav class="navbar navbar-default" id="menu-side">-->
+  <!--<div class="container-fluid">-->
+    <!--<div class="navbar-header">-->
+      <!--<a class="navbar-brand" href="#">-->
+        <!--<img style="max-width:160px;" src="/images/lg.png">-->
+      <!--</a>-->
+    <!--</div>-->
+    <!--<ul class="nav navbar-nav">-->
+      <!--<li class="active"><a href="/scp">Dashboard</a></li>-->
+      <!--<li><a href="/scp/order">Order</a></li>-->
+      <!--<li><a href="/scp/product">Product</a></li>-->
+      <!--<li><a href="/scp/store">Store</a></li>-->
+      <!--<li><a href="/scp/setting">Setting</a></li>-->
+    <!--</ul>-->
+  <!--</div>-->
+<!--</nav>-->
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menuSide">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/scp">
+        <img style="max-width:160px;" src="/images/lg.png">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="menuSide">
+      <ul class="nav navbar-nav">
+        <li><a href="/scp">Dashboard</a></li>
+        <!--<li><a href="/scp/order">Orders</a></li>-->
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Orders
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/scp/order?list=picked">Orders Picked</a></li>
+            <li><a href="/scp/order?list=unpick">Orders Unpick</a></li>
+          </ul>
+        </li>
+        <li><a href="/scp/product">Products</a></li>
+        <!--<li><a href="/scp/setting">Setting</a></li>-->
+        <li class="user-account" data-toggle="tooltip" title="<%= req.session.user.email %>" data-placement="bottom"><a href="/logout"><%= req.session.user.username %> (Sign out)</a></li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+

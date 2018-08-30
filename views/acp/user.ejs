@@ -1,0 +1,87 @@
+
+<div class="container" id="admin-page">
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="user-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Users</li>
+      </ul>
+      <div id="seller-page-notice"></div>
+      <a href="/user/add" style="margin-bottom:5px" type="button" class="btn btn-green button-add">Add new user</a>
+      <div style="float:right;margin-bottom:0" id="user-status-filter" class="status-filter">
+        <ul class="nav nav-pills">
+          <li><a href="#" data-status="">All (<%= userTotal %>)</a></li>
+          <% _.each(userStatusIndex, function(status) { %>
+          <li><a href="#" data-status="<%= status %>"><%= status %> (<%= _.get(userStatus[status],'count',0) %>)</a></li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <table class="table table-hover" id="user-table">
+
+        <thead>
+        <tr>
+          <!--<th></th>-->
+          <th>ID</th>
+          <!--<th>Registered Date</th>-->
+          <th>Name</th>
+          <th>Group</th>
+          <th>Commission</th>
+          <th>Status</th>
+          <th>Last Login</th>
+          <!--<th>Payment Method</th>-->
+          <!--<th>Total Order</th>-->
+          <!--<th>Total Amount</th>-->
+          <th>Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% _.each(foundUser,function(user){ %>
+          <tr id="user-<%= user.id %>">
+            <td><%= user.id %></td>
+            <td><a href="/user/edit?id=<%= user.id %>" data-toggle="tooltip" title="<%= user.email %>"><%= user.username %></a></td>
+            <td>
+              <%if(user.group == 1){%>
+              <span class="group_admin">Super Admin</span>
+              <%}else if(user.group == 2){%>
+              <span class="group_manager">Manager</span>
+              <%}else{%>
+              <span class="group_shipper">Shipper</span>
+              <%}%>
+            </td>
+            <td><%= user.commission || 0 %>%</td>
+            <td><span class="<%= user.status %>"><%= user.status || '' %></span></td>
+            <td><%= sails.moment.tz(user.last_login,"America/Los_Angeles").format('MM/DD/YYYY') %></td>
+            <td><a href="#" class="delete-user" data-id="<%= user.id %>" data-name="<%= user.username %>"><i class="fa fa-trash-o"></i></a></td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+<style>
+  .group_admin {
+    color:#FF9800;
+  }
+  .group_manager {
+    color:#8BC34A;
+  }
+  .group_shipper {
+    color:#607d8bd1
+  }
+  table th, table td {
+    line-height: 35px !important;
+  }
+</style>

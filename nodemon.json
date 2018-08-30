@@ -1,0 +1,15 @@
+{
+  "verbose"    : true,
+  "legacyWatch": false,
+  "ignore"     : [
+    ".tmp/*",
+    "views/*",
+    "node_modules/*"
+  ],
+  "watch": [
+    "api",
+    "config",
+    "assets/js/*"
+  ],
+  "ext": "js json"
+}

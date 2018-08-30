@@ -1,0 +1,75 @@
+
+<div class="container" id="seller-page">
+  <aside class="sidenav">
+    <%- partial ('../menu-side.ejs') %>
+  </aside>
+
+  <div class="main-content">
+    <div class="head-content">
+      <a class="menu-button" href="#">
+        <div class="menu-arrow aright text-center">
+          <i class="fa fa-chevron-right pull-left"></i>
+        </div>
+      </a>
+      <a class="menu-button" href="#">
+        <div class="sr-only menu-arrow aleft text-center">
+          <i class="fa fa-chevron-left pull-left"></i>
+        </div>
+      </a>
+      <div class="menu-title">
+        <h4><span class="name-param">Stores</span></h4>
+      </div>
+    </div>
+
+    <div class="detail-content" id="view-store-products">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/scp/store">Store</a></li>
+        <li><a href="/scp/store?name=<%= data.name %>">View store</a></li>
+        <li class="active">View product</li>
+      </ul>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="media">
+            <div class="media-left">
+              <img src="<%= data.product.image.src %>" class="media-object" style="width:100px">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading"><%= data.product.title %></h4>
+              <p> Vendor: <%= data.product.vendor %></p>
+              <p> Description: <%= data.product.body_html %></p>
+              <p>Tags: <%= data.product.tags %></p>
+            </div>
+            <div class="media-right">
+              <p><a href="https://<%= data.name %>/admin/products/<%= data.product.id %>" class="btn btn-primary">Edit in Shopify</a></p>
+              <p><a href="/shopify/product?name=<%= data.name %>&action=edit&id=<%= data.product.id %>" class="btn btn-primary">Edit in Gearment</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" id="shop-userid-<%= req.session.user.id %>">
+          <% _.each(data.product.variants, function(variant) { %>
+          <div class="media">
+            <div class="media-left">
+              <img src="<%= variant.img %>" class="media-object" style="width:60px">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading"><%= variant.title %></h4>
+              <p><%= variant.option1 %>, <%= variant.option2 %>, <%= variant.option3 %></p>
+              <p>Price: <%= variant.price %></p>
+            </div>
+            <div class="media-right">
+              <p><a href="#" class="btn btn-primary">Edit</a></p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+</div>

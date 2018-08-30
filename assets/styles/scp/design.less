@@ -1,0 +1,234 @@
+@basecolor: #00cdff;
+@greenColor: #5cb85c;
+@blueColor: #337ab7;
+@yellowColor: #f0ad4e;
+@jadeColor: #4CCBD2;
+@fadeEffect: all 0.6s;
+
+// @TODO Khong duoc sua, hoac sua khi thay doi material width hoac height
+@materialWidth: 567px;
+
+#drawingArea {
+  border:2px dashed rgba(255, 255, 255, 0.42);
+  position: absolute;
+  z-index: 10;
+  &.add-design-bg {
+    background: url(/images/add_image_design.png);
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  &:hover {
+    background: rgba(0, 0, 0, 0.16);
+  }
+
+  .multiple-image-bulk-upload{
+    background: black;
+    width: 100%;
+    height: 100%;
+    color: white;
+    padding-top: 90px;
+    display: none;
+    cursor: not-allowed;
+  }
+}
+
+#tshirtFacing {
+  transition: @fadeEffect;
+  -webkit-transition: @fadeEffect;
+}
+
+#shirtDiv {
+  //max-width: 375px;
+  //max-height: 400px;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+}
+
+#tcanvas {
+
+}
+
+#imageeditor {
+  display: none;
+}
+
+.img-logo{
+  cursor: pointer;
+}
+.img-logo-checkbox{
+  //display: none;
+  //visibility: hidden;
+  text-align: center;
+  margin: 0 auto !important;
+  //transform: scale(1.5);
+}
+
+
+// design area
+.main-section {
+  float:left;
+  width:100%;
+}
+
+// Design Step 1
+#user-design-section {
+  width:100%;
+  margin:0 auto;
+  .preview-product-section {
+    position:relative;
+    margin:0 auto;
+    width: @materialWidth;
+    //min-width: 600px;
+  }
+
+  // Please dont do this, it break the bootstrap col percentage
+  //.right-side {
+  //  width:320px;
+  //}
+
+}
+// Design Step 2
+#details-section{
+  display: none;
+}
+#chooseDesignModal {
+  button.close {
+    background: #a94442;
+    opacity: 1;
+    border-radius: 50%;
+    padding: 0 7px 5px;
+    font-weight: 200;
+    color: #fff;
+  }
+  //.modal-content{
+  //  width:75%;
+  //  margin:0 auto;
+  //}
+}
+
+//img.img-logo.selected {
+//  max-width:120px;
+//}
+.design-icon {
+  //margin-bottom: 10px;
+  //border: 1px solid #ccc;
+
+  //height: 120px;
+  //margin-top: 10px;
+  //padding-bottom: 25px;
+
+  //height: 125px;
+  //padding-top: 10px;
+  margin: 10px 0;
+  border:1px solid #ccc;
+  background: #e9e6e6 !important;
+  //padding-bottom: 22px;
+  //background: #f9f9f9;
+
+
+  .removeable-design {
+    display:none;
+    position: absolute;
+    top: -12px;
+    right: 5px;
+    //margin-top: -8px;
+    background: #a94442;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    padding: 2px;
+    a {
+      color: #fff;
+    }
+  }
+  &:hover {
+    //background: #efefef;
+    .removeable-design {
+      display:block;
+    }
+  }
+}
+
+img.img-logo {
+  min-height: 120px;
+  max-width:100%;
+  max-height:100%;
+  //border:1px solid #ccc!important;
+  box-shadow: 2px 2px 3px #ddd;
+  //margin-bottom:5px;
+}
+
+@media (max-width: 1200px) {
+  ul.breadcrumb{
+    width:100%;
+  }
+  .right-side {
+    width:600px!important;
+  }
+}
+
+@media (max-width: 768px) {
+  ul.breadcrumb {
+    width:100%;
+  }
+  .left-side {
+    width:100%!important;
+  }
+}
+
+.se-pre-con {
+  display:none;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url(../images/loader.gif) center no-repeat rgba(255, 255, 255, 0.72);
+}
+
+.bulk-upload-notification{
+  display: none;
+
+  //display: block;
+  //width: 100%;
+  //position: fixed;
+  //bottom: 0;
+  //z-index: 2;
+  //left: 0;
+  //margin: 0!important;
+
+  .bulk-upload-design-item{
+    padding: 0;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    /* max-height: 100px; */
+    border-bottom: 1px solid #ddd;
+    img{
+      max-height: 75px;
+    }
+    .upload-progress{
+      //position: absolute;
+      position: relative;
+      width: 100%;
+      left: 0;
+      height: 10px;
+    }
+  }
+}
+
+.lazyload,
+.lazyloading {
+  opacity: 0;
+}
+.lazyloaded {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.bootstrap-tagsinput {
+  width:100%;
+}

@@ -1,0 +1,96 @@
+<div class="container" id="admin-page">
+    <%- partial ('../menu-side.ejs') %>
+
+  <div class="main-content">
+    
+
+    <div class="detail-content" id="export-order-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/acp/user">User</a></li>
+        <li class="active">USER: <%= foundUser.username %><span class="userID hidden"><%= foundUser.id %></span></li>
+      </ul>
+
+      <div class="report-order-details-section">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">EXPORT ORDER DATA <span class="fromDate"></span><span class="toDate"></span></div>
+          <div class="panel-body">
+            <div class="container">
+              <p class="text-success dateRange">Date range selected from <kbd class="fromDate">01/01/2017</kbd> to <kbd class="toDate"><%= sails.moment().format('MM/DD/YYYY') %></kbd></p>
+              <div class="row">
+                <div class='col-sm-6'>
+                  <div class="form-group">
+                    <div class='input-group date'>
+                      <input id="demo" type='text' class="form-control" name="report-from-date"/>
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <button type="button" class="reset-date-range btn btn-warning">Reset Date Range</button>
+                  <button type="button" class="export-cs-file btn btn-info">Export CSV File</button>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+
+  $(function () {
+    let currentDate = moment().format('MM/DD/YYYY');
+    $('#demo').daterangepicker({
+      "autoApply": true,
+      "autoUpdateInput": true,
+      "linkedCalendars": false,
+//      "showCustomRangeLabel": true,
+      "startDate": "01/01/2017",
+      "endDate": currentDate,
+      "minDate": "01/01/2017",
+      "maxDate": currentDate,
+      "opens": "center"
+    }, function(start, end, label) {
+      $('.dateRange kbd.fromDate').text(start.format('MM/DD/YYYY'));
+      $('.dateRange kbd.toDate').text(end.format('MM/DD/YYYY'));
+      console.log('start',start.format('MM/DD/YYYY'));
+      console.log('to',end.format('MM/DD/YYYY'));
+      console.log('range',label)
+    });
+
+    $('.reset-date-range').click(function(){
+      $('input#demo').val(`01/01/2017 - ${currentDate}`);
+      $('.dateRange kbd.fromDate').text('01/01/2017');
+      $('.dateRange kbd.toDate').text(currentDate);
+    });
+
+    $('.export-cs-file').click(function(){
+
+      let exportData = {
+        fromDate: $('.dateRange kbd.fromDate').text(),
+        toDate: $('.dateRange kbd.toDate').text(),
+        user: $('#export-order-page span.userID').text()
+      };
+      window.location = `/acp/export_user_order?user=${exportData.user}&fromDate=${exportData.fromDate}&toDate=${exportData.toDate}`
+      console.log('exportData', exportData);
+    })
+  });
+</script>

@@ -1,0 +1,147 @@
+
+<div class="container" id="admin-page">
+  <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="brand-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Discount</li>
+      </ul>
+
+      <div class="add-more">
+        <button class="btn btn-green" data-toggle="collapse" data-target="#addDiscount">Add New Discount</button>
+        <div id="addDiscount" class="collapse">
+          <div class="row">
+            <div class="col-sm-4">
+              <form id="add-discount" style="max-width:400px">
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <select class="form-control" id="category" name="category">
+                    <option>Choose category</option>
+                    <% _.each(findCategory,function(category){ %>
+                    <option value="<%= category.name %>"><%= category.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="title">Discount Title</label>
+                  <input style="text-transform: uppercase" type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="form-group">
+                  <label for="type">Value Type</label>
+                  <select class="form-control" id="value_type" name="type">
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed_amount">Fixed amount</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="value">Value</label>
+                  <input type="number" class="form-control" id="value" name="value">
+                </div>
+
+                <button type="submit" class="btn btn-green btn-block button-add">Add discount</button>
+              </form>
+            </div>
+            <!--<div class="col-sm-8">-->
+              <!--<div class="panel panel-default">-->
+                <!--<div class="panel-body">-->
+                  <!--<h4>Tracking Result</h4>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <!--<div id="seller-page-notice"></div>-->
+      <table class="table" id="discount-list">
+        <thead>
+        <tr>
+
+          <th>ID</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Value Type</th>
+          <th>Value</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(findDiscount, function(discount) { %>
+        <tr id="discount-<%= discount.id %>">
+
+          <td><%= discount.id %></td>
+          <td class="discount-title"><%= discount.title %></td>
+          <td class="discount-category"><%= discount.category %></td>
+          <td class="discount-type"><%= discount.type %></td>
+          <td class="discount-value"><%= discount.value %></td>
+
+          <td><a class="edit-discount" data-id="<%= discount.id %>" data-title="<%= discount.title %>" href="#"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+          <td><a class="delete-discount" data-id="<%= discount.id %>" data-title="<%= discount.title %>" href="#"><i class="fa fa-trash-o"></i></a></td>
+        </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+<!-- Modal -->
+<!--<div id="updateDiscountModal" class="modal fade" role="dialog">-->
+  <!--<div class="modal-dialog">-->
+
+    <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <!--<h4 class="modal-title">Edit Discount</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<form id="edit-discount">-->
+          <!--<div class="form-group">-->
+            <!--<label for="title">Title</label>-->
+            <!--<input style="text-transform:uppercase" type="text" class="form-control" id="title" name="title">-->
+          <!--</div>-->
+
+          <!--<div class="form-group">-->
+            <!--<label for="code">Code</label>-->
+            <!--<input style="text-transform:uppercase" type="text" class="form-control" id="code" name="code">-->
+          <!--</div>-->
+
+          <!--<div class="form-group">-->
+            <!--<label for="type">Value Type</label>-->
+            <!--<select class="form-control" id="value_type" name="type">-->
+              <!--<option value="percentage">Percentage</option>-->
+              <!--<option value="fixed_amount">Fixed amount</option>-->
+            <!--</select>-->
+          <!--</div>-->
+
+
+          <!--<div class="form-group">-->
+            <!--<label for="value">Value</label>-->
+            <!--<input type="number" class="form-control" id="value" name="value">-->
+          <!--</div>-->
+
+
+          <!--<input class="hidden" name="id" value="">-->
+          <!--<button type="submit" class="btn btn-green btn-block button-update">Update</button>-->
+        <!--</form>-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+  <!--</div>-->
+<!--</div>-->

@@ -1,0 +1,61 @@
+<!-- Modal Update Email-->
+<div id="refundModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add/Remove products</h4>
+      </div>
+      <div class="fade hide updateInfoNotify alert alert-warning"></div>
+
+      <div class="modal-body">
+        <form style="padding:15px" class="form-horizontal" role="form" id="refundOrderForm">
+
+          <% _.each(foundOrder.line_items,function(item){ %>
+          <div class="media orderItemRefund">
+
+            <div class="media-body">
+              <h4 class="media-heading"><%= item.title %></h4>
+              <span class="sr-only item-title"><%= item.variant_title %></span>
+              <span class="sr-only item-sku"><%= item.sku %></span>
+              <span class="sr-only line-item-id"><%= item.id %></span>
+              Style: <span class="item-style"><%= item.variant_title.split(' / ')[0] %></span><br>
+              Color: <span class="item-color"><%= item.variant_title.split(' / ')[1] %></span><br>
+              Size: <span class="item-size"><%= item.variant_title.split(' / ')[2] %></span><br>
+            </div>
+
+            <div class="media-right text-center media-basecost-section">
+              $<span class="item-basecost"><%= item.basecost %></span>
+            </div>
+
+            <div class="media-right text-center item-icon">
+              <span>x</span>
+            </div>
+
+            <div class="media-right text-center media-quantity-section">
+              <input class="change-quantity-refund" type="number" value="0" max="<%= item.quantity %>">
+            </div>
+
+            <div class="media-right text-center media-total-section">
+              $<span class="item-total-cost">0</span>
+            </div>
+
+
+          </div><hr>
+          <% }) %>
+
+          <hr>
+
+          <input class="sr-only" name="orderid" value="<%= foundOrder.orderid %>">
+          <input class="sr-only" name="ordershop" value="<%= foundOrder.shop %>">
+          <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+          <!--<input type="submit" class="refundItembutton btn btn-success" value="Refund $0.00" disabled></input>-->
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

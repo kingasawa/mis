@@ -1,0 +1,16 @@
+// import Thumbor from 'thumbor';
+
+/*
+ * https://www.npmjs.com/package/thumbor
+ * */
+
+// USAGE:
+
+// const thumborService = new Thumbor(sails.config.uploader.imageSecret, sails.config.uploader.imageHost);
+
+// const logoUrl = thumborService.setImagePath(logo).resize(150, 150).buildUrl();
+// const materialUrl = thumborService.setImagePath(material).resize(500, 500).buildUrl();
+// let product = thumborService.setImagePath(materialUrl).filter(`watermark(${logoUrl},center,100,20)`).buildUrl();
+
+
+// module.exports = Thumbor;

@@ -1,0 +1,298 @@
+<div class="se-pre-con"></div>
+<div class="container" id="admin-page">
+
+    <%- partial ('../menu-side.ejs') %>
+
+
+  <div class="main-content">
+
+
+    <div class="detail-content order-<%= foundOrder.orderid %>" id="order-view-page">
+      <!--<ul class="breadcrumb">-->
+        <!--<li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>-->
+        <!--<li><a href="/acp/order">Orders</a></li>-->
+        <!--<li class="active">Order #<%= foundOrder.id %></li>-->
+      <!--</ul>-->
+
+      <h2>Order details</h2>
+      <p>Order Name: <strong><%= foundOrder.order_name %></strong> | Order ID: <strong><%= foundOrder.id %></strong> | Order date: <strong><%= sails.moment.tz(foundOrder.createdAt,"America/Los_Angeles").format('MM/DD/YYYY') %></strong></p>
+
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="order-info" id="order-id-<%= foundOrder.id %>">
+                <% if(req.user.group == 1) { %>
+                <span style="float:left;margin-right:30px" class="store-name badge"><%= foundOrder.shop %></span>
+                <% } %>
+                <div class="order-status">
+                <span style="color:#FF5722 !important;" class="update-status badge"><%= foundOrder.status %></span>
+                <select class="hidden form-control" data-order-id="<%= foundOrder.id %>" id="update-order-status">
+                  <option value="New" <%if(foundOrder.status=='New'){%>selected<%}%>>New</option>
+                  <option value="Processing" <%if(foundOrder.status=='Processing'){%>selected<%}%>>Processing</option>
+                  <option value="Shipped" <%if(foundOrder.status=='Shipped'){%>selected<%}%>>Shipped</option>
+                  <option value="Delivered" <%if(foundOrder.status=='Delivered'){%>selected<%}%>>Delivered</option>
+                  <option value="Out of stock" <%if(foundOrder.status=='Out of stock'){%>selected<%}%>>Out of stock</option>
+                  <option value="Cancelled" <%if(foundOrder.status=='Cancelled'){%>selected<%}%>>Cancelled</option>
+                  <option value="Refunded" <%if(foundOrder.status=='Refunded'){%>selected<%}%>>Refunded</option>
+                </select>
+                </div>
+                <a type="button" class="mark-cs btn btn-info" data-id="<%= foundOrder.id %>" <%if(foundOrder.status=='CS'){%>disabled<%}%>>Mark CS</a>
+              </div>
+              <table class="table table-bordered" id="acp-order-detail">
+                <thead>
+                <tr>
+                  <th><input type="checkbox" class="choose-all-item" checked></th>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th class="hidden">itemId</th>
+                  <th class="hidden">productId</th>
+                  <th>SKU</th>
+                  <th>Quantity</th>
+                  <th>Stock</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <!--//item here-->
+                <% _.each(foundOrder.line_items,function(item){ %>
+                <% if(!item.global || item.global === 1 || item.owner == req.user.id){ %>
+                <tr class="tr-item item-picked" id="item-id-<%= item.id %>">
+                  <td><input type="checkbox" data-item-id="<%= item.id %>" class="choose-item-id" checked></td>
+                  <td class="product-image"><img src="<%= item.image || item.src %>"></td>
+                  <td class="product-name"><%= item.title %> <%= item.variant_title %></td>
+                  <td class="hidden itemId"><%= item.id %></td>
+                  <td class="hidden productId"><%= item.product_id %></td>
+                  <td><%= item.sku %></td>
+                  <td class="product-quantity"><%= item.quantity %></td>
+                  <td class="product-instock"><a data-shop="<%= foundOrder.shop %>" data-product="<%= item.product_id %>" data-variant="<%= item.variant_id %>" id="product-stock"><%= item.stock %></a></td>
+                  <td class="product-price"><%= item.price %></td>
+                  <td class="product-total-amount"></td>
+
+                </tr>
+                <% } %>
+                <% }) %>
+                <!--//end here-->
+                </tbody>
+              </table>
+              <div class="notification-tracking-item">You are select <strong><%= foundOrder.line_items.length %></strong> item(s)</div>
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="panel panel-warning">
+                    <div class="panel-heading"><i class="fa fa-file-text-o"></i> Internal Note 1</div>
+                    <div id="internal-notes1" class="panel-body"><%= foundOrder.internal_notes1 || ''%></div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="panel panel-warning">
+                    <div class="panel-heading"><i class="fa fa-file-text-o"></i> Internal Note 2</div>
+                    <div id="internal-notes2" class="panel-body"><%= foundOrder.internal_notes2 || ''%></div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="panel panel-warning">
+                    <div class="panel-heading"><i class="fa fa-file-text-o"></i> Internal Note 3</div>
+                    <div id="internal-notes3" class="panel-body"><%= foundOrder.internal_notes3 || ''%></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <% if (foundFulfill.length > 0) { %>
+          <div class="panel panel-default">
+            <div class="panel-body panel-title">Fulfillments Order: #<%= foundOrder.id %> <button type="button" data-toggle="modal" data-target="#updateTrackingModal" class="btn btn-info pull-right">Update tracking</button></div><hr>
+            <% _.each(foundFulfill, function(fulfill) { %>
+            <div class="panel-body">
+              <div class="fulfillment-detail">
+                <span class="sr-only fulfillmentId"><%= fulfill.id %></span>
+                <div class="fulfillment-row">
+                  <div class="fulfillment-column col-sm-4">
+                    <p style="color:#929292">Carrier</p>
+                    <p><%= fulfill.tracking_company %></p>
+                  </div>
+                  <div class="fulfillment-column col-sm-4">
+                    <p style="color:#929292">Tracking Number</p>
+                    <p><a href="<%= fulfill.tracking_url %>" target="_blank"><%= fulfill.tracking_number %></a></p>
+                  </div>
+                </div>
+                <div class="fulfillment-row">
+
+                  <div class="fulfillment-column col-sm-12">
+                    <p style="color:#929292">Items</p>
+                    <% _.each(fulfill.line_items,function(item){ %>
+                    <p><%= item.quantity %> x <%= item.name %></p>
+                    <% }) %>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Update Tracking-->
+            <div id="updateTrackingModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update tracking information</h4>
+                  </div>
+                  <div class="fade hide updateInfoNotify alert alert-warning"></div>
+
+                  <div class="modal-body">
+                    <form style="padding:15px" class="form-horizontal" role="form" id="updateTrackingInformation">
+
+                      <div class="form-group">
+                        <label for="trackingNumber">Tracking Number</label>
+                        <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" value="<%= fulfill.tracking_number %>">
+                      </div>
+                      <div class="form-group">
+                        <label for="trackingCompany">Tracking Company</label>
+                        <select class="form-control" id="trackingCompany" name="trackingCompany">
+                          <option value="<%= fulfill.tracking_company %>"><%= fulfill.tracking_company %></option>
+                          <option value="4PX">4PX</option>
+                          <option value="4PC">4PC</option>
+                          <option value="Correios">Correios</option>
+                          <option value="DHL">DHL Express</option>
+                          <option value="FedEx">FedEx</option>
+                          <option value="OnTrac">OnTrac</option>
+                          <option value="TrakPak">P2P TrakPak</option>
+                          <option value="UPS">UPS</option>
+                          <option value="USPS">USPS</option>
+                        </select>
+                      </div>
+
+                      <input class="sr-only" name="current_number" value="<%= fulfill.tracking_number %>">
+                      <input class="sr-only" name="current_company" value="<%= fulfill.tracking_company %>">
+                      <input class="sr-only" name="id" value="<%= fulfill.id %>">
+                      <input class="sr-only" name="orderid" value="<%= foundOrder.orderid %>">
+
+                      <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                      <input type="submit" class="updateInfobutton btn btn-success" value="Update tracking"></input>
+
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!--end modal-->
+            <% }) %>
+          </div>
+          <% } %>
+
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">Shipping Information <a href="#" class="copyToClipboard pull-right" data-text="<%= foundOrder.addressFormat %>"><i class="fa fa-copy"></i> Copy</a></div>
+            <div class="panel-body">
+              <address>
+
+                <strong><%= foundOrder.shipping_address.name %></strong><br>
+                <%= foundOrder.shipping_address.address1 %><br>
+                <%= foundOrder.shipping_address.address2 %><br><br>
+                <%= foundOrder.shipping_address.city %>, <%= foundOrder.shipping_address.province %> <%= foundOrder.shipping_address.zip %><br>
+                <%= foundOrder.shipping_address.country %>
+              </address>
+              <a href="#" style="font-size:14px" data-toggle="modal" data-target="#editAddressModal" class="btn btn-info pull-right">Edit</a>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Fulfillment</div>
+            <div class="section-tracking-enter panel-body">
+              <div class="row">
+                <form>
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <label for="tracking-number">Tracking Information</label>
+                      <input type="text" class="form-control" id="tracking-number" name="tracking-number">
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="tracking-company">Carrier</label>
+                      <select style="width:100%;border:1px solid #ccc;height:34px;" name="tracking-company">
+                        <option value="4PX">4PX</option>
+                        <option value="4PC">4PC</option>
+                        <option value="Correios">Correios</option>
+                        <option value="DHL">DHL Express</option>
+                        <option value="FedEx">FedEx</option>
+                        <option value="OnTrac">OnTrac</option>
+                        <option value="Lasership">Lasership</option>
+                        <option value="TrakPak">P2P TrakPak</option>
+                        <option value="UPS">UPS</option>
+                        <option value="USPS">USPS</option>
+
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <button style="margin-left:5px" type="button" data-id="<%= foundOrder.orderid %>" class="mark-shipped btn btn-green pull-right">Mark Shipped</button>
+
+                    <button type="button" data-id="<%= foundOrder.orderid %>" class="mark-cancelled btn btn-red pull-right">Cancelled</button>
+
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+<%- partial ('modal/edit_address_modal.ejs') %>
+
+
+<style>
+  hr{
+    margin:0;
+  }
+  thead, .badge {
+    background: #f5f5f5!important;
+    color: #797878 !important;
+  }
+  .product-name{
+    text-align: left;
+  }
+  .product-image img {
+    max-width: 80px;
+  }
+  .panel-title{
+    color: #8a7144;
+    background: #fcf8e1;
+  }
+  .order-status {
+    width: 50%;
+    float: left;
+    margin-bottom: 10px;
+  }
+  .mark-cs {
+    float:right;
+    margin-bottom: 10px;
+  }
+
+</style>
+
+<script>
+  $('#acp-order-detail tbody tr').each(function(){
+    var quantity = parseFloat($(this).find('td.product-quantity').text());
+    var price = parseFloat($(this).find('td.product-price').text());
+    var total = quantity*price;
+    total = parseFloat(total).toFixed(2);
+    $(this).find('td.product-total-amount').text(total)
+  })
+</script>

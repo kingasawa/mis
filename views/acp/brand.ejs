@@ -1,0 +1,60 @@
+
+<div class="container" id="admin-page">
+  <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="brand-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Brands</li>
+      </ul>
+
+      <div class="add-more">
+        <button class="btn btn-green" data-toggle="collapse" data-target="#addBrand">Add New Brand</button>
+        <div id="addBrand" class="collapse">
+          <form class="form-inline" id="add-brand">
+            <div class="form-group">
+              <label for="name">Brand Name</label>
+              <input type="text" class="form-control" id="name" name="name">
+              <button type="submit" class="btn btn-default button-add">Add brand</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+
+      <!--<div id="seller-page-notice"></div>-->
+      <table class="table" id="brand-list">
+        <thead>
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Brand</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(findBrand, function(brand) { %>
+        <tr id="brand-<%= brand.id %>">
+          <td></td>
+          <td><%= brand.id %></td>
+          <td class="brand-name"><%= brand.name %></td>
+          <td><a class="edit-brand" data-id="<%= brand.id %>" data-name="<%= brand.name %>" href="#"><i style="color:#7fbf00" class="fa fa-pencil-square-o"></i></a></td>
+          <td><a class="delete-brand" data-id="<%= brand.id %>" data-name="<%= brand.name %>" href="#"><i class="fa fa-trash-o"></i></a></td>
+        </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+  </div>
+</div>

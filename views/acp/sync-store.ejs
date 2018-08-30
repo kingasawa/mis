@@ -1,0 +1,42 @@
+
+<div class="container" id="admin-page">
+    <%- partial ('menu-side.ejs') %>
+
+  <div class="main-content">
+
+
+    <div class="detail-content" id="sync-page">
+      <ul class="breadcrumb">
+        <li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/acp/store">Store</a></li>
+        <li class="active">Sync</li>
+      </ul>
+      <div class="sync-section">
+
+        <h3>Connect Shopify store</h3>
+        <p>Easily create and fulfil products for your existing Shopify Store with Represent. Connect your store to get started.</p>
+        <form action="/shopify" method="post">
+          <div class="input-group">
+            <input class="sr-only" name="uid" value="<%= req.session.user.id %>">
+            <input class="form-control input-lg" name="shopifyname" placeholder="Store name" required="true" type="text">
+            <span class="input-group-addon">.myshopify.com</span>
+          </div><hr>
+          <button class="button-color btn btn-green btn-block" type="submit">Connect</button>
+        </form>
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>
+
+<style>
+  .sync-section {
+    max-width: 500px;
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0px 1px 5px 1px #ccc;
+  }
+</style>

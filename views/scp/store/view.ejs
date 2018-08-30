@@ -1,0 +1,63 @@
+
+<div class="container" id="seller-page">
+  <aside class="sidenav">
+    <%- partial ('../menu-side.ejs') %>
+  </aside>
+
+  <div class="main-content">
+    <div class="head-content">
+      <a class="menu-button" href="#">
+        <div class="menu-arrow aright text-center">
+          <i class="fa fa-chevron-right pull-left"></i>
+        </div>
+      </a>
+      <a class="menu-button" href="#">
+        <div class="sr-only menu-arrow aleft text-center">
+          <i class="fa fa-chevron-left pull-left"></i>
+        </div>
+      </a>
+      <div class="menu-title">
+        <h4><span class="name-param">Stores</span></h4>
+      </div>
+    </div>
+
+    <div class="detail-content" id="view-store">
+      <ul class="breadcrumb">
+        <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="/scp/store">Store</a></li>
+        <li class="active">View store</li>
+      </ul>
+
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">Product List</div>
+        <div class="panel-body" id="shop-userid-<%= req.session.user.id %>">
+          <% _.each(data.products, function(product) { %>
+          <div class="media">
+            <div class="media-left">
+              <% if (product.image) { %>
+              <img src="<%= product.image.src %>" class="media-object" style="width:60px">
+              <% } else { %>
+              <img src="/images/noimage.png" class="media-object" style="width:60px">
+              <% } %>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading"><%= product.title %></h4>
+              <p>Last edit: <%= product.updated_at %></p>
+            </div>
+            <div class="media-right">
+              <p><a href="/scp/store?name=<%= data.name %>&id=<%= product.id %>" class="btn btn-primary">View</a></p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+</div>
