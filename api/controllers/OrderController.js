@@ -4,12 +4,13 @@
  * @description :: Server-side logic for managing aboutuses
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+const { apiKey, apiSecret } = sails.config.shopify;
 import bluebird from 'bluebird';
 import sanitizer from 'sanitizer';
 import moment from 'moment'
 
-const apiKey = '06636a56f6226cc663470ee0e58b0623'; //06636a56f6226cc663470ee0e58b0623
-const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
+// const apiKey = '06636a56f6226cc663470ee0e58b0623'; //06636a56f6226cc663470ee0e58b0623
+// const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
 
 const aftershipKey = '22328965-7073-434b-a7a9-6c727695b399';
 const Aftership = require('aftership')(aftershipKey);

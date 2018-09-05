@@ -11,10 +11,10 @@ import concat from 'lodash.concat';
 import fill from 'lodash.fill';
 import moment from 'moment';
 import lzma from 'lzma';
+const { apiKey, apiSecret } = sails.config.shopify;
 
-
-const apiKey = '06636a56f6226cc663470ee0e58b0623';
-const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
+// const apiKey = '06636a56f6226cc663470ee0e58b0623';
+// const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
 const barcodelookupKey = 'gvua5ur4pw2hlz9qxqruza5hltt3m4'
 
 module.exports = {

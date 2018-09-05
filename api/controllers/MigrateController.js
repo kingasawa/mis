@@ -7,6 +7,7 @@
 
 import request from 'request';
 // import keyby from 'lodash.keyby';
+const { apiKey, apiSecret } = sails.config.shopify;
 import replace from 'lodash.replace';
 import uuidv4 from 'uuid/v4';
 import keyby from 'lodash.keyby';
@@ -18,8 +19,8 @@ import moment from 'moment';
 import lzma from 'lzma';
 
 
-const apiKey = '9ecfc20ce93ac92b9d146486441c6e7f';
-const apiSecret =  '29279b2a2026e3092f3daa4cb93362bf';
+// const apiKey = '9ecfc20ce93ac92b9d146486441c6e7f';
+// const apiSecret =  '29279b2a2026e3092f3daa4cb93362bf';
 
 module.exports = {
   //update compare_at_price

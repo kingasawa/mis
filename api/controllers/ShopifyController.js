@@ -5,10 +5,10 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 const { baseUrl } = sails.config.globals
-
+const { apiKey, apiSecret } = sails.config.shopify;
 // const { apiKey, apiSecret } = sails.config.shopify;
-const apiKey = '06636a56f6226cc663470ee0e58b0623';
-const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
+// const apiKey = '06636a56f6226cc663470ee0e58b0623';
+// const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
 
   //shopify app dev
 // var apiKey = '5be0da665e61116428d9fc135b5d452a';
