@@ -1,6 +1,6 @@
 module.exports.shopify = {
-  apiKey: '37ba19c60c3afeafdcb6e24f0c8e252d',
-  apiSecret: '22a3bfc470e705982986685f3d123808',
+  apiKey: '',
+  apiSecret: '',
   shopifyVendor: 'US2',
   apiConfig: {
     rate_limit_delay: 10000, // 10 seconds (in ms) => if Shopify returns 429 response code
