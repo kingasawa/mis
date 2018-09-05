@@ -21,11 +21,11 @@ import lzma from 'lzma';
 
 const knex = require('knex')({client: 'pg'});
 
-const { easypostapi } = sails.config.easypost;
+// const { easypostapi } = sails.config.easypost;
 // const easypostapi = '0qSy6pqLZyeXoXajMpcwBg';
 
-const EasyPost = require('node-easypost');
-const api = new EasyPost(easypostapi);
+// const EasyPost = require('node-easypost');
+// const api = new EasyPost(easypostapi);
 
 
 module.exports = {
