@@ -29,26 +29,26 @@ module.exports = {
       adapter: 'sails-postgresql',
       host: '127.0.0.1', //208.113.135.170
       port: '5432',
-      user: 'nicecode', // optional
-      password: 'Tu)!Tr#H4ck', // optional
-      database: 'misdb' //optional
+      user: '', // optional
+      password: '', // optional
+      database: '' //optional
     },
     dev: {
       adapter: 'sails-postgresql',
-      host: '104.198.236.57',
+      host: '',
       port: '5432',
-      user: 'postgres', // optional
+      user: '', // optional
       password: '', // optional
-      database: 'nodeshopis' //optional
+      database: '' //optional
     },
 
     localhost: {
       adapter: 'sails-postgresql',
-      host: '208.113.164.89',
-      user: 'nicecode', // optional
-      port: '5432',
-      password: 'Tu)!Tr#H4ck', // optional
-      database: 'misdb' //optional
+      host: '',
+      user: '', // optional
+      port: '',
+      password: '', // optional
+      database: '' //optional
     }
 
   },
@@ -63,8 +63,8 @@ module.exports = {
   port: process.env.PORT || 3000,
 
   shopify: {
-    apiKey: '37ba19c60c3afeafdcb6e24f0c8e252d',
-    apiSecret: '22a3bfc470e705982986685f3d123808',
+    apiKey: '',
+    apiSecret: '',
   },
   // policies: {
   //   '*': true
@@ -72,7 +72,7 @@ module.exports = {
 
   // Dev Shipping Key
   easypost: {
-    easypostapi: '0qSy6pqLZyeXoXajMpcwBg'
+    easypostapi: ''
   },
 
   session: {
