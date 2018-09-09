@@ -131,7 +131,7 @@
           <td><%= _.get(post,'owner.username','') %></td>
           <td><%if(post.global === 1){%>Yes<%}else{%>No<%}%></td>
           <td class="post<%= post.status %>"><%= post.status %></td>
-          <% if(post.stock < 3) { %>
+          <% if(post.stock < 1) { %>
           <td>Out of stock (<strong><%=post.stock%></strong>)</td>
           <% } else { %>
           <td><%= post.stock %></td>

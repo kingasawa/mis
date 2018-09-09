@@ -472,7 +472,7 @@ module.exports = {
 
     let findProduct = await Post.find().populate('owner');
     findProduct.map((product)=>{
-      if(product.stock < 3){
+      if(product.stock < 1){
         countOutOfStock += 1
       }
     })
