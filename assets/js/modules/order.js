@@ -855,6 +855,7 @@ $(function() {
     }
     $(this).html(`<i class="fa fa-spin fa-spinner"></i> Mark Shipped`)
     socket.post('/order/mark_shipped',{orderid,trackingCompany,trackingNumber,items,products},function(result){
+      console.log('result', result);
       if(!result.error){
         location.reload()
       } else {

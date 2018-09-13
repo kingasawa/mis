@@ -245,7 +245,7 @@ module.exports = {
 
           // console.log('data fulfill',data.fulfillment);
           // sails.sockets.broadcast(session_id, 'order/shipped', { data: params.orderId });
-          return res.send(200);
+          return res.json({result:'successfull'});
         }
       });
 
