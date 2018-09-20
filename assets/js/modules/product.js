@@ -25,12 +25,12 @@ $(function() {
 
     if(statusName == 'Out of stock'){
       productTable.columns( 12 ).search( statusName ).draw();
+      console.log('disabled add hidden');
+      $('td.postDisabled').parent('tr.tr-product').addClass('hidden')
       return false;
     }
     productTable.columns( 12 ).search( '' ).draw();
     productTable.columns( 11 ).search( statusName ).draw();
-    console.log('disabled add hidden');
-    $('td.postDisabled').parent('tr.tr-product').addClass('hidden')
   });
 
   $('#filter-product').on('change',function(){
