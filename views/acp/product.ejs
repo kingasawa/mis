@@ -113,7 +113,7 @@
         </thead>
         <tbody>
         <% _.each(findProduct, function(post) { %>
-        <tr id="product-id-<%= post.id %>" class="tr-product">
+        <tr id="product-id-<%= post.id %>" class="tr-product <%if(post.status === 'Disabled'){%>hidden product-disabled<%}%>">
 
           <td><input type="checkbox" data-product-id="<%= post.id %>" class="choose-product-id"></td>
           <td class="product-id"><%= post.id %></td>

@@ -16,7 +16,9 @@ $(function() {
     $(this).addClass('active');
     console.log(statusName);
     if(statusName == 'Disabled'){
-      $('tr.product-hidden').removeClass('hidden')
+      $('tr.product-disabled').toggleClass("hidden",false)
+    } else {
+      $('tr.product-disabled').toggleClass('hidden',true)
     }
     if(statusName === ''){
       console.log('status null');
@@ -25,8 +27,6 @@ $(function() {
 
     if(statusName == 'Out of stock'){
       productTable.columns( 12 ).search( statusName ).draw();
-      console.log('disabled add hidden');
-      $('td.postDisabled').parent('tr.tr-product').addClass('hidden')
       return false;
     }
     productTable.columns( 12 ).search( '' ).draw();
