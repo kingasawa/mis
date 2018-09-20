@@ -24,7 +24,7 @@ $(function() {
     }
 
     if(statusName == 'Out of stock'){
-      $('td.postDisabled').parents('tr.tr-product').addClass('hidden')
+      $('td.postDisabled').parent('tr.tr-product').addClass('hidden')
       productTable.columns( 12 ).search( statusName ).draw();
       return false;
     }
