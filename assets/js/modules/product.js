@@ -25,6 +25,7 @@ $(function() {
 
     if(statusName == 'Out of stock'){
       productTable.columns( 12 ).search( statusName ).draw();
+      productTable.columns( 11 ).search( '' ).draw();
       return false;
     }
     productTable.columns( 12 ).search( '' ).draw();
