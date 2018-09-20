@@ -16,7 +16,7 @@ $(function() {
     $(this).addClass('active');
     console.log(statusName);
     if(statusName == 'Disabled'){
-      $('tr.product-disabled').toggleClass('hidden',false)
+      $('tr.product-hidden').removeClass('hidden')
     }
     if(statusName === ''){
       console.log('status null');

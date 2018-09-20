@@ -113,7 +113,7 @@
         </thead>
         <tbody>
         <% _.each(findProduct, function(post) { %>
-        <tr id="product-id-<%= post.id %>" class="tr-product <%if(post.status === 'Disabled'){%>hidden product-disabled<%}%>">
+        <tr id="product-id-<%= post.id %>" class="tr-product">
 
           <td><input type="checkbox" data-product-id="<%= post.id %>" class="choose-product-id"></td>
           <td class="product-id"><%= post.id %></td>
@@ -131,7 +131,7 @@
           <td><%= _.get(post,'owner.username','') %></td>
           <td><%if(post.global === 1){%>Yes<%}else{%>No<%}%></td>
           <td class="post<%= post.status %>"><%= post.status %></td>
-          <% if(post.stock < 1) { %>
+          <% if(post.stock < 1 && post.status !== 'Disabled') { %>
           <td>Out of stock (<strong><%=post.stock%></strong>)</td>
           <% } else { %>
           <td><%= post.stock %></td>
