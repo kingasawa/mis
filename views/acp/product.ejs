@@ -47,7 +47,7 @@
             <li><a id="all-product" data-status="" class="active">All products</a></li>
             <li><a id="product-sync" data-status="Synced">Sync</a></li>
             <li><a id="product-unsync" data-status="Unsync">Unsync</a></li>
-            <li><a id="product-disabled" data-status="Disabled">Disabled</a></li>
+            <!--<li><a id="product-disabled" data-status="Disabled">Disabled</a></li>-->
             <li><a id="product-outofstock" data-status="Out of stock">Out of stock (<%= countOutOfStock %>)</a></li>
           </ul>
         </div>
@@ -106,7 +106,7 @@
           <th style="width:80px">Status</th>
           <th>Stock</th>
           <th>Edit</th>
-          <th>Disable</th>
+          <th>Delete</th>
           <th>GTIN</th>
 
         </tr>
@@ -130,7 +130,7 @@
           <td class="text_price"><%= _.get(post,'price','') %></td>
           <td><%= _.get(post,'owner.username','') %></td>
           <td><%if(post.global === 1){%>Yes<%}else{%>No<%}%></td>
-          <td class="post<%= post.status %>"><%= post.status %></td>
+          <td class="product-status post<%= post.status %>"><%= post.status %></td>
           <% if(post.stock < 1 && post.status !== 'Disabled') { %>
           <td>Out of stock (<strong><%=post.stock%></strong>)</td>
           <% } else { %>

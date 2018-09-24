@@ -15,21 +15,15 @@ $(function() {
     statusName = $(this).data('status')
     $(this).addClass('active');
     console.log(statusName);
-    if(statusName == 'Disabled'){
-      $('tr.product-hidden').removeClass('hidden')
-    }
-    if(statusName === ''){
-      console.log('status null');
-      $('tr.product-hidden').addClass('hidden')
-    }
+
+    productTable.columns( 12 ).search( '' ).draw();
+    productTable.columns( 11 ).search( statusName ).draw();
 
     if(statusName == 'Out of stock'){
       productTable.columns( 12 ).search( statusName ).draw();
       productTable.columns( 11 ).search( '' ).draw();
       return false;
     }
-    productTable.columns( 12 ).search( '' ).draw();
-    productTable.columns( 11 ).search( statusName ).draw();
   });
 
   $('#filter-product').on('change',function(){
@@ -205,7 +199,8 @@ $(function() {
         let checkImg = $(this).find('td.product-image img').attr('src').length;
         let checkGtin = $(this).find('td.product-gtin').text().length;
         let checkStore = $(this).find('td.product-store').text().length;
-        if(checkStore === 0 && checkGtin > 0 && checkImg > 0){
+        let checkStatus = $(this).find('td.product-status').text();
+        if(checkStore === 0 && checkGtin > 0 && checkImg > 0 && checkStatus === 'Disabled'){
           return $(this).find('input.choose-product-id').data('product-id');
         }
       }).get();
