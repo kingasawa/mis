@@ -447,7 +447,7 @@ module.exports = {
       let shopifyAuth = {
         shop:product.store,
         shopify_api_key: apiKey,
-        access_token:product.shopifytoken[0].accessToken,
+        access_token:findToken.shopifytoken[0].accessToken,
       };
 
       let apiConfig = {
