@@ -524,16 +524,17 @@ $(function() {
     $(`tr#product-id-${id} i.fa-trash-o`).removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
     socket.post(`/product/delete?id=${id}&status=${status}`,function(data){
       console.log('data', data);
+
       if(data.success){
         swal('Disabled! Your product has been disabled!')
         $(`tr#product-id-${id}`).css('opacity','1');
-        $(`tr#product-id-${id} td.postUnsync`).text('Disabled');
+        $(`tr#product-id-${id} td.product-status`).text('Disabled');
 
       } else {
         $(`tr#product-id-${id}`).css('opacity','1');
-        $(`tr#product-id-${id} i.fa-trash-o`).addClass('fa-trash-o').removeClass('fa-spinner fa-spin');
         swal('Error!')
       }
+      $(`tr#product-id-${id} i.fa-trash-o`).addClass('fa-trash-o').removeClass('fa-spinner fa-spin');
     })
 
     // swal({
