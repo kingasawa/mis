@@ -15,15 +15,21 @@ $(function() {
     statusName = $(this).data('status')
     $(this).addClass('active');
     console.log(statusName);
-
-    productTable.columns( 12 ).search( '' ).draw();
-    productTable.columns( 11 ).search( statusName ).draw();
+    if(statusName == 'Disabled'){
+      $('tr.product-hidden').removeClass('hidden')
+    }
+    if(statusName === ''){
+      console.log('status null');
+      $('tr.product-hidden').addClass('hidden')
+    }
 
     if(statusName == 'Out of stock'){
       productTable.columns( 12 ).search( statusName ).draw();
       productTable.columns( 11 ).search( '' ).draw();
       return false;
     }
+    productTable.columns( 12 ).search( '' ).draw();
+    productTable.columns( 11 ).search( statusName ).draw();
   });
 
   $('#filter-product').on('change',function(){
