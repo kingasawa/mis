@@ -516,13 +516,15 @@ $(function() {
   //end
 
   $('a.delete-post').click(function(){
-    let checkStatus = $(this).data('status');
-    if(checkStatus == 'Sync'){
-      swal('Error! This product is sync with Shopify, please unsync this!')
-      return false;
-    }
+    // let checkStatus = $(this).data('status');
+    // if(checkStatus == 'Sync'){
+    //   swal('Error! This product is sync with Shopify, please unsync this!')
+    //   return false;
+    // }
+
     let title = $(this).attr('data-title');
     let id = $(this).attr('data-id')
+    let status = $(this).data('status');
 
     swal({
       title: 'Are you sure?',
@@ -531,15 +533,15 @@ $(function() {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, disable it!'
     }).then((result) => {
       if (result.value) {
         $(`tr#product-id-${id}`).css('opacity','0.3');
         $(`tr#product-id-${id} i.fa-trash-o`).removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
-        socket.post(`/product/delete?id=${id}`,function(data){
+        socket.post(`/product/delete?id=${id}&status=${status}`,function(data){
           console.log('data', data);
           if(data.success){
-            swal('Deleted! Your product has been deleted!')
+            swal('Disabled! Your product has been disabled!')
             $(`tr#product-id-${id}`).css('opacity','1');
             $(`tr#product-id-${id} td.postUnsync`).text('Disabled');
 

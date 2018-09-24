@@ -235,15 +235,6 @@ module.exports = {
     // })
   },
 
-  delete: async(req,res) => {
-    let {id} = req.allParams();
-    console.log('delete post id', id);
-    Post.update({id},{status:'Disabled'})
-        .then(success => res.json({success}))
-        .catch(error => res.json({error}) )
-
-  },
-
   datatable: async(req, res) => {
     bluebird.promisifyAll(Post);
 
@@ -443,6 +434,49 @@ module.exports = {
                .ttl(600000)
                .save();
     })
+  },
+
+  delete: async(req,res) => {
+    let {id,status} = req.allParams();
+
+    if(status === 'Synced'){
+      let product = await Post.findOne({id})
+
+      let findToken = await Promise.resolve(Shop.findOne({name:product.store}).populate('shopifytoken'));
+
+      let shopifyAuth = {
+        shop:product.store,
+        shopify_api_key: apiKey,
+        access_token:product.shopifytoken[0].accessToken,
+      };
+
+      let apiConfig = {
+        rate_limit_delay: 10000, // 10 seconds (in ms) => if Shopify returns 429 response code
+        backoff: 5, // limit X of 40 API calls => default is 35 of 40 API calls
+        backoff_delay: 2000 // 1 second (in ms) => wait 1 second if backoff option is exceeded
+      };
+
+      shopifyAuth = Object.assign(apiConfig, shopifyAuth);
+      const Shopify = new ShopifyApi(shopifyAuth);
+
+
+      let shopifyPostUrl = `/admin/products/${product.productid}.json`;
+
+      Shopify.delete(shopifyPostUrl, (error, result) => {
+        if (error) {
+          console.log('error:disable:product', error);
+        }
+      })
+    }
+    console.log('delete post id', id);
+    Post.update({id},{
+      status:'Disabled',
+      productid: '',
+      store: ''
+    })
+        .then(success => res.json({success}))
+        .catch(error => res.json({error}) )
+
   },
 
   restock: async(req,res) => {

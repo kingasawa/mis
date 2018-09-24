@@ -382,17 +382,6 @@ module.exports = {
   },
 
 
-
-  getsize: (req,res) => {
-    let session_id = req.signedCookies['sails.sid'];
-    // sails.sockets.join(req,session_id);
-    let params = req.allParams();
-    MaterialSize.findOne({material:params.id}).exec(function(err,foundAllSize){
-      console.log(foundAllSize);
-      sails.sockets.broadcast(session_id,'load/allsize',{msg:foundAllSize});
-    })
-  },
-
   // sync: (req,res) => {
   //   return res.view('scp/sync-store')
   // },
@@ -418,40 +407,6 @@ module.exports = {
       })
     }
   },
-
-  get: async(req,res) => {
-	  let { id,side } = req.allParams();
-	  console.log('side', side);
-
-    let session_id = req.signedCookies['sails.sid'];
-
-    let data = {};
-    let ENABLE_CACHE = false;
-    let cachePrefix = `scp:get:config:${id}:${CACHE_KEY}`;
-
-    let getConfigCached = await Cache.getAsync(`${cachePrefix}`);
-
-    if(ENABLE_CACHE && getConfigCached){
-      data = JSON.parse(getConfigCached);
-    }else{
-      data.color = await Promise.resolve(MaterialColor.findOne({material:id}));
-
-      if(side == 'front'){
-        data.config = await Promise.resolve(MaterialConfig.findOne({material:id}));
-      } else {
-        data.config = await Promise.resolve(MaterialBackConfig.findOne({material:id}));
-      }
-
-      data.basecost = await Promise.resolve(MaterialSize.findOne({material:id}));
-
-      let cacheConfigString = JSON.stringify(data);
-      Cache.set(`${cachePrefix}`, cacheConfigString, 'EX', 600);
-    }
-    console.log('data', data);
-    res.json(data);
-  },
-
-
 
   profile: async(req, res) => {
     res.view('scp/profile');
