@@ -530,11 +530,18 @@ $(function() {
       title: 'Are you sure?',
       text: "You will not be able to recover this product!",
       type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, disable it!'
+      // showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      // confirmButtonText: 'Yes, disable it!',
+      buttons: {
+        cancel: true,
+        confirm: "Yes, disable it!",
+        value: 'disable'
+      },
+
     }).then((result) => {
+      console.log('result', result);
       if (result.value) {
         $(`tr#product-id-${id}`).css('opacity','0.3');
         $(`tr#product-id-${id} i.fa-trash-o`).removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
