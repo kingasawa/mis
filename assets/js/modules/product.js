@@ -206,6 +206,7 @@ $(function() {
         let checkGtin = $(this).find('td.product-gtin').text().length;
         let checkStore = $(this).find('td.product-store').text().length;
         let checkStatus = $(this).find('td.product-status').text();
+        console.log('checkStatus', checkStatus);
         if(checkStore === 0 && checkGtin > 0 && checkImg > 0 && checkStatus === 'Disabled'){
           return $(this).find('input.choose-product-id').data('product-id');
         }
