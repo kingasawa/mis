@@ -527,14 +527,13 @@ $(function() {
 
       if(data.success){
         swal('Disabled! Your product has been disabled!')
-        $(`tr#product-id-${id}`).css('opacity','1');
         $(`tr#product-id-${id} td.product-status`).text('Disabled');
-
+        $(`tr#product-id-${id}`).css('opacity','1');
       } else {
         $(`tr#product-id-${id}`).css('opacity','1');
         swal('Error!')
       }
-      $(`tr#product-id-${id} i.fa-trash-o`).addClass('fa-trash-o').removeClass('fa-spinner fa-spin');
+      $(`tr#product-id-${id} i.fa-spinner`).addClass('fa-trash-o').removeClass('fa-spinner fa-spin');
     })
 
     // swal({
