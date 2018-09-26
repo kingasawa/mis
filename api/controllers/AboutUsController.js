@@ -8,13 +8,13 @@
 module.exports = {
   index: async (req, res) => {
     let sampleDate = (new Date()).toString();
-    let user = await Promise.resolve(User.find(1));
+    let version = '1.0.1'
 
     console.log('user', user);
 
     let data = {
       currentDate: sampleDate,
-      user
+      version
     };
 
     res.json(data);
