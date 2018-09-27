@@ -14,9 +14,9 @@ module.exports = {
   index: (req, res) => {
     const uploadConfig = {
       maxBytes: 100000000,// default 15000000
-      dirname:'../../assets/images/product/'
+      dirname:'../../assets/img'
     };
-    let imageHost = `https://${baseUrl}/images/product`
+    let imageHost = `https://${baseUrl}/img`
 
     let owner = req.user.id;
     // let fileName = _.get(req, '_readableState.pipes.partFilename', null);
