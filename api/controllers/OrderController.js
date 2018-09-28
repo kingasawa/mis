@@ -166,11 +166,11 @@ module.exports = {
       access_token:accessToken
     });
 
-    console.log('items[0].origin_location.id', items[0].origin_location.id);
-
+    let locationId = _.get(findShop,'line_items[0].origin_location.id','')
+    console.log('locationId', locationId);
     let postData = {
       "fulfillment": {
-        "location_id": items[0].origin_location.id,
+        "location_id": locationId,
         "tracking_number": trackingNumber,
         "tracking_company": trackingCompany,
         "line_items": items
