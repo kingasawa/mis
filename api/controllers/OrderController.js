@@ -166,10 +166,9 @@ module.exports = {
       access_token:accessToken
     });
 
-    let postData;
     Shopify.get('/admin/locations.json',(err,data)=>{
       let locationId = _.get(data,'locations[0].id','')
-      postData = {
+      const postData = {
         "fulfillment": {
           "location_id": locationId,
           "tracking_number": trackingNumber,
@@ -178,83 +177,66 @@ module.exports = {
         }
       };
       console.log('locationId', locationId);
-    })
 
-
-    let postTracking = {
-      "tracking": {
-        "slug": trackingCompany,
-        "tracking_number": trackingNumber,
-        "title": `order-${orderid}`,
+      let postTracking = {
+        "tracking": {
+          "slug": trackingCompany,
+          "tracking_number": trackingNumber,
+          "title": `order-${orderid}`,
+        }
       }
-    }
 
-    Shopify.post(`/admin/orders/${orderid}/fulfillments.json`,postData,
-      async(error, data) => {
-        if (error) {
-          // let error = err.error.base
-          // console.log('err', err.error.base[0]);
-          console.log('error ne', error);
-          if(error.code == 403 && error.error == 'Contact support'){
-            // console.log('vào đây');
-            postData.fulfillment.id = orderid+trackingNumber;
-            postData.fulfillment.order_id = orderid
-            Fulfillment.create(postData.fulfillment).exec(async(err, result) => {
-              if (err) console.log('err', err);
-              console.log('fulfillment', result)
+      Shopify.post(`/admin/orders/${orderid}/fulfillments.json`,postData,
+        async(error, data) => {
+          if (error) {
+            // let error = err.error.base
+            // console.log('err', err.error.base[0]);
+            console.log('error ne', error);
+            if(error.code == 403 && error.error == 'Contact support'){
+              // console.log('vào đây');
+              postData.fulfillment.id = orderid+trackingNumber;
+              postData.fulfillment.order_id = orderid
+              Fulfillment.create(postData.fulfillment).exec(async(err, result) => {
+                if (err) console.log('err', err);
+                console.log('fulfillment', result)
                 Order.update({orderid}, {status:'Shipped',tracking_number:postData.fulfillment.tracking_number }).then((updateOrder)=>{
                   res.json({result:'successfull'});
                 })
+              });
+              // update tracking to aftership
+              Aftership.POST('/trackings' ,{body:postTracking}, (err, result)=> {
+                if(err) console.log('err', err);
+                // console.log('aftership', result.data);
+                // Order.update({orderid},{tracking_status:result.data.tracking.tag}).then(console.log(Aftership.rate_limit))
+
+              });
+            } else {
+              return res.json({error:'cannot update tracking'});
+            }
+
+          }
+          else {
+            // await Promise.resolve(Tracking.update({shop_order_id:params.orderId},{status:'shipped'}));
+            await Promise.resolve(Order.update({orderid},
+              { status: 'Shipped',tracking_number:data.fulfillment.tracking_number }));
+            delete data.fulfillment.created_at;
+            delete data.fulfillment.updated_at;
+            Fulfillment.create(data.fulfillment).exec((err, result) => {
+              if (err) console.log('err', err);
+              console.log('fulfillment', result)
             });
+
             // update tracking to aftership
             Aftership.POST('/trackings' ,{body:postTracking}, (err, result)=> {
               if(err) console.log('err', err);
-              // console.log('aftership', result.data);
-              // Order.update({orderid},{tracking_status:result.data.tracking.tag}).then(console.log(Aftership.rate_limit))
-
+              console.log(Aftership.rate_limit);
             });
-          } else {
-            return res.json({error:'cannot update tracking'});
+            // end
+
+            return res.json({result:'successfull'});
           }
-
-        }
-        else {
-          // await Promise.resolve(Tracking.update({shop_order_id:params.orderId},{status:'shipped'}));
-          await Promise.resolve(Order.update({orderid},
-            { status: 'Shipped',tracking_number:data.fulfillment.tracking_number }));
-          delete data.fulfillment.created_at;
-          delete data.fulfillment.updated_at;
-          Fulfillment.create(data.fulfillment).exec((err, result) => {
-            if (err) console.log('err', err);
-            console.log('fulfillment', result)
-          });
-
-          // update tracking to aftership
-          Aftership.POST('/trackings' ,{body:postTracking}, (err, result)=> {
-            if(err) console.log('err', err);
-            console.log(Aftership.rate_limit);
-          });
-          // end
-
-          // //update stock to db
-          // products.map(async(item)=>{
-          //   let findPost = await Post.findOne({productid:item.id});
-          //   if(findPost){
-          //     item.quantity = parseInt(item.quantity);
-          //     let stock = findPost.stock-item.quantity;
-          //     Post.update({productid:item.product_id},{stock}).then((updateQuantity)=>{
-          //       if(err) console.log('err', err);
-          //     })
-          //   }
-          // })
-          // //end
-
-          // console.log('data fulfill',data.fulfillment);
-          // sails.sockets.broadcast(session_id, 'order/shipped', { data: params.orderId });
-          return res.json({result:'successfull'});
-        }
-      });
-
+        });
+    })
 
   },
 
