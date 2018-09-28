@@ -166,16 +166,19 @@ module.exports = {
       access_token:accessToken
     });
 
-    let locationId = _.get(findShop,'line_items[0].origin_location.id','')
-    console.log('locationId', locationId);
-    let postData = {
-      "fulfillment": {
-        "location_id": 15427960905,
-        "tracking_number": trackingNumber,
-        "tracking_company": trackingCompany,
-        "line_items": items
-      }
-    };
+    let postData;
+    await Shopify.get('/admin/locations.json',(err,data)=>{
+      let locationId = _.get(data,'locations[0].id','')
+      postData = {
+        "fulfillment": {
+          "location_id": locationId,
+          "tracking_number": trackingNumber,
+          "tracking_company": trackingCompany,
+          "line_items": items
+        }
+      };
+      console.log('locationId', locationId);
+    })
 
 
     let postTracking = {
