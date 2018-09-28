@@ -166,9 +166,11 @@ module.exports = {
       access_token:accessToken
     });
 
+    console.log('items[0].origin_location.id', items[0].origin_location.id);
+
     let postData = {
       "fulfillment": {
-        "location_id": 349260841013,
+        "location_id": items[0].origin_location.id,
         "tracking_number": trackingNumber,
         "tracking_company": trackingCompany,
         "line_items": items
