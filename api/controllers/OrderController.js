@@ -167,7 +167,7 @@ module.exports = {
     });
 
     let postData;
-    await Shopify.get('/admin/locations.json',(err,data)=>{
+    Shopify.get('/admin/locations.json',(err,data)=>{
       let locationId = _.get(data,'locations[0].id','')
       postData = {
         "fulfillment": {
