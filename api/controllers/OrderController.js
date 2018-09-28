@@ -170,7 +170,6 @@ module.exports = {
     console.log('locationId', locationId);
     let postData = {
       "fulfillment": {
-        "location_id": locationId,
         "tracking_number": trackingNumber,
         "tracking_company": trackingCompany,
         "line_items": items
