@@ -588,6 +588,46 @@ module.exports = {
     })
   },
 
+  adminLocation: async (req, res) => {
+	  let {shop} = req.allParams()
+    Shop.findOne({name: shop}).populate('shopifytoken').exec((err,findToken)=>{
+      let Shopify = new ShopifyApi({
+        shop,
+        shopify_api_key: apiKey,
+        access_token: findToken.shopifytoken[0].accessToken,
+      });
+
+      Shopify.get('/admin/locations.json',(err,data)=>{
+        if(err) {
+          console.log('err',err);
+          return false;
+        } else {
+          return res.json(data)
+        }
+      })
+    });
+  },
+
+  getLocation: async (req, res) => {
+    let {shop,id} = req.allParams()
+    Shop.findOne({name: shop}).populate('shopifytoken').exec((err,findToken)=>{
+      let Shopify = new ShopifyApi({
+        shop,
+        shopify_api_key: apiKey,
+        access_token: findToken.shopifytoken[0].accessToken,
+      });
+
+      Shopify.get(`/admin/locations/${id}.json`,(err,data)=>{
+        if(err) {
+          console.log('err',err);
+          return false;
+        } else {
+          return res.json(data)
+        }
+      })
+    });
+  },
+
   delete_store: async(req,res) => {
     let {id,shop} = req.allParams();
 
