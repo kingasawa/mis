@@ -168,7 +168,7 @@ module.exports = {
 
     let postData = {
       "fulfillment": {
-        "location_id": 6497304629,
+        "location_id": 349260841013,
         "tracking_number": trackingNumber,
         "tracking_company": trackingCompany,
         "line_items": items
