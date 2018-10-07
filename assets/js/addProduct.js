@@ -565,4 +565,50 @@ $(function() {
     // })
   })
 
+  $('form#getItemForm').submit(function(e){
+    let itemId = $(this).find('input[name=itemId]').val()
+    e.preventDefault()
+    socket.get(`/walmart/getItem?id=${itemId}`,function(result){
+      $('.list-group-item').remove();
+      $('.itemThumbnail').remove()
+      $('.showItemName').text('')
+      if(result.status === 400){
+        noty({
+          text: result.message,
+          type: 'error',
+        });
+        return false;
+      }
+      noty({
+        text: 'got item data successful',
+        type: 'success',
+      });
+      $('#getItemData').removeClass('hidden')
+      console.log('result', result);
+      $.each(result.item.imageEntities,function(index,img){
+        $('#showItemImage').append(`
+        <img class="itemThumbnail" src="${img.thumbnailImage}">`)
+        })
+      $('.showItemName').text(result.item.name)
+      $('#showItemData').append(`
+        <a class="list-group-item"><strong>Description:</strong> ${result.item.longDescription}</a>
+        <a class="list-group-item"><strong>Brand:</strong> ${result.item.brandName}</a>
+        <a class="list-group-item"><strong>Category:</strong> ${result.item.categoryPath}</a>
+        <a class="list-group-item"><strong>UPC:</strong> ${result.item.upc}</a>
+        <a class="list-group-item"><strong>Sale Pricec:</strong> ${result.item.salePrice}</a>
+        <a class="list-group-item"><strong>Stock:</strong> ${result.item.stock}</a>
+        <a class="list-group-item"><strong>Size:</strong> ${result.item.size.toString()}</a>
+        <a class="list-group-item"><strong>Color:</strong> ${result.item.color.toString()}</a>
+      `)
+    })
+  })
+
+  $('button.quickAddProduct').click(function(){
+    noty({
+      text: 'NOTICE: waiting for dev :D',
+      type: 'error',
+    });
+    return false;
+  })
+
 });

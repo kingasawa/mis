@@ -1,0 +1,42 @@
+<div class="se-pre-con"></div>
+<div class="container" id="seller-page">
+  <% if (req.user.group == 3) {%>
+  <%- partial ('../scp/menu-side.ejs') %>
+  <% } else {%>
+  <%- partial ('../acp/menu-side.ejs') %>
+  <% } %>
+
+  <div id="quick-add-product-page">
+    <div class="detail-content container">
+      <% if (req.user.group == 3) {%>
+        <ul class="breadcrumb">
+          <li><a href="/scp"><i class="fa fa-home"></i> Dashboard</a></li>
+          <li><a href="/scp/product">Products</a></li>
+          <li class="active">Quick Add from API</li>
+        </ul>
+      <% } else { %>
+        <ul class="breadcrumb">
+          <li><a href="/acp"><i class="fa fa-home"></i> Dashboard</a></li>
+          <li><a href="/acp/product">Products</a></li>
+          <li class="active">Quick Add from API</li>
+        </ul>
+      <% } %>
+      <div id="inputItemId">
+        <form class="form-inline" id="getItemForm">
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="itemId" class="sr-only">Item ID</label>
+            <input type="text" class="form-control" id="itemId" name="itemId" placeholder="Enter item id">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Get Product Data</button>
+        </form>
+      </div><hr>
+      <div id="getItemData" class="hidden">
+        <h3 class="showItemName"></h3>
+        <div id="showItemImage"></div>
+        <div class="list-group" id="showItemData"></div>
+        <button type="submit" class="quickAddProduct btn btn-warning mb-2">Add Product</button>
+      </div>
+    </div>
+  </div>
+
+</div>

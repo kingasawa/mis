@@ -95,11 +95,18 @@ module.exports = {
     return res.view('product/edit',{post,findBrand,findMerchant,categories})
   },
 
+  quick_add: async (req, res) => {
+    return res.view('product/quick_add')
+  },
+
   add: async(req,res) => {
     let params = req.allParams();
     let {product,category,collections,brand,mpn,gtin,merchant,compare_at_price,
         global,price,option1,option2,option3,sku,weight,weight_unit,stock} = params;
     console.log('params', params);
+    console.log('product.options', product.options);
+    console.log('product.variants', product.variants);
+    console.log('product.images', product.images);
 
     //editing ....
     // let status = 'Disabled';
