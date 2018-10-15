@@ -583,32 +583,71 @@ $(function() {
         text: 'got item data successful',
         type: 'success',
       });
-      $('#getItemData').removeClass('hidden')
       console.log('result', result);
       $.each(result.item.imageEntities,function(index,img){
         $('#showItemImage').append(`
-        <img class="itemThumbnail" src="${img.thumbnailImage}">`)
+        <img style="max-width: 100px" class="itemThumbnail" src="${img.largeImage}">`)
         })
       $('.showItemName').text(result.item.name)
       $('#showItemData').append(`
-        <a class="list-group-item"><strong>Description:</strong> ${result.item.longDescription}</a>
-        <a class="list-group-item"><strong>Brand:</strong> ${result.item.brandName}</a>
-        <a class="list-group-item"><strong>Category:</strong> ${result.item.categoryPath}</a>
-        <a class="list-group-item"><strong>UPC:</strong> ${result.item.upc}</a>
-        <a class="list-group-item"><strong>Sale Pricec:</strong> ${result.item.salePrice}</a>
-        <a class="list-group-item"><strong>Stock:</strong> ${result.item.stock}</a>
-        <a class="list-group-item"><strong>Size:</strong> ${result.item.size.toString()}</a>
-        <a class="list-group-item"><strong>Color:</strong> ${result.item.color.toString()}</a>
+        <a class="list-group-item itemDescription"><strong>Description:</strong> <span>${result.item.longDescription}</span></a>
+        <a class="list-group-item itemBrand"><strong>Brand:</strong> <span>${result.item.brandName}</span></a>
+        <a class="list-group-item itemCategory"><strong>Category:</strong> <span>${result.item.categoryPath}</span></a>
+        <a class="list-group-item itemUpc"><strong>UPC:</strong> <span>${result.item.upc}</span></a>
+        <a class="list-group-item itemPrice"><strong>Sale Price:</strong> <span>${result.item.salePrice}</span></a>
+        <a class="list-group-item itemStock"><strong>Stock:</strong> <span>${result.item.stock}</span></a>
+        <a class="list-group-item itemSize"><strong>Size:</strong> <span>${result.item.size.toString()}</span></a>
+        <a class="list-group-item itemColor"><strong>Color:</strong> <span>${result.item.color.toString()}</span></a>
       `)
+      $('#getItemData').removeClass('hidden')
     })
   })
 
+  // $('button.quickAddProduct').click(function(){
+  //   noty({
+  //     text: 'NOTICE: waiting for dev :D',
+  //     type: 'error',
+  //   });
+  //   return false;
+  // })
+
   $('button.quickAddProduct').click(function(){
-    noty({
-      text: 'NOTICE: waiting for dev :D',
-      type: 'error',
-    });
-    return false;
+    let imageArr = [];
+    $('#showItemImage img').each(function(){
+      let image = $(this).attr('src')
+      console.log('value', $(this).attr('src'));
+      imageArr.push({src:image})
+    })
+    let postData = {
+      title : $('.showItemName').text(),
+      description : $('#showItemData .itemDescription span').text(),
+      brand : $('#showItemData .itemBrand span').text(),
+      category : $('#showItemData .itemCategory span').text(),
+      upc : $('#showItemData .itemUpc span').text(),
+      price : $('#showItemData .itemPrice span').text(),
+      stock : $('#showItemData .itemStock span').text(),
+      images: imageArr,
+      // size : $('#showItemData .itemSize span').text().split(','),
+      // color : $('#showItemData .itemColor span').text().split(',')
+      size: ['S','M'],
+      color: ['Red','Blue','Green']
+    }
+    console.log('postData', postData);
+    socket.post('/product/quickAddProduct',postData,function(result){
+      if(result.error){
+          noty({
+            text: 'this product is not available, can not add to system',
+            type: 'error',
+          });
+          return false;
+      }
+      noty({
+        text: 'Add product successful',
+        type: 'success',
+      });
+      console.log('result', result);
+      $('#getItemData').addClass('hidden')
+    })
   })
 
 });

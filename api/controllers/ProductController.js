@@ -99,6 +99,14 @@ module.exports = {
     return res.view('product/quick_add')
   },
 
+  quickAddProduct: async (req, res) => {
+    let params = req.allParams();
+    params.owner = req.user.id;
+    let result = await Walmart.quick_add(params)
+    console.log('quickAddProduct result', result);
+    return res.json(result)
+  },
+
   add: async(req,res) => {
     let params = req.allParams();
     let {product,category,collections,brand,mpn,gtin,merchant,compare_at_price,
