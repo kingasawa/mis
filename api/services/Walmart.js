@@ -139,7 +139,7 @@ module.exports = {
 
     let createData = {
       title,price,brand,images,
-      body_html:description,
+      body_html:`<p>${description}</p>`,
       stock:5,
       category: category.split(' ')[0],
       compare_at_price:price,

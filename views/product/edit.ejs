@@ -300,7 +300,7 @@
                 <% _.each(findMerchant,function(merchant){ %>
                 <!--.includes({ 'a': 1, 'b': 2 }, 1);-->
                 <% let merArr = [] ; _.each(post.merchant,function(item){ merArr.push(item.name) }) %>
-                <% if(post.merchant.length > 0 && _.includes(merArr,merchant.name) === true) { %>
+                <% if((post.merchant && post.merchant.length > 0) && _.includes(merArr,merchant.name) === true) { %>
                 <option value="<%= merchant.name %>" selected><%= merchant.name %></option>
                 <% } else { %>
                 <option value="<%= merchant.name %>"><%= merchant.name %></option>

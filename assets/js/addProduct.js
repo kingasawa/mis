@@ -627,10 +627,10 @@ $(function() {
       price : $('#showItemData .itemPrice span').text(),
       stock : $('#showItemData .itemStock span').text(),
       images: imageArr,
-      // size : $('#showItemData .itemSize span').text().split(','),
-      // color : $('#showItemData .itemColor span').text().split(',')
-      size: ['S','M'],
-      color: ['Red','Blue','Green']
+      size : $('#showItemData .itemSize span').text().split(','),
+      color : $('#showItemData .itemColor span').text().split(',')
+      // size: ['S','M'],
+      // color: ['Red','Blue','Green']
     }
     console.log('postData', postData);
     socket.post('/product/quickAddProduct',postData,function(result){
