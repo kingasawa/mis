@@ -85,7 +85,7 @@ module.exports = {
         inventory_policy: 'deny',
         inventory_quantity: 5
       }]
-    } else if (size.length < 1 && color.length > 1){
+    } else if (size.length < 1 && color.length > 0){
       console.log('ko co size , co color');
       _.each(color,(c,i)=>{
         variants.push({
@@ -100,7 +100,7 @@ module.exports = {
         })
       })
       options = [{"name":"Color"}]
-    } else if (size.length > 1 && color.length < 1){
+    } else if (size.length > 0 && color.length < 1){
       console.log('ko co color , co size');
 
       _.each(size,(s,i)=>{
