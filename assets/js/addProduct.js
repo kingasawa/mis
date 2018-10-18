@@ -633,10 +633,10 @@ $(function() {
       // color: ['Red','Blue','Green']
     }
 
-    if($('#showItemData .itemSize span').text() === 0) {
+    if($('#showItemData .itemSize span').text().length === 0) {
       postData.size = []
     }
-    if($('#showItemData .itemColor span').text() === 0) {
+    if($('#showItemData .itemColor span').text().length === 0) {
       postData.color = []
     }
 
