@@ -632,6 +632,14 @@ $(function() {
       // size: ['S','M'],
       // color: ['Red','Blue','Green']
     }
+
+    if($('#showItemData .itemSize span').text() === 0) {
+      postData.size = []
+    }
+    if($('#showItemData .itemColor span').text() === 0) {
+      postData.color = []
+    }
+
     console.log('postData', postData);
     socket.post('/product/quickAddProduct',postData,function(result){
       if(result.error){
