@@ -567,6 +567,7 @@ $(function() {
 
   $('form#getItemForm').submit(function(e){
     let itemId = $(this).find('input[name=itemId]').val()
+    let itemDescription;
     e.preventDefault()
     socket.get(`/walmart/getItem?id=${itemId}`,function(result){
       $('.list-group-item').remove();
@@ -579,6 +580,14 @@ $(function() {
         });
         return false;
       }
+
+      if(result.item.longDescription){
+        itemDescription = result.item.longDescription
+      } else {
+        itemDescription = result.item.shortDescription
+      }
+
+
       noty({
         text: 'got item data successful',
         type: 'success',
@@ -590,7 +599,7 @@ $(function() {
         })
       $('.showItemName').text(result.item.name)
       $('#showItemData').append(`
-        <a class="list-group-item itemDescription"><strong>Description:</strong> <span>${result.item.longDescription}</span></a>
+        <a class="list-group-item itemDescription"><strong>Description:</strong> <span>${itemDescription}</span></a>
         <a class="list-group-item itemBrand"><strong>Brand:</strong> <span>${result.item.brandName}</span></a>
         <a class="list-group-item itemCategory"><strong>Category:</strong> <span>${result.item.categoryPath}</span></a>
         <a class="list-group-item itemUpc"><strong>UPC:</strong> <span>${result.item.upc}</span></a>
