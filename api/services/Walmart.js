@@ -7,6 +7,16 @@ module.exports = {
     let itemData = {}
     let url =`http://api.walmartlabs.com/v1/items/${id}?apiKey=${apiKey}&format=json`
     // let getVariants =`http://api.walmartlabs.com/v1/items?ids=518575401,189453116,435647969,579723256,712118804,912412386,323151929&apiKey=${apiKey}&format=json`
+    let findPost = await Post.find({wip:id})
+    console.log('findPost', findPost);
+    if(findPost.length !== 0){
+      return {
+        status: 400,
+        message: `existed`,
+        item: findPost,
+      }
+    }
+
     await axios.get(url)
          .then(async (response)=> {
            console.log('response.data', response.data);
@@ -66,7 +76,7 @@ module.exports = {
 
   quick_add: async (params) => {
     console.log('quick add params', params);
-    let { owner, stock, title, description, price, brand, upc, size, color, images, category } = params
+    let { itemId, owner, stock, title, description, price, brand, upc, size, color, images, category } = params
     if(stock !== 'Available'){
       return {
         error: 'not available'
@@ -139,6 +149,7 @@ module.exports = {
 
     let createData = {
       title,price,brand,images,
+      wip:itemId,
       body_html:`<p>${description}</p>`,
       stock:5,
       category: category.split(' ')[0],

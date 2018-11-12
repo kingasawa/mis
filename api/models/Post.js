@@ -104,6 +104,9 @@ module.exports = {
     productid:{
       type: 'string'
     },
+    wip:{
+      type: 'string'
+    },
     owner: {
       model: 'user',
       index: true,

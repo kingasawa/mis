@@ -570,6 +570,7 @@ $(function() {
     let itemDescription;
     e.preventDefault()
     socket.get(`/walmart/getItem?id=${itemId}`,function(result){
+      console.log('result item', result.item);
       $('.list-group-item').remove();
       $('.itemThumbnail').remove()
       $('.showItemName').text('')
@@ -578,6 +579,10 @@ $(function() {
           text: result.message,
           type: 'error',
         });
+        if(result.message === 'existed'){
+          $('.product-existed').removeClass('hidden')
+          $('.product-existed').html(`Product is exited, <a href="/product/edit_product?id=${result.item[0].id}">go to edit page</a>`)
+        }
         return false;
       }
 
@@ -607,6 +612,7 @@ $(function() {
         <a class="list-group-item itemStock"><strong>Stock:</strong> <span>${result.item.stock}</span></a>
         <a class="list-group-item itemSize"><strong>Size:</strong> <span>${result.item.size.toString()}</span></a>
         <a class="list-group-item itemColor"><strong>Color:</strong> <span>${result.item.color.toString()}</span></a>
+        <a class="list-group-item itemId hidden"><span>${itemId}</span></a>
       `)
       $('#getItemData').removeClass('hidden')
     })
@@ -628,6 +634,7 @@ $(function() {
       imageArr.push({src:image})
     })
     let postData = {
+      itemId: $('#showItemData .itemId span').text(),
       title : $('.showItemName').text(),
       description : $('#showItemData .itemDescription span').text(),
       brand : $('#showItemData .itemBrand span').text(),

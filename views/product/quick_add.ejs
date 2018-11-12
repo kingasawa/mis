@@ -21,6 +21,7 @@
           <li class="active">Quick Add from API</li>
         </ul>
       <% } %>
+
       <div id="inputItemId">
         <form class="form-inline" id="getItemForm">
           <div class="form-group mx-sm-3 mb-2">
@@ -30,6 +31,9 @@
           <button type="submit" class="btn btn-primary mb-2">Get Product Data</button>
         </form>
       </div><hr>
+
+      <div class="alert alert-info product-existed hidden"></div>
+
       <div id="getItemData" class="hidden">
         <h3 class="showItemName"></h3>
         <div id="showItemImage"></div>
