@@ -644,7 +644,9 @@ $(function() {
       stock : $('#showItemData .itemStock span').text(),
       images: imageArr,
       size : $('#showItemData .itemSize span').text().split(','),
-      color : $('#showItemData .itemColor span').text().split(',')
+      color : $('#showItemData .itemColor span').text().split(','),
+      tags: '',
+      sku: ''
       // size: ['S','M'],
       // color: ['Red','Blue','Green']
     }

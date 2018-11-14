@@ -76,7 +76,7 @@ module.exports = {
 
   quick_add: async (params) => {
     console.log('quick add params', params);
-    let { itemId, owner, stock, title, description, price, brand, upc, size, color, images, category } = params
+    let { itemId, owner, stock, title, description, price, brand, upc, size, color, images, category, sku, tags } = params
     if(stock !== 'Available'){
       return {
         error: 'not available'
@@ -148,7 +148,7 @@ module.exports = {
     }
 
     let createData = {
-      title,price,brand,images,
+      title,price,brand,images,sku,tags,
       wip:itemId,
       body_html:`<p>${description}</p>`,
       stock:5,
