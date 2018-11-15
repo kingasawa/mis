@@ -55,6 +55,12 @@ $(function() {
   //   console.log('value', value);
   // });
 
+  $('input[name=sku]').bind("keyup",function(e){
+    let value = $(this).val();;
+    console.log('value', value);
+    $('.variant-sku input').val(value)
+  })
+
   $('.dropdown-brand li a').click(function(){
     let chooseBrand = $(this).text();
     $('input[name=brand]').val(chooseBrand);

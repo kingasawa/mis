@@ -53,6 +53,23 @@ module.exports = {
     res.send(200)
   },
 
+  update_sku: async (req, res) => {
+    let findPost = await Post.find();
+    findPost.map(async(post)=>{
+      let sku = post.sku;
+      let variants = post.variants[0]
+      let id = post.id
+      if(!variants.sku || (variants.sku && variants.sku.length === 0)){
+        console.log('data', {sku,variants,id});
+        variants.sku = sku
+        let updateSku = await Post.update({id},{variants}).then((result)=>{
+          console.log('updated');
+        })
+      }
+    })
+    res.send(200)
+  },
+
   update_variant_price: async(req,res) => {
     let findPost = await Post.find();
     findPost.map(async(post)=>{
