@@ -652,7 +652,8 @@ $(function() {
       size : $('#showItemData .itemSize span').text().split(','),
       color : $('#showItemData .itemColor span').text().split(','),
       tags: '',
-      sku: ''
+      sku: '',
+      mpn: '',
       // size: ['S','M'],
       // color: ['Red','Blue','Green']
     }
