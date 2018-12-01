@@ -7,7 +7,8 @@
 const { apiKey, apiSecret } = sails.config.shopify;
 import bluebird from 'bluebird';
 import sanitizer from 'sanitizer';
-import moment from 'moment'
+import moment from 'moment';
+import uuidv4 from 'uuid/v4';
 
 // const apiKey = '06636a56f6226cc663470ee0e58b0623'; //06636a56f6226cc663470ee0e58b0623
 // const apiSecret =  'e6648b8d4cf98043e99fd8fde6559c22';
@@ -18,6 +19,347 @@ const Aftership = require('aftership')(aftershipKey);
 module.exports = {
   index: async(req,res) => {
     return res.notFound();
+  },
+
+  import: async (req,res)=>{
+    return res.view('scp/order/import_csv');
+  },
+
+  upload: async (req, res) => {
+    // let { id } = req.user;
+    let file_data = [];
+    let sid = uuidv4();
+    let number = 0;
+    req.file('files').upload({
+      adapter: require('skipper-csv'),
+      csvOptions: {delimiter: ',', columns: true},
+      rowHandler: function(row, fd){
+        // console.log(fd, row);
+        number = number+1;
+        row.number = number;
+        file_data.push(row);
+        // sails.sockets.broadcast(session_id,'order/import_done',row);
+      }
+    }, async (err, files) => {
+      if (err) return res.serverError(err);
+
+      let createData = {
+        sid,
+        file_name: files[0].filename,
+        file_size: files[0].size,
+        file_data,
+      }
+      console.log('createData', createData);
+      // let createResult = await Promise.resolve(ImportCache.create(createData));
+      // console.log('createResult', createResult);
+
+
+      // _.each(file_data,(order)=>{
+      //   let orderData = {
+      //     id : order.OrderID,
+      //     order_name : order.OrderName,
+      //     total_item : order.Qty,
+      //     total_price : order.Total,
+      //     internal_notes1: order.Notes,
+      //     tracking_status: order.Status,
+      //     tracking_number: order.Tracking,
+      //     picker: order.User
+      //   }
+      //   Order.create(orderData).then((result)=>{
+      //     console.log('done', result.id);
+      //   }).catch((err)=>{
+      //     console.log('err', err);
+      //   })
+      // })
+
+        _.each(file_data,(order)=>{
+            let updateData = {
+              internal_note1: order.Notes,
+              tracking_status: order.Status,
+              status: order.Status,
+              tracking_number: order.Tracking,
+              picker: order.User
+            }
+
+            Order.update({
+              where: {
+                id: order.OrderID
+              }
+            },updateData).then((result)=>{
+              console.log('done', order.OrderID);
+            }).catch((err)=>{
+              console.log('err', err);
+            })
+      })
+
+      return res.redirect(`/order/import?sid=${sid}`);
+
+    });
+  },
+
+  count: async (req, res) => {
+    let {shop} = req.allParams()
+    let findToken = await Promise.resolve(Shop.findOne({ name: shop }).populate('shopifytoken'));
+
+    let accessToken = findToken.shopifytoken[0].accessToken
+    let Shopify = new ShopifyApi({
+      shop: shop,
+      shopify_api_key: apiKey,
+      access_token:accessToken
+    });
+
+    Shopify.get(`/admin/orders/count.json`,(err,data)=>{
+      console.log('data', data);
+    })
+  },
+
+  migrate: async (req, res) => {
+    let billing_address = {"first_name":"Nathan","address1":"72663 Pine St","phone":null,"city":"Fortuna","zip":"65034-1010","province":"Missouri","country":"United States","last_name":"Doyel","address2":"","company":"","latitude":null,"longitude":null,"name":"Nathan Doyel","country_code":"US","province_code":"MO"}
+    let shipping_address = {"first_name":"Nathan","address1":"72663 Pine St","phone":null,"city":"Fortuna","zip":"65034-1010","province":"Missouri","country":"United States","last_name":"Doyel","address2":"","company":"","latitude":null,"longitude":null,"name":"Nathan Doyel","country_code":"US","province_code":"MO"}
+
+    let orders = await Order.find({orderid:null})
+    console.log('orders', orders);
+    _.each(orders,(order)=>{
+      Order.update({id:order.id},{billing_address,shipping_address})
+           .then((result)=>{
+             console.log('result', result.id);
+           })
+           .catch((err)=>{
+             console.log('err', err);
+           })
+    })
+
+  },
+
+  migrateUpdate: async (req, res) => {
+    // let findOrder = await ImportCache.findOne({id:1})
+    //
+    // Order.create({id:345}).then((result)=>{
+    //   console.log('result', result);
+    // })
+    // _.each(findOrder.file_data,async(order)=>{
+    //
+    //   delete order.payout;
+    //   delete order.commission;
+    //   delete order.tracking_url
+    //
+    //   if(order.global !== '1'){
+    //     delete order.global
+    //     console.log('order.orderid', order.orderid);
+    //     Order.create(order).then((result)=>{
+    //       console.log('done', result.id);
+    //     }).catch((err)=>{
+    //       console.log('err', err);
+    //     })
+    //   }
+    // })
+    // let order = { 'orderid': '738886647919',
+    //   'order_name': '#1184',
+    //   'note': '',
+    //   'email': 'texascoolguy1@gmail.com',
+    //   '': '96cae92ebbd75146ab8b9fc5934d3731',
+    //   total_price: '107.99',
+    //   total_line_items_price: '107.99',
+    //   subtotal_price: '107.99',
+    //   total_weight: '0',
+    //   total_tax: '0',
+    //   total_item: '1',
+    //   total_discounts: '0',
+    //   currency: 'USD',
+    //   financial_status: 'paid',
+    //   confirmed: 'true',
+    //   name: 'AHMAD ASHOUR',
+    //   referring_site: '',
+    //   customer: '{"id":961895727215,"email":"texascoolguy1@gmail.com","accepts_marketing":true,"created_at":"2018-11-23T20:21:55-08:00","updated_at":"2018-11-23T20:22:28-08:00","first_name":"AHMAD","last_name":"ASHOUR","orders_count":1,"state":"disabled","total_spent":"107.99","last_order_id":738886647919,"note":null,"verified_email":true,"multipass_identifier":null,"tax_exempt":false,"phone":null,"tags":"","last_order_name":"#1184","default_address":{"id":1060950245487,"customer_id":961895727215,"first_name":"AHMAD","last_name":"ASHOUR","company":"","address1":"1301 N 175th St Apt B302","address2":"","city":"Shoreline","province":"Washington","country":"United States","zip":"98133","phone":null,"name":"AHMAD ASHOUR","province_code":"WA","country_code":"US","country_name":"United States","default":true}}',
+    //   shop: 'haanmark.myshopify.com',
+    //   order_status_url: 'https://haanmark.com/8156512367/orders/96cae92ebbd75146ab8b9fc5934d3731/authenticate?key=664ef7e9e8e61a25f90c8a8a0badecbf',
+    //   line_items: '[{"id":1696210714735,"variant_id":18088014381167,"title":"Dr. Infrared Heater DR-968 Portable Space Heater, 1500W","quantity":1,"price":"107.99","sku":"17153162","variant_title":"Other","vendor":"DR. INFRARED HEATER","fulfillment_service":"manual","product_id":1932802097263,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"Dr. Infrared Heater DR-968 Portable Space Heater, 1500W - Other","variant_inventory_management":"shopify","properties":[],"product_exists":true,"fulfillable_quantity":1,"grams":0,"total_discount":"0.00","fulfillment_status":null,"discount_allocations":[],"tax_lines":[],"origin_location":{"id":693374812271,"country_code":"US","province_code":"CA","name":"haanmark","address1":"7 Alpine Village Drive","address2":"","city":"Alpine","zip":"91901"},"global":1,"owner":29,"mpn":"DR-968","merchant":[{"name":"walmart.com","code":"17153162"}],"image":"https://i5.walmartimages.com/asr/a900d965-c759-4fbf-80c9-cef9be0088d0_1.bd5bdb5779afa8a37dc7b25673cc7f99.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF"}]',
+    //   billing_address: '{"first_name":"AHMAD","address1":"1301 N 175th St Apt B302","phone":null,"city":"Shoreline","zip":"98133","province":"Washington","country":"United States","last_name":"ASHOUR","address2":"","company":"","latitude":47.7557804,"longitude":-122.3424158,"name":"AHMAD ASHOUR","country_code":"US","province_code":"WA"}',
+    //   shipping_address: '{"first_name":"AHMAD","address1":"1301 N 175th St Apt B302","phone":null,"city":"Shoreline","zip":"98133","province":"Washington","country":"United States","last_name":"ASHOUR","address2":"","company":"","latitude":47.7557804,"longitude":-122.3424158,"name":"AHMAD ASHOUR","country_code":"US","province_code":"WA"}',
+    //   internal_notes1: '',
+    //   internal_notes2: '',
+    //   internal_notes3: '',
+    //   tag: '',
+    //   status: 'New',
+    //   tracking_number: '',
+    //   label: 'no-label',
+    //   picker: '',
+    //   owner: '[29]',
+    //   global: '1',
+    //   id: '4485',
+    //   createdAt: '2018-11-24 04:22:29+00',
+    //   updatedAt: '2018-11-24 04:22:39+00',
+    //   tracking_url: '',
+    //   commission: 0,
+    //   payout: 0,
+    //   tracking_status: '',
+    //   number: 4469 }
+
+    let {id,shop,status} = req.allParams()
+    // let {shop} = req.allParams()
+    let findToken = await Promise.resolve(Shop.findOne({ name: shop }).populate('shopifytoken'));
+
+    let accessToken = findToken.shopifytoken[0].accessToken
+    let Shopify = new ShopifyApi({
+      shop: shop,
+      shopify_api_key: apiKey,
+      access_token:accessToken
+    });
+
+    // let shopifyUrl = `/admin/orders.json?since_id=${id}&limit=250&status=${status}`
+    let shopifyUrl = `/admin/orders.json?ids=${id}&status=${status}`
+    // let shopifyUrl = `/admin/orders.json?limit=250`
+    Shopify.get(shopifyUrl,(err,data)=>{
+      console.log('count', data.orders.length);
+
+      console.log('data.orders', data.orders);
+      _.each(data.orders,(order)=>{
+        order.orderid = order.id
+        delete order.id
+        order.order_name = order.name
+        order.shop = shop
+        // order.tracking_status = 'New'
+        // let quantity = 0
+        // _.each(order.line_items,(item)=>{
+        //   quantity += item.quantity
+        // })
+        // order.total_item = quantity
+        let number = parseInt(order.name.split('#')[1])
+          Order.update({where: {
+              order_name:order.name,
+              orderid:null,
+              total_price:parseFloat(order.total_price)
+            }},order).then((result)=>{
+            console.log('done', result.orderid);
+          }).catch((err)=>{
+            console.log('err', err);
+          })
+      })
+    })
+    res.json('ok')
+  },
+
+  migrateCreate: async (req, res) => {
+
+    // let {id,shop} = req.allParams()
+    let {id,shop} = req.allParams()
+    let findToken = await Promise.resolve(Shop.findOne({ name: shop }).populate('shopifytoken'));
+
+    let accessToken = findToken.shopifytoken[0].accessToken
+    let Shopify = new ShopifyApi({
+      shop: shop,
+      shopify_api_key: apiKey,
+      access_token:accessToken
+    });
+
+    let shopifyUrl = `/admin/orders.json?since_id=${id}&limit=250`
+    // let shopifyUrl = `/admin/orders.json?limit=250`
+    Shopify.get(shopifyUrl,(err,data)=>{
+      console.log('count', data.orders.length);
+
+      console.log('data.orders', data.orders);
+      _.each(data.orders,(order)=>{
+        order.orderid = order.id
+        delete order.id
+        order.order_name = order.name
+        order.shop = shop
+        order.tracking_status = 'New'
+        let quantity = 0
+        _.each(order.line_items,(item)=>{
+          quantity += item.quantity
+        })
+        order.total_item = quantity
+
+        Order.create(order).then((result)=>{
+          console.log('result', result.id);
+        }).catch((err)=>{
+          console.log('err', err);
+        })
+      })
+    })
+    return res.json('ok')
+  },
+
+  export: async (req, res) => {
+      // let { selectedOrders } = req.allParams();
+    let selectedOrders = [1000,1002,1003,1004]
+      // Selected Pickup Order <array>:string.split(',')
+      // let orders = [2261, 2264, 2266, 2268];
+
+      // sails.log.debug("selectedOrders", selectedOrders);
+
+      // let pickupOrders = await Order.find().where({ id: selectedOrders })
+      let pickupOrders = await Order.find().sort('id ASC');
+
+      let filename = `export-order-items`;
+
+      let orderItems = [];
+
+      _.each(pickupOrders, (order) => {
+        // sails.log.debug("order", order);
+
+        let { line_items } = order;
+        let products = []
+        _.each(line_items, (item) => {
+          const { title,  quantity, sku} = item
+          sails.log.debug("line_item", item);
+          let product = `${title} - SKU: ${sku}`
+          if(quantity>1){
+            product = `${quantity}x ${product}`
+          }
+          products.push(product)
+        })
+        products = products.join(' | ')
+
+        let address = order.shipping_address
+        let shippingAddress = `${address.name} | ${address.address1} | ${address.address2} | ${address.city} | ${address.zip} | ${address.province} | ${address.country}`
+
+        let csvLineItem = {
+          OrderId: order.id,
+          OrderName: order.order_name,
+          Date: order.createdAt,
+          Qty: order.total_item,
+          Total: order.total_price,
+          Product: products,
+          ShippingInformation: shippingAddress,
+          Notes: order.internal_notes1,
+          Status: order.tracking_status,
+          Tracking: order.tracking_number,
+          User: order.picker
+        };
+
+        orderItems.push(csvLineItem);
+      })
+
+      // sails.log.debug("orderItems", orderItems);
+
+      let fields = Object.keys(_.get(orderItems, '[0]',{}));
+
+      // res.json({
+      //   filename,
+      //   data: orderItems,
+      //   fields
+      // });
+      res.csv({
+        filename,
+        data: orderItems,
+        fields
+      });
+  },
+
+  backup: async (req, res) => {
+
+    let orders = await Order.find().sort('id ASC');
+
+    let filename = `backup-orders`;
+
+    let fields = Object.keys(_.get(orders, '[0]',{}));
+
+    res.csv({
+      filename,
+      data: orders,
+      fields
+    });
   },
 
   get_chart: async(req,res) => {

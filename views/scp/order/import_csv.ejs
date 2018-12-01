@@ -2,9 +2,7 @@
 
 
 <div class="container" id="seller-page">
-  <aside class="sidenav">
-    <%- partial ('../menu-side.ejs') %>
-  </aside>
+
 
   <div class="main-content">
     <div class="head-content">
@@ -23,90 +21,41 @@
       </div>
     </div>
 
-    <div class="detail-content import-order-page" id="<%= sid %>">
+    <div class="detail-content import-order-page" id="">
       <ul class="breadcrumb">
         <li><a href="/scp"><i class="fa fa-home"></i> Home</a></li>
         <li class="active">Import Order</li>
       </ul>
 
 
-      <% if(validDataArray.length > 0) {%>
-      <div class="display-noty">
-      <div class="alert alert-success">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-        <strong>Success!</strong> Now press Validate Data.</div>
-      </div>
-      <% } %>
 
 
-      <% if(!foundShop) { %>
-      <div class="alert alert-warning">Please config your Shop to import order.</div>
-      <div style="max-width:600px;margin:0 auto;padding:15px;background:#fff" class="config-shop">
-      <form method="POST" action="/fulfillment/create_shop">
-        <div class="form-group">
-          <label for="shop">Shop</label>
-          <input type="text" class="form-control" value="CSV_<%= _.get(req.user,'id') %>" disabled>
-          <input type="text" class="hidden form-control" id="shop" name="shop" value="CSV_<%= _.get(req.user,'id') %>">
-        </div>
-        <div class="form-group">
-          <label for="name">Company</label>
-          <input type="text" class="form-control" id="name" name="name" placeholder="Enter your company name" required>
-        </div>
-        <div class="form-group">
-          <label for="street1">Street</label>
-          <input type="text" class="form-control" id="street1" name="street1" value="6182 Winslow Dr">
-        </div>
-        <div class="form-group">
-          <label for="city">City</label>
-          <input type="text" class="form-control" id="city" name="city" value="Huntington Beach">
-        </div>
-        <div class="form-group">
-          <label for="state">State</label>
-          <input type="text" class="form-control" id="state" name="state" value="CA">
-        </div>
-        <div class="form-group">
-          <label for="zip">Zip</label>
-          <input type="text" class="form-control" id="zip" name="zip" value="92647">
-        </div>
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input type="text" class="form-control" id="country" name="country" value="US">
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="text" class="form-control" id="phone" name="phone" value="310-808-5243">
-        </div>
 
-        <button type="submit" class="btn btn-block btn-large btn-success">Submit</button>
-      </form>
-      </div>
 
-      <% } else { %>
       <div class="main-section">
         <div class="col-sm-7">
 
-          <a class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i> Download CSV Example</a>
           <form id="upload-csv-form" action="/order/upload" method="post" enctype="multipart/form-data">
               <!-- The name here is important, and will be used later to reference the data -->
               <input type="file" name="files" accept="text/cvs">
               <div class="section-button">
-                <a class="import-csv-submit btn btn-info" href="#" disabled><i class="fa fa-upload fa-lg"></i> Upload CSV File</a>
-                <a class="validate-data btn btn-warning" href="#" disabled><i class="fa fa-circle-o-notch fa-lg"></i> Validate Data</a>
-                <a class="import-orders btn btn-success" href="#" disabled><i class="fa fa-circle-o-notch fa-lg"></i> Import Orders</a>
+                <a class="import-csv-submit btn btn-info" href="#" disabled><i class="fa fa-upload fa-lg"></i> Import CSV File</a>
+                <a class="validate-data btn btn-warning hidden" href="#" disabled><i class="fa fa-circle-o-notch fa-lg"></i> Validate Data</a>
+                <a class="hidden import-orders btn btn-success" href="#" disabled><i class="fa fa-circle-o-notch fa-lg"></i> Import Orders</a>
+                <a class="export-orders btn btn-success" href="/order/export"><i class="fa fa-circle-o-notch fa-lg"></i> Export Orders</a>
+                <a class="backup-orders btn btn-warning" href="/order/backup"><i class="fa fa-circle-o-notch fa-lg"></i> Backup Orders</a>
               </div>
               <!--<input type="submit" value="Submit"/>-->
             </form>
         </div>
         <div class="col-sm-5 import-data">
-          <div class="panel panel-default">
+          <div class="panel panel-success">
             <div class="panel-heading">Import CSV Details</div>
             <div style="padding:0" class="panel-body">
               <ul class="list-group">
-                <li class="order-length list-group-item">Order Count <span class="badge"><%= validDataArray.length %></span></li>
+                <li class="order-length list-group-item">Order Count <span class="badge"></span></li>
                 <!--<li class="valid-order-count list-group-item">Valid Orders <span class="badge">0</span></li>-->
                 <li class="fail-order-count list-group-item">Failed <span class="badge">0</span></li>
-                <li class="valid-shipping-total list-group-item list-group-item-info">Shipping Total <span class="badge">$0.00</span></li>
-                <li class="valid-sub-total list-group-item list-group-item-success">Sub-Total <span class="badge">$0.00</span></li>
               </ul>
             </div>
           </div>
@@ -114,57 +63,9 @@
       </div>
 
 
-
-      <div class="table-section">
-        <table class="table table-hover" id="import-order-table">
-          <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Ship Name</th>
-            <th>Address1</th>
-            <th>Address2</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip</th>
-            <th>Country</th>
-            <th>SubTotal</th>
-            <th>Quantity</th>
-            <th>Shipping Cost</th>
-            <th>Validation</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% _.each(validDataArray,function(data){ %>
-          <tr style="background:#efefef;color:#ccc" class="no-validate" id="tr-<%= _.get(data,'orderid', '') %>">
-            <td class="import-order-id"><%= _.get(data,'orderid', '') %></td>
-            <td class="import-order-name"><%= _.get(data,'name', '') %></td>
-            <td class="import-order-address1"><%= _.get(data,'address1', '') %></td>
-            <td class="import-order-address2"><%= _.get(data,'address2', '') %></td>
-            <td class="import-order-city"><%= _.get(data,'city', '') %></td>
-            <td class="import-order-state"><%= _.get(data,'state', '') %></td>
-            <td class="import-order-zipcode"><%= _.get(data,'zipcode', '') %></td>
-            <td class="import-order-country"><%= _.get(data,'country', '') %></td>
-            <td class="subtotal text_price"><%= _.get(data,'subtotal', '') %></td>
-            <td class="quantity text_price"><%= _.get(data,'quantity', '') %></td>
-            <td class="shippingcost text_price"><%= _.get(data,'shippingcost', '') %></td>
-            <td class="i-status"><i class="fa fa-circle-o-notch fa-lg"></i></td>
-          </tr>
-          <% }) %>
-          </tbody>
-        </table>
-      </div>
-
-      <% } %>
     </div>
   </div>
 </div>
-
-<%- partial ('modal/modal101.ejs') %>
-<%- partial ('modal/modal201.ejs') %>
-<%- partial ('modal/modal202.ejs') %>
-<%- partial ('modal/modal203.ejs') %>
-<%- partial ('modal/modal204.ejs') %>
-
 <style>
 
   table i.fa-spin {
