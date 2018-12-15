@@ -101,6 +101,7 @@ module.exports = {
 
   quickAddProduct: async (req, res) => {
     let params = req.allParams();
+    console.log('params', params);
     params.owner = req.user.id;
     let result = await Walmart.quick_add(params)
     console.log('quickAddProduct result', result);
