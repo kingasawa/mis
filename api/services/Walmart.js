@@ -164,12 +164,7 @@ module.exports = {
       owner
     }
     console.log('createData', createData);
-    let postCreated
-    await Post.create(createData).then((result)=>{
-      postCreated = result
-    }).catch((err)=>{
-      console.log('err', err);
-    })
+    let postCreated = await Post.create(createData)
 
     console.log('postCreated', postCreated);
     return postCreated
