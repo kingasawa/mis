@@ -164,7 +164,7 @@ module.exports = {
       owner
     }
     console.log('createData', createData);
-    let postCreated = await Post.create(createData)
+    let postCreated = await Post.create(createData).fetch()
 
     console.log('postCreated', postCreated);
     return postCreated
