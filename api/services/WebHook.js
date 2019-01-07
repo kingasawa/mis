@@ -41,7 +41,7 @@ module.exports = {
         let foundPost = await Post.findOne({productid:item.product_id});
         if(!foundPost){
           let foundProduct = await Product.findOne({productId:item.product_id});
-          item.src = foundProduct.images[0].src
+          item.src = _.get(foundProduct,'images[0].src','')
           return false;
         }
 
