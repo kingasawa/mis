@@ -252,7 +252,7 @@ module.exports = {
       access_token:accessToken
     });
 
-    let shopifyUrl = `/admin/orders.json?since_id=${id}&limit=250`
+    let shopifyUrl = `/admin/api/2019-04/orders.json?since_id=${id}&limit=250`
     // let shopifyUrl = `/admin/orders.json?limit=250`
     Shopify.get(shopifyUrl,(err,data)=>{
       console.log('count', data.orders.length);
