@@ -113,6 +113,22 @@ module.exports = {
     })
   },
 
+  fetchAll: async (req, res) => {
+    let {shop} = req.allParams()
+    let findToken = await Promise.resolve(Shop.findOne({ name: shop }).populate('shopifytoken'));
+
+    let accessToken = findToken.shopifytoken[0].accessToken
+    let Shopify = new ShopifyApi({
+      shop: shop,
+      shopify_api_key: apiKey,
+      access_token:accessToken
+    });
+
+    Shopify.get(`/admin/orders`,(err,data)=>{
+      console.log('data', data);
+    })
+  },
+
   migrate: async (req, res) => {
     let billing_address = {"first_name":"Nathan","address1":"72663 Pine St","phone":null,"city":"Fortuna","zip":"65034-1010","province":"Missouri","country":"United States","last_name":"Doyel","address2":"","company":"","latitude":null,"longitude":null,"name":"Nathan Doyel","country_code":"US","province_code":"MO"}
     let shipping_address = {"first_name":"Nathan","address1":"72663 Pine St","phone":null,"city":"Fortuna","zip":"65034-1010","province":"Missouri","country":"United States","last_name":"Doyel","address2":"","company":"","latitude":null,"longitude":null,"name":"Nathan Doyel","country_code":"US","province_code":"MO"}
@@ -251,7 +267,7 @@ module.exports = {
       shopify_api_key: apiKey,
       access_token:accessToken
     });
-
+    // /admin/api/2019-04/orders.json?since_id=123
     let shopifyUrl = `/admin/api/2019-04/orders.json?since_id=${id}&limit=250`
     // let shopifyUrl = `/admin/orders.json?limit=250`
     Shopify.get(shopifyUrl,(err,data)=>{
