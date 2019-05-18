@@ -110,6 +110,7 @@ module.exports = {
 
     Shopify.get(`/admin/orders/count.json`,(err,data)=>{
       console.log('data', data);
+      res.json(data)
     })
   },
 
@@ -124,8 +125,9 @@ module.exports = {
       access_token:accessToken
     });
 
-    Shopify.get(`/admin/orders`,(err,data)=>{
+    Shopify.get(`/admin/api/2019-04/orders.json`,(err,data)=>{
       console.log('data', data);
+      res.json(data)
     })
   },
 
