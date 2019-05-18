@@ -229,7 +229,7 @@ module.exports = {
         //   { tag: { '!': 'picked' } },
         //   { tag: null }
         // ],
-        picker:null,
+        // picker:null,
         status:'New'
       });
       console.log('foundOrder', foundOrder.length);
