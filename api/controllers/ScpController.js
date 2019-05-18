@@ -225,10 +225,11 @@ module.exports = {
     } else if(list=='unpick') {
       let orderReturnCount = 0;
       let foundOrder = await Order.find({
-        or : [
-          { tag: { '!': 'picked' } },
-          { tag: null }
-        ],
+        // or : [
+        //   { tag: { '!': 'picked' } },
+        //   { tag: null }
+        // ],
+        picker:null,
         status:'New'
       });
       console.log('foundOrder', foundOrder.length);
