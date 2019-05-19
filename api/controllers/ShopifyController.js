@@ -26,7 +26,7 @@ module.exports = {
           shop: params.shopifyname,
           shopify_api_key: apiKey,
           shopify_shared_secret: apiSecret,
-          shopify_scope: 'write_price_rules,write_products,read_orders,read_all_orders,read_customers,write_customers,read_orders,write_orders,read_shipping,write_shipping,read_analytics',
+          shopify_scope: 'write_price_rules,write_products,read_orders,read_customers,write_customers,read_orders,write_orders,read_shipping,write_shipping,read_analytics',
           redirect_uri: `https://${baseUrl}/shopify/sync_callback`,
           nonce: params.uid // you must provide a randomly selected value unique for each authorization request
         });
