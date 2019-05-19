@@ -7,8 +7,8 @@
 const { baseUrl } = sails.config.globals
 // const { apiKey, apiSecret } = sails.config.shopify;
 // const { apiKey, apiSecret } = sails.config.shopify;
-const apiKey = '37ba19c60c3afeafdcb6e24f0c8e252d';
-const apiSecret =  '22a3bfc470e705982986685f3d123808';
+const apiKey = '9ecfc20ce93ac92b9d146486441c6e7f';
+const apiSecret =  '29279b2a2026e3092f3daa4cb93362bf';
 
   //shopify app dev
 // var apiKey = '5be0da665e61116428d9fc135b5d452a';
@@ -26,7 +26,7 @@ module.exports = {
           shop: params.shopifyname,
           shopify_api_key: apiKey,
           shopify_shared_secret: apiSecret,
-          shopify_scope: 'write_price_rules,write_products,read_orders,read_customers,write_customers,read_orders,write_orders,read_shipping,write_shipping,read_analytics',
+          shopify_scope: 'write_price_rules,write_products,read_orders,read_all_orders,read_customers,write_customers,read_orders,write_orders,read_shipping,write_shipping,read_analytics',
           redirect_uri: `https://${baseUrl}/shopify/sync_callback`,
           nonce: params.uid // you must provide a randomly selected value unique for each authorization request
         });
@@ -618,6 +618,26 @@ module.exports = {
       });
 
       Shopify.get(`/admin/locations/${id}.json`,(err,data)=>{
+        if(err) {
+          console.log('err',err);
+          return false;
+        } else {
+          return res.json(data)
+        }
+      })
+    });
+  },
+
+  getOrder: async (req, res) => {
+    let {shop,id} = req.allParams()
+    Shop.findOne({name: shop}).populate('shopifytoken').exec((err,findToken)=>{
+      let Shopify = new ShopifyApi({
+        shop,
+        shopify_api_key: apiKey,
+        access_token: findToken.shopifytoken[0].accessToken,
+      });
+
+      Shopify.get(`/admin/webhooks.json`,(err,data)=>{
         if(err) {
           console.log('err',err);
           return false;
