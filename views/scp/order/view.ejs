@@ -37,7 +37,7 @@
                 <a type="button" class="mark-cs btn btn-info" data-id="<%= foundOrder.id %>" <%if(foundOrder.status=='CS'){%>disabled<%}%>>Mark CS</a>
 
               </div>
-              <table class="table table-bordered" id="scp-order-detail">
+              <table class="table table-bordered table-striped" id="scp-order-detail">
                 <thead>
                 <tr>
                   <th><input type="checkbox" class="choose-all-item" checked></th>
@@ -57,7 +57,7 @@
                 <tbody>
 
                 <!--//item here-->
-                <% _.each(foundOrder.line_items,function(item){ %>
+                <% _.each(orderArr,function(item){ %>
                 <% if(!item.global || item.global === 1 || item.owner == req.user.id){ %>
                 <tr class="tr-item item-picked" id="item-id-<%= item.id %>">
                   <td><input type="checkbox" data-item-id="<%= item.id %>" class="choose-item-id" checked></td>
