@@ -21,9 +21,6 @@
             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
               Bulk action <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu">
-              <%if(req.user.group == 1) {%>
-
-              <% } %>
               <% if (req.query.list == 'picked'){ %>
               <li><a class="hidden picklist" data-text="pickup-order" data-picker="<%= req.user.username %>" href="#"><i class="fa fa-hand-o-up"></i> Pickup order</a></li>
               <li><a class="hidden picklist" data-text="unpick-order" data-owner="<%= req.user.username %>" data-group="<%= req.user.group %>" href="#"><i class="fa fa-close"></i> Unpick order</a></li>
@@ -36,15 +33,7 @@
           </div>
         </div>
       </div>
-      <!-- Datatable here -->
 
-      <!--<div id="orderreportrange" class="btn btn-default">-->
-      <!--<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;-->
-      <!--<span></span> <b class="caret"></b>-->
-      <!--</div>-->
-
-      <!--<button type="button" id="export-order-csv" class="btn btn-success"><i class="fa fa-list-alt"></i> Export CSV</button>-->
-      <!--<h2>Order List</h2>-->
       <table style="background:#fff" id="order-table" class="display table table-responsive" cellspacing="0" width="100%">
 
 

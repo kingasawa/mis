@@ -38,12 +38,23 @@ module.exports = {
     } else {
       countUser = await User.count();
     }
-
     let countStore = await Shop.count();
+    let foundUser = await User.find()
+    let orderCount = []
+    await foundUser.map(async(user)=>{
+      let userOrderCount = await Order.count({status:'Refunded',picker:user.username})
+      return orderCount.push({
+        picker:user.username,
+        status:'Refunded',
+        count: userOrderCount
+      })
+    })
     let data = {
       countProduct,countOrder,countUser,countStore
     }
     console.log('data', data);
+    console.log('orderCount', orderCount);
+    // console.log('foundUser', foundUser);
     res.view('acp/index',data);
 
   },
@@ -173,6 +184,7 @@ module.exports = {
       // });
       let foundUser = await User.find()
       let foundOrder = await Order.find();
+      console.log('foundOrder', foundOrder);
       if(req.user.group === 1){
         findStore = await Shop.find();
       }
@@ -235,19 +247,6 @@ module.exports = {
 
 
     data = await (Order.queryAsync(query.toString())).then(e=>e.rows[0]) // {sync:1, ...addQuery}
-
-    // console.log('testData', testData);
-
-    // data['all-order'] = await (Order.queryAsync(query.toString())).then(e=>e.rows[0].count) // {sync:1, ...addQuery}
-    // data['pending-order'] = await Order.queryAsync(query.where({tracking:'pending'}).toString()).then(e=>e.rows[0].count)
-    // data['back-order'] = await Order.queryAsync(query.where({tracking:'Back-Order'}).toString()).then(e=>e.rows[0].count)
-    // data['awaiting-fulfillment-order'] = await Order.queryAsync(query.where({tracking:'Awaiting-Fulfillment'}).toString()).then(e=>e.rows[0].count)
-    // console.log('inprod query', query.where({tracking:'In-Production'}).toString());
-    // data['in-production-order'] = await Order.queryAsync(query.where({tracking:'In-Production'}).toString()).then(e=>e.rows[0].count)
-    // data['fulfilled-order'] = await Order.queryAsync(query.where({tracking:'Fulfilled'}).toString()).then(e=>e.rows[0].count)
-    // data['cancelled-order'] = await Order.queryAsync(query.where({tracking:'Cancelled'}).toString()).then(e=>e.rows[0].count)
-
-    // console.log('aq', {sync:1, ...addQuery});
 
     console.log('stats data', data);
     res.json(data)
@@ -517,17 +516,20 @@ module.exports = {
 
   user: async(req,res) => {
 
-    let foundUser;
-    if(req.user.group == 2){
-      foundUser = await User.find({group:[2,3]})
-    } else {
-      foundUser = await User.find()
-    }
+    // let foundUser;
+    // if(req.user.group == 2){
+    //   foundUser = await User.find({group:[2,3]})
+    // } else {
+    //   foundUser = await User.find()
+    // }
 
+    let foundUser = await Report.commission(req.user.group)
+    // console.log('foundUser', foundUser);
     let result = await Report.user();
     let userTotal = sumby(result,(r) => parseInt(r.count));
     let userStatusIndex = ['Active', 'Inactive'];
     let userStatus = keyby(result, 'status');
+    console.log('result', result);
 
 
 

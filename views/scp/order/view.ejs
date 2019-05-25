@@ -8,14 +8,8 @@
 
 
     <div class="detail-content order-<%= foundOrder.orderid %>" id="order-view-page">
-      <!--<ul class="breadcrumb">-->
-      <!--<li><a href="/acp"><i class="fa fa-home"></i> Home</a></li>-->
-      <!--<li><a href="/acp/order">Orders</a></li>-->
-      <!--<li class="active">Order #</li>-->
-      <!--</ul>-->
-
       <h2>Order details</h2>
-      <p>Order Name: <strong><%= foundOrder.order_name %></strong> | Order ID: <strong><%= foundOrder.id %></strong>Order date: <strong><%= sails.moment.tz(foundOrder.createdAt,"America/Los_Angeles").format('MM/DD/YYYY') %></strong></p>
+      <p>Order Name: <strong><%= foundOrder.order_name %></strong> | Order ID: <strong><%= foundOrder.id %> | </strong>Order date: <strong><%= sails.moment.tz(foundOrder.createdAt,"America/Los_Angeles").format('MM/DD/YYYY') %></strong></p>
 
       <div class="row">
         <div class="col-sm-8">
@@ -57,8 +51,8 @@
                 <tbody>
 
                 <!--//item here-->
-                <% _.each(orderArr,function(item){ %>
-                <% if(!item.global || item.global === 1 || item.owner == req.user.id){ %>
+                <% _.each(foundOrder.line_items,function(item){ %>
+
                 <tr class="tr-item item-picked" id="item-id-<%= item.id %>">
                   <td><input type="checkbox" data-item-id="<%= item.id %>" class="choose-item-id" checked></td>
                   <td class="product-image"><img src="<%= item.image || item.src %>"></td>
@@ -74,7 +68,7 @@
 
 
                 </tr>
-                <% } %>
+
                 <% }) %>
                 <!--//end here-->
                 </tbody>

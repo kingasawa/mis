@@ -187,7 +187,9 @@ module.exports = {
       await Promise.all(
         foundOrder.line_items.map((item)=>{
           Post.findOne({productid:item.product_id}).then((result)=>{
-            item.stock = result.stock
+            console.log('result', result);
+            if(result.stock) item.stock = result.stock
+            // item.stock = result.stock
           })
         })
       )
@@ -197,9 +199,10 @@ module.exports = {
       foundOrder.addressFormat = `${name}|${address1}|${address2}|${city}|${zip}|${province}|${country}`;
 
       let foundFulfill = await Fulfillment.find({order_id:foundOrder.orderid});
+      console.log('foundOrder', foundOrder);
       res.view('scp/order/view',{foundOrder,foundFulfill});
 
-    } else if(list=='picked') {
+    } if(list=='picked') {
       let orderReturnCount = 0;
       let foundOrder = await Order.find({picker:req.user.username});
       let orderArr = []
@@ -215,14 +218,16 @@ module.exports = {
           order.products = items.join('\n')
           let {name,address1,address2,city,zip,province,country} = order.shipping_address;
           order.addressFormat = `${name} |${address1} |${address2} |${city} |${zip} |${province} |${country}`;
-          if((_.includes(order.owner,owner) || order.global == 1)){
-            orderArr.push(order);
-          }
+          // if((_.includes(order.owner,owner) || order.global == 1)){
+          //   orderArr.push(order);
+          // }
+          orderArr.push(order);
         })
       )
       return res.view('scp/order', {orderArr,orderReturnCount});
 
     } else if(list=='unpick') {
+      console.log('list', list);
       let orderReturnCount = 0;
       let foundOrder = await Order.find({
         // or : [
@@ -232,7 +237,8 @@ module.exports = {
         // picker:null,
         status:'New'
       });
-      console.log('foundOrder', foundOrder.length);
+      console.log('foundOrder length', foundOrder.length);
+      console.log('foundOrder', foundOrder);
       let orderArr = []
       await Promise.all(
         foundOrder.map((order)=>{
@@ -246,32 +252,15 @@ module.exports = {
           order.products = items.join('\n')
           let {name,address1,address2,city,zip,province,country} = order.shipping_address;
           order.addressFormat = `${name} |${address1} |${address2} |${city} |${zip} |${province} |${country}`;
-          if((_.includes(order.owner,owner) || order.global == 1)){
-            orderArr.push(order);
-          }
+          orderArr.push(order);
         })
       )
+      console.log('orderArr', orderArr);
+      console.log('orderReturnCount', orderReturnCount);
       return res.view('scp/order', {orderArr,orderReturnCount});
 
     } else {
       return res.forbidden()
-      // let foundOrder = await Order.find();
-      // let orderArr = []
-      // await Promise.all(
-      //   foundOrder.map((order)=>{
-      //     let items = []
-      //     order.line_items.map((item)=>{
-      //       items.push(`• ${item.title}`)
-      //     })
-      //     order.products = items.join('\n')
-      //     let {name,address1,address2,city,zip,province,country} = order.shipping_address;
-      //     order.addressFormat = `${name} |${address1} |${address2} |${city} |${zip} |${province} |${country}`;
-      //     if((_.includes(order.owner,owner) || order.global == 1)){
-      //       orderArr.push(order);
-      //     }
-      //   })
-      // )
-      // return res.view('scp/order', {orderArr});
     }
 
 

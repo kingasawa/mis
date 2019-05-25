@@ -84,7 +84,7 @@ $(function() {
     }
 
     acpOrderTable.columns( 15 ).search( statusName ).draw();
-    orderTable.columns( 13 ).search( statusName ).draw();
+    // orderTable.columns( 13 ).search( statusName ).draw();
 
   })
 
@@ -855,9 +855,9 @@ $(function() {
     }
     $(this).html(`<i class="fa fa-spin fa-spinner"></i> Mark Shipped`)
     socket.post('/order/mark_shipped',{orderid,trackingCompany,trackingNumber,items,products},function(result){
-      console.log('result', result);
+      console.log('result', result)
       if(!result.error){
-        location.reload()
+        location.href = `${location.pathname}?list=picked`
       } else {
         $('button.mark-shipped').html(`Mark Shipped`)
         // console.log('result', result.error.base);
