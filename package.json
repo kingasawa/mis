@@ -37,6 +37,8 @@
     "knex": "^0.13.0",
     "lodash.concat": "^4.5.0",
     "lodash.fill": "^3.4.0",
+    "lodash.filter": "^4.6.0",
+    "lodash.groupby": "^4.6.0",
     "lodash.keyby": "^4.6.0",
     "lodash.minby": "^4.6.0",
     "lodash.reject": "^4.6.0",

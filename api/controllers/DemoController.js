@@ -1,7 +1,9 @@
 import moment from 'moment';
 import bluebird from 'bluebird';
+import groupBy from 'lodash.groupby';
 // import Passport from 'passport';
 const request = require('request');
+
 
 const { apiKey, apiSecret } = sails.config.shopify;
 const { shopifyVendor } = sails.config.shopify;
@@ -148,19 +150,19 @@ module.exports = {
     Mailer.sendFeedBack(feedback);
     res.json({msg:'done'})
   },
-  report: async (req, res) => {
-    let params = req.allParams();
-    let { export_report = false, REVALIDATE = false } = params;
-    console.time('analyze-report');
-    const allReport = await Report.Order({
-      export_report,
-      REVALIDATE
-    });
-
-    console.timeEnd('analyze-report');
-    // const allReport = await Report.Order({orderid: '5484266701', export_report: false});
-    res.json(allReport);
-  },
+  // report: async (req, res) => {
+  //   let params = req.allParams();
+  //   let { export_report = false, REVALIDATE = false } = params;
+  //   console.time('analyze-report');
+  //   const allReport = await Report.Order({
+  //     export_report,
+  //     REVALIDATE
+  //   });
+  //
+  //   console.timeEnd('analyze-report');
+  //   // const allReport = await Report.Order({orderid: '5484266701', export_report: false});
+  //   res.json(allReport);
+  // },
   dashboard: async (req, res) => {
     // let params = req.allParams();
     // let { export_report = false, REVALIDATE = false } = params;
@@ -574,5 +576,31 @@ module.exports = {
       return res.json(response)
     });
   },
+
+  report: async (req, res) => {
+    bluebird.promisifyAll(Order);
+    const orderData = await Order.queryAsync(`
+    select picker, status, count(id), sum(total_price) from "order"
+    WHERE "picker" is not null
+    AND "picker" <> ''
+    GROUP BY picker,status
+    ORDER BY picker
+      `);
+    //
+    // const orderMoney = await Order.queryAsync(`
+    // select picker, status, sum(total_price) from "order"
+    // GROUP BY picker,status
+    // ORDER BY status
+    //   `);
+
+    const orderGroup = groupBy(orderData.rows,'picker')
+    // const reportMoney = groupBy(orderMoney.rows,'status')
+    const userList = Object.keys(orderGroup)
+    const reportData = {orderGroup,userList}
+
+    // console.log('orderGroup', orderGroup);
+    res.json(reportData)
+  },
+
 };
 

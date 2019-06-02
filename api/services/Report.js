@@ -1,6 +1,9 @@
+import keyBy from 'lodash.keyby';
+
 var forEach = require('async-foreach').forEach;
 import bluebird from 'bluebird';
 import moment from 'moment';
+import groupBy from 'lodash.groupby';
 // import keyBy from 'lodash.keyby';
 
 module.exports = {
@@ -495,4 +498,44 @@ module.exports = {
     console.log('userDataRows', userDataRows);
     return userDataRows;
   },
+
+  reportOrder: async (req, res) => {
+    bluebird.promisifyAll(Order);
+    const orderData = await Order.queryAsync(`
+    select picker, status, count(id), sum(total_price) from "order"
+    GROUP BY picker,status
+    ORDER BY picker
+      `);
+    //
+    // const orderMoney = await Order.queryAsync(`
+    // select picker, status, sum(total_price) from "order"
+    // GROUP BY picker,status
+    // ORDER BY status
+    //   `);
+
+    const orderGroup = groupBy(orderData.rows,'picker')
+    // const reportMoney = groupBy(orderMoney.rows,'status')
+    const userList = Object.keys(orderGroup)
+    const reportData = {orderGroup,userList}
+
+    console.log('reportData', reportData);
+    return reportData
+    // res.json(reportData)
+  },
+
+  commission: async (group) => {
+    console.log('group', group);
+    let allUser
+    if(group == 2){
+      allUser = await User.find({group:[2,3]})
+    } else {
+      allUser = await User.find()
+    }
+    // _.each(allUser,async(user)=>{
+    //   user.order = await Order.find({picker:user.username})
+    // })
+    console.log('allUser', allUser);
+    return allUser
+  },
+
 };

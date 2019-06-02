@@ -39,21 +39,21 @@ module.exports = {
       countUser = await User.count();
     }
     let countStore = await Shop.count();
-    let foundUser = await User.find()
-    let orderCount = []
-    await foundUser.map(async(user)=>{
-      let userOrderCount = await Order.count({status:'Refunded',picker:user.username})
-      return orderCount.push({
-        picker:user.username,
-        status:'Refunded',
-        count: userOrderCount
-      })
-    })
+    // let foundUser = await User.find()
+    // let orderCount = []
+    // await foundUser.map(async(user)=>{
+    //   let userOrderCount = await Order.count({status:'Refunded',picker:user.username})
+    //   return orderCount.push({
+    //     picker:user.username,
+    //     status:'Refunded',
+    //     count: userOrderCount
+    //   })
+    // })
+    const reportOrder = await Report.reportOrder()
     let data = {
-      countProduct,countOrder,countUser,countStore
+      countProduct,countOrder,countUser,countStore, reportOrder
     }
-    console.log('data', data);
-    console.log('orderCount', orderCount);
+
     // console.log('foundUser', foundUser);
     res.view('acp/index',data);
 
