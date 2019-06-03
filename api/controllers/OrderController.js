@@ -50,47 +50,26 @@ module.exports = {
         file_data,
       }
       console.log('createData', createData);
-      // let createResult = await Promise.resolve(ImportCache.create(createData));
-      // console.log('createResult', createResult);
 
-
-      // _.each(file_data,(order)=>{
-      //   let orderData = {
-      //     id : order.OrderID,
-      //     order_name : order.OrderName,
-      //     total_item : order.Qty,
-      //     total_price : order.Total,
-      //     internal_notes1: order.Notes,
-      //     tracking_status: order.Status,
-      //     tracking_number: order.Tracking,
-      //     picker: order.User
-      //   }
-      //   Order.create(orderData).then((result)=>{
-      //     console.log('done', result.id);
-      //   }).catch((err)=>{
-      //     console.log('err', err);
-      //   })
-      // })
-
-        _.each(file_data,(order)=>{
-            let updateData = {
-              internal_note1: order.Notes,
-              tracking_status: order.Status,
-              status: order.Status,
-              tracking_number: order.Tracking,
-              picker: order.User
-            }
-
-            Order.update({
-              where: {
-                id: order.OrderID
-              }
-            },updateData).then((result)=>{
-              console.log('done', order.OrderID);
-            }).catch((err)=>{
-              console.log('err', err);
-            })
-      })
+        // _.each(file_data,(order)=>{
+        //     let updateData = {
+        //       internal_note1: order.Notes,
+        //       tracking_status: order.Status,
+        //       status: order.Status,
+        //       tracking_number: order.Tracking,
+        //       picker: order.User
+        //     }
+        //
+        //     Order.update({
+        //       where: {
+        //         id: order.OrderID
+        //       }
+        //     },updateData).then((result)=>{
+        //       console.log('done', order.OrderID);
+        //     }).catch((err)=>{
+        //       console.log('err', err);
+        //     })
+        // })
 
       return res.redirect(`/order/import?sid=${sid}`);
 
@@ -271,6 +250,49 @@ module.exports = {
     });
     // /admin/api/2019-04/orders.json?since_id=123
     let shopifyUrl = `/admin/api/2019-04/orders.json?since_id=${id}&limit=250`
+    // let shopifyUrl = `/admin/api/2019-04/orders.json`
+    // let shopifyUrl = `/admin/orders.json?limit=250`
+    Shopify.get(shopifyUrl,(err,data)=>{
+      console.log('count', data.orders.length);
+
+      console.log('data.orders', data.orders);
+      _.each(data.orders,(order)=>{
+        order.orderid = order.id
+        delete order.id
+        order.order_name = order.name
+        order.shop = shop
+        order.tracking_status = 'New'
+        let quantity = 0
+        _.each(order.line_items,(item)=>{
+          quantity += item.quantity
+        })
+        order.total_item = quantity
+
+        Order.create(order).then((result)=>{
+          console.log('result', result.id);
+        }).catch((err)=>{
+          console.log('err', err);
+        })
+      })
+    })
+    return res.json('ok')
+  },
+
+  migrateCreateNew: async (req, res) => {
+
+    // let {id,shop} = req.allParams()
+    let {id,shop} = req.allParams()
+    let findToken = await Promise.resolve(Shop.findOne({ name: shop }).populate('shopifytoken'));
+
+    let accessToken = findToken.shopifytoken[0].accessToken
+    let Shopify = new ShopifyApi({
+      shop: shop,
+      shopify_api_key: apiKey,
+      access_token:accessToken
+    });
+    // /admin/api/2019-04/orders.json?since_id=123
+    // let shopifyUrl = `/admin/api/2019-04/orders.json?since_id=${id}&limit=250`
+    let shopifyUrl = `/admin/api/2019-04/orders.json`
     // let shopifyUrl = `/admin/orders.json?limit=250`
     Shopify.get(shopifyUrl,(err,data)=>{
       console.log('count', data.orders.length);

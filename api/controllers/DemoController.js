@@ -578,14 +578,16 @@ module.exports = {
   },
 
   report: async (req, res) => {
+
+
     bluebird.promisifyAll(Order);
-    const orderData = await Order.queryAsync(`
-    select picker, status, count(id), sum(total_price) from "order"
-    WHERE "picker" is not null
-    AND "picker" <> ''
-    GROUP BY picker,status
-    ORDER BY picker
-      `);
+    // const orderData = await Order.queryAsync(`
+    // select picker, status, count(id), sum(total_price) from "order"
+    // WHERE "picker" is not null
+    // AND "picker" <> ''
+    // GROUP BY picker,status
+    // ORDER BY picker
+    //   `);
     //
     // const orderMoney = await Order.queryAsync(`
     // select picker, status, sum(total_price) from "order"
@@ -593,13 +595,59 @@ module.exports = {
     // ORDER BY status
     //   `);
 
-    const orderGroup = groupBy(orderData.rows,'picker')
+    // const orderGroup = groupBy(orderData.rows,'picker')
+    // const userList = Object.keys(orderGroup)
+
+    const queryStatus = await Order.queryAsync(`
+    select status from "order"
+    GROUP BY status
+    `)
+
+    const queryUser = await Order.queryAsync(`
+    select picker from "order"
+    WHERE "picker" is not null
+    AND "picker" <> ''
+    GROUP BY picker
+    `)
+
+    const userData = []
+
+    queryUser.rows.map((user)=>{
+      queryStatus.rows.map(async(status)=>{
+        console.log('user', user);
+        console.log('status', status);
+        const orderData = await Order.queryAsync(`
+          select picker, status, count(id), sum(total_price) from "order"
+          WHERE "picker" = '${user.picker}'
+          AND "status" = '${status.status}'
+          GROUP BY picker,status
+        `);
+        console.log('userData orderData.rows', orderData.rows);
+        userData.push(orderData.rows)
+      })
+    })
+
+    console.log('userData', userData);
+    // const rows = []
+    // const orderUser = groupBy(orderData.rows,'picker')
+    // const orderStatus = groupBy(orderData.rows,'status')
+    // const objUser = Object.keys(orderUser)
+    // const objStatus = Object.keys(orderStatus)
+    //
+    // objStatus.map((s)=>{
+    //   objUser.map((u)=>{
+    //     if(orderUser[s].picker !== u)
+    //     rows.push()
+    //   })
+    // })
+
     // const reportMoney = groupBy(orderMoney.rows,'status')
-    const userList = Object.keys(orderGroup)
-    const reportData = {orderGroup,userList}
+    // console.log('orderGroup', orderGroup['Go GO']);
+
+    // const reportData = {orderGroup,obj}
 
     // console.log('orderGroup', orderGroup);
-    res.json(reportData)
+    res.json({msg:'ok'})
   },
 
 };

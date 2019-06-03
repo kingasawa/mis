@@ -112,6 +112,29 @@
         </div>
         <% } %>
       </div>
+      <div class="white-box">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">User</th>
+            <th scope="col">Order</th>
+            <th scope="col">Total</th>
+            <th scope="col">Money</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% _.each(reportOrder,function(order){%>
+            <tr>
+              <th scope="row"><%= order.user %></th>
+              <td style="font-size:18px"><%= order.order %></td>
+              <td style="font-size:18px;color:#0088cc"><%= order.total %></td>
+              <td style="font-size:20px;color:#7ebe00">$<%= order.money %></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
+
 
       <div class="chart-container" style="position: relative;">
       <canvas style="background:#fff" id="myChart" height="100"></canvas>

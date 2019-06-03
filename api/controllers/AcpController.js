@@ -50,6 +50,7 @@ module.exports = {
     //   })
     // })
     const reportOrder = await Report.reportOrder()
+    console.log('reportOrder', reportOrder);
     let data = {
       countProduct,countOrder,countUser,countStore, reportOrder
     }
