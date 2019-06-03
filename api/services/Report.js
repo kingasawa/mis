@@ -502,7 +502,10 @@ module.exports = {
   reportOrder: async (req, res) => {
     bluebird.promisifyAll(Order);
     const orderData = await Order.queryAsync(`
-    select picker, status, count(id), sum(total_price) from "order"
+    SELECT picker AS user, status AS order, count(id) AS total , sum(total_price) AS money 
+    FROM "order"
+    WHERE "picker" is not null
+    AND "picker" <> ''
     GROUP BY picker,status
     ORDER BY picker
       `);
@@ -513,13 +516,13 @@ module.exports = {
     // ORDER BY status
     //   `);
 
-    const orderGroup = groupBy(orderData.rows,'picker')
+    // const orderGroup = groupBy(orderData.rows,'picker')
     // const reportMoney = groupBy(orderMoney.rows,'status')
-    const userList = Object.keys(orderGroup)
-    const reportData = {orderGroup,userList}
+    // const userList = Object.keys(orderGroup)
+    // const reportData = {orderGroup,userList}
 
-    console.log('reportData', reportData);
-    return reportData
+    // console.log('orderData', orderData);
+    return orderData.rows
     // res.json(reportData)
   },
 
