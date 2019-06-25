@@ -80,6 +80,17 @@ module.exports = {
 
     }
   },
+
+  unsyncProductApi: async (req, res) => {
+    const {store} = req.allParams()
+    const updatedUsers = await Post.update({store}).set({
+      store: ''
+    }).fetch()
+    res.send({
+      msg: `${store} - Unsync successful`
+    })
+  },
+
   order: async(req,res) => {
     let { id,list } = req.allParams();
     let findStore;
