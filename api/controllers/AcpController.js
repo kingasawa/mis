@@ -83,12 +83,12 @@ module.exports = {
 
   unsyncProductApi: async (req, res) => {
     const {store} = req.allParams()
-    const updatedUsers = await Post.update({store}).set({
-      store: ''
-    }).fetch()
-    res.send({
-      msg: `${store} - Unsync successful`
+    await Post.update({store},{store: ''}).then((updatedUsers)=>{
+      res.send({
+        msg: `${store} - Unsync ${updatedUsers.length} products successful `
+      })
     })
+
   },
 
   order: async(req,res) => {
