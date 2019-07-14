@@ -66,6 +66,35 @@
             </a>
           </div>
         </div>
+          <div class="row" style="margin-top:15px">
+            <div class="col-sm-3">
+              <a href="/acp/user">
+                <div class="media media-manager">
+                  <div class="media-left media-middle">
+                    <img width="55" src="/images/dollar.png" class="media-object">
+                  </div>
+                  <div class="media-body" style="text-align: center">
+                    <h2 class="media-heading">$<%= sumOrderPaid %></h2>
+                    <p>Total Order Paid</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class="col-sm-3">
+              <a href="/acp/user">
+                <div class="media media-manager">
+                  <div class="media-left media-middle">
+                    <img width="55" src="/images/dollar.png" class="media-object">
+                  </div>
+                  <div class="media-body" style="text-align: center">
+                    <h2 class="media-heading">$<%= sumOrderRefunded %></h2>
+                    <p>Total Order Refunded</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         <% } else { %>
         <div class="row">
           <div class="col-sm-4">

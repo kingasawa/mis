@@ -39,23 +39,21 @@ module.exports = {
       countUser = await User.count();
     }
     let countStore = await Shop.count();
-    // let foundUser = await User.find()
-    // let orderCount = []
-    // await foundUser.map(async(user)=>{
-    //   let userOrderCount = await Order.count({status:'Refunded',picker:user.username})
-    //   return orderCount.push({
-    //     picker:user.username,
-    //     status:'Refunded',
-    //     count: userOrderCount
-    //   })
-    // })
+
     const reportOrder = await Report.reportOrder()
-    console.log('reportOrder', reportOrder);
+
+    const orderPaid = await Report.sumOrderByPaid()
+    let sumOrderPaid = orderPaid[0].sum
+    sumOrderPaid = sumOrderPaid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    const orderRefunded = await Report.sumOrderByRefunded()
+    let sumOrderRefunded = orderRefunded[0].sum
+    sumOrderRefunded = sumOrderRefunded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
     let data = {
-      countProduct,countOrder,countUser,countStore, reportOrder
+      countProduct,countOrder,countUser,countStore, reportOrder, sumOrderPaid, sumOrderRefunded
     }
 
-    // console.log('foundUser', foundUser);
     res.view('acp/index',data);
 
   },

@@ -526,6 +526,28 @@ module.exports = {
     // res.json(reportData)
   },
 
+  sumOrderByPaid: async (req, res) => {
+    bluebird.promisifyAll(Order);
+    const data = await Order.queryAsync(`
+    SELECT sum(total_price)
+    FROM "order"
+    WHERE "financial_status" = 'paid'
+    GROUP BY financial_status;
+      `);
+    return data.rows
+  },
+
+  sumOrderByRefunded: async (req, res) => {
+    bluebird.promisifyAll(Order);
+    const data = await Order.queryAsync(`
+    SELECT sum(total_price)
+    FROM "order"
+    WHERE "financial_status" = 'refunded'
+    GROUP BY financial_status;
+      `);
+    return data.rows
+  },
+
   commission: async (group) => {
     console.log('group', group);
     let allUser
