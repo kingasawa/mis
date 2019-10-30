@@ -34,7 +34,7 @@
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
     "json2csv": "^3.7.3",
-    "knex": "^0.13.0",
+    "knex": "^0.19.5",
     "lodash.concat": "^4.5.0",
     "lodash.fill": "^3.4.0",
     "lodash.filter": "^4.6.0",
