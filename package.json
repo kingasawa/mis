@@ -51,7 +51,7 @@
     "node-bigcommerce": "^3.0.0",
     "node-datatable": "3.0.3",
     "node-easypost": "^3.0.0-rc.17",
-    "node-sass": "^4.5.3",
+    "node-sass": "^7.0.0",
     "nodemailer-mailgun-transport": "^1.3.5",
     "paypal-adaptive": "^0.4.2",
     "paypal-rest-sdk": "^1.7.1",
