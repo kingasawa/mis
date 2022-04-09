@@ -47,7 +47,7 @@
     "lodash.sum": "^4.0.2",
     "lodash.sumby": "^4.6.0",
     "lzma": "^2.3.2",
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "node-bigcommerce": "^3.0.0",
     "node-datatable": "3.0.3",
     "node-easypost": "^3.0.0-rc.17",
