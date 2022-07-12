@@ -22,7 +22,7 @@ module.exports = {
   //   connection: 'someMongodbServer'
   // },
   globals: {
-    baseUrl: 'shipint.live'
+    baseUrl: 'hdgangz.com'
   },
   connections: {
     misdb: {
@@ -31,7 +31,7 @@ module.exports = {
       port: '5432',
       user: '', // optional
       password: '', // optional
-      database: '' //optional
+      database: 'misdb' //optional
     },
     dev: {
       adapter: 'sails-postgresql',
@@ -39,7 +39,7 @@ module.exports = {
       port: '5432',
       user: '', // optional
       password: '', // optional
-      database: '' //optional
+      database: 'misdev' //optional
     },
 
     localhost: {
@@ -48,7 +48,7 @@ module.exports = {
       user: '', // optional
       port: '',
       password: '', // optional
-      database: '' //optional
+      database: 'mislocal' //optional
     }
 
   },
