@@ -45,7 +45,7 @@ module.exports = {
     localhost: {
       adapter: 'sails-postgresql',
       host: '127.0.0.1',
-      user: 'nicecode', // optional
+      user: 'root', // optional
       port: '5432',
       password: 'Tu)!Tr#H4ck', // optional
       database: 'misdb' //optional
