@@ -28,3 +28,15 @@ services:
       POSTGRES_USER: 'root' # The PostgreSQL user (useful to connect to the database)
       POSTGRES_PASSWORD: 'Tu)!Tr#H4ck' # The PostgreSQL password (useful to connect to the database)
       POSTGRES_DB: 'misdb' # The PostgreSQL default database (automatically created at first launch)
+      
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
+  volumes:
+    cache:
+      driver: local
