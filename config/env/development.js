@@ -83,6 +83,7 @@ module.exports = {
     db: 4,
     pass:  '',
     prefix: 'sess:',
+    secret: 'abcdefABCDEF!@#'
   },
   kue_subscriber: {
     redis: {
