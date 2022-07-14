@@ -30,7 +30,9 @@ services:
       POSTGRES_DB: 'misdb' # The PostgreSQL default database (automatically created at first launch)
       
   cache:
-    image: redis:6.2-alpine
+    image: redis:5-alpine
     restart: always
     ports:
       - '6379:6379'
+    environment:
+      - REDIS_PASSWORD='abcdefABCDEF!@#'
