@@ -97,13 +97,13 @@ module.exports = {
     },
   },
   cache: {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 6379,
     db: 1
   },
   sockets: {
     adapter: 'socket.io-redis',
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 6379,
     db: 3
   },
